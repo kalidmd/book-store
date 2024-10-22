@@ -36,6 +36,7 @@ export const Footer = () => {
           </div>
         </div>
       </div>
+      <hr className='footer-hr'/>
 
       <div className="bottom-footer">
         <div className="footer-bottom-links">
@@ -46,13 +47,22 @@ export const Footer = () => {
         </div>
 
         <div className="social-media-icons">
-          <NavLink to={'https://www.instagram.com/'}> 
+          <NavLink 
+            to={'https://www.instagram.com/'}
+            target='_blank'
+          > 
             <img src={InstaIcon} alt="instagram" />
           </NavLink>
-          <NavLink to={'https://www.google.com/'}>
+          <NavLink 
+            to={'https://www.google.com/'}
+            target='_blank'
+          >
             <img src={GoogleIcon} alt="google" />
           </NavLink>
-          <NavLink to={'https://www.facebook.com/'}>
+          <NavLink 
+            to={'https://www.facebook.com/'}
+            target='_blank'
+          >
             <img src={FacebookIcon} alt="facebook" />
           </NavLink>
         

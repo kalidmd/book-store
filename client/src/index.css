@@ -256,6 +256,7 @@ footer {
   display: flex;
   align-items: end;
   justify-content: space-between;
+  margin-bottom: 140px;
   /* gap: 50px; */
 }
 .footer-top-links {
@@ -297,10 +298,16 @@ footer {
   border-bottom-left-radius: 0;
   height: 36px;
 }
+
+    /* Horizental Line */
+    /* *************** */
+.footer-hr {
+  margin-bottom: 21px;
+  border: .7px solid rgba(13, 8, 66, 10%);
+}
     /* Bottom Footer */
     /* ************* */
 .bottom-footer {
-  margin-top: 161px;
   display: flex;
   justify-content: space-between;
 }
@@ -311,4 +318,42 @@ footer {
 .social-media-icons {
   display: flex;
   gap: 50px;
+}
+    
+/* Bottom Footer */
+/* ************* */
+.page-not-found {
+  /* width: 90%; */
+  /* margin: 0 auto; */
+  text-align: center;
+  font-family: var(--montserrat);
+}
+.page-not-found-books {
+  /* background-color: red; */
+  width: fit-content;
+  margin: 0 auto;
+  display: flex;
+}
+/* .page-not-found-books img {
+  width: 100px;
+} */
+.four-o-four {
+  color: var(--yellow-color);
+  font-size: 228px;
+  font-weight: 500;
+}
+.page-not-found-looks-like {
+  font-size: 36px;
+  margin-bottom: 30px;
+}
+.page-not-found-the-page {
+  font-size: 24px;
+  color: rgba(13, 8, 66, 60%);
+  margin-bottom: 30px;
+}
+.page-not-found a {
+  font-family: var(--nunito-sans);
+  color: var(--yellow-color);
+  font-weight: bold;
+  font-size: 23px;
 }
