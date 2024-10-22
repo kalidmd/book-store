@@ -6,20 +6,21 @@
 ::after, ::before {
   box-sizing: border-box;
 }
-img {
-  /* width: 100%; */
-  /* height: 100%; */
-}
 :root {
   --yellow-color: #FFCE1A;
   --text-color: #0D0842;
   --search-bg-color: #EAEAEA;
+  --book-desc-color: rgba(13, 8, 66, 52%);
   --discount-color: #6C6C6C;
   --text-color-for-black-bg: #FFFFF8;
   --bg-color-website: #FFFFFF;
   --nunito-sans: "Nunito Sans", sans-serif;
   --montserrat: "Montserrat", sans-serif;
 }
+a {
+  text-decoration: none;
+}
+
 body {
   /* font-family: "Maven Pro", sans-serif; */
   font-family: "Nunito Sans", sans-serif;
@@ -121,7 +122,7 @@ footer {
   width: 450px;
   padding-bottom: 40px;
 }
-.new-releases-cont button {
+.subscribe-btn {
   background-color: var(--yellow-color);
   border: none;
   color: #fff;
@@ -137,8 +138,10 @@ footer {
         /* ******************* */
 .top-sellers-section {
   font-family: var(--montserrat);
+  margin-bottom: 76px;
 }
 .top-sellers-title {
+  width: fit-content;
   font-size: 24px;
   font-weight: 600;
   margin-bottom: 20px;
@@ -154,36 +157,158 @@ footer {
   background-color: transparent;
   font-size: 16px;
   padding: 7px 10px;
-
-  /* display: flex; */
-  /* gap: 5px; */
 }
-.top-selling-books {
-  margin-top: 20px;
+        /* Books Component */
+        /* *************** */
+.books {
+  margin-top: 37px;
+  /* background-color: rgb(246, 204, 210); */
+  display: flex;
+  gap: 40px;
+  overflow: hidden;
+  /* justify-content: space-between; */
 }
-/* .arrow {
-  border: solid black;
-  border-width: 0 3px 3px 0;
-  display: inline-block;
-  padding: 3px;
+.book {
+  display: flex;
+  /* background-color: lightcyan; */
+  width: fit-content;
+  gap: 40px;
+  align-items: end;
+}
+.book-contents {
+  width: 219px;
+}
+.book-title {
+  margin-bottom: 15px;
+}
+.book-desc {
+  font-family: var(--nunito-sans);
+  color: var(--book-desc-color); 
+}
+.book-price {
+  font-family: var(--nunito-sans);
+  display: flex;
+  width: fit-content;
+  gap: 15px;
+  margin-top: 15px;
+}
+.book-old-price {
+  color: var(--discount-color);
+  text-decoration: line-through;
+}
+.book-basket-btn {
+  font-family: var(--nunito-sans);
+  margin-top: 23px;
+  padding: 7px 20px 7px 15px;
+}
+        /* Recommended Section */
+        /* ******************* */
+.recommended-section {
+  margin-bottom: 120px;
+}
+.recommended-title, .news-title {
+  width: fit-content;
+  font-size: 24px;
+  font-weight: 600;
 }
 
-.right {
-  transform: rotate(-45deg);
-  -webkit-transform: rotate(-45deg);
+        /* News Section */
+        /************** */
+.news-section {
+  /* background-color: gray; */
+  margin-bottom: 220px;
+}
+.news-cont {
+  margin-top: 31px;
+  display: flex;
+  overflow: hidden;
+}
+.news {
+  display: flex;
+  gap: 45px;
+  margin-left: 45px;
+}
+.news-contents {
+  width: 386px;
+}
+.news-heading {
+  font-family: var(--montserrat);
+}
+.news-underline {
+  width: 50px;
+  border: 1px solid var(--yellow-color);
+  background: var(--yellow-color);
+  margin: 25px 0;
+}
+.news-desc {
+  font-size: 14px;
 }
 
-.left {
-  transform: rotate(135deg);
-  -webkit-transform: rotate(135deg);
+        /* Footer */
+        /* ****** */
+    /* Top Footer */
+    /* ********** */
+footer {
+  margin-bottom: 20px;
 }
-
-.up {
-  transform: rotate(-135deg);
-  -webkit-transform: rotate(-135deg);
-} */
-
-.down {
-  transform: rotate(45deg);
-  -webkit-transform: rotate(45deg);
+.top-footer {
+  /* background-color: lightblue; */
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  /* gap: 50px; */
+}
+.footer-top-links {
+  margin-top: 40px;
+  display: flex;
+  gap: 40px;
+}
+.footer-top-links a, .footer-bottom-links a {
+  color: var(--text-color);
+  font-size: 18px;
+}
+.subscribe-cont {
+  display: flex;
+  flex-direction: column;
+  /* background-color: lightgreen; */
+  width: 420px;
+  /* align-items: end; */
+}
+.subscribe-text {
+  margin-bottom: 38px;
+}
+.email-cont {
+  /* width: 458px; */
+  display: flex;
+  border: 1px solid var(--yellow-color);
+  border-radius: 8px;
+}
+.email-cont input {
+  width: 283px;
+  height: 36px;
+  border: none;
+  outline: none;
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
+  text-indent: 25px;
+}
+.footer-subscribe-btn {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  height: 36px;
+}
+    /* Bottom Footer */
+    /* ************* */
+.bottom-footer {
+  margin-top: 161px;
+  display: flex;
+  justify-content: space-between;
+}
+.footer-bottom-links {
+  display: flex;
+  gap: 46px;
+}
+.social-media-icons {
+  display: flex;
+  gap: 50px;
 }

@@ -5,7 +5,7 @@ const Search = ({ setSearch }) => {
     <input 
         type="text" 
         className='search'
-        placeholder='What are you looking for?'
+        placeholder='What are you looking for ?'
     />
   )
 }
