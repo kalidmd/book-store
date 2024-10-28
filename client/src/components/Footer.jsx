@@ -10,7 +10,8 @@ import FacebookIcon from '../assets/icons/facebook-icon.png';
 export const Footer = () => {
   return (
     <footer>
-      <div className="top-footer">
+      
+      {/* <div className="top-footer">
 
         <div className="logo-and-links">
           <img src={BookLogo} alt="Book" />
@@ -67,7 +68,7 @@ export const Footer = () => {
           </NavLink>
         
         </div>
-      </div>
+      </div> */}
     </footer>
   )
 }

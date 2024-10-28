@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 * {
   margin: 0;
   padding: 0;
@@ -6,30 +10,32 @@
 ::after, ::before {
   box-sizing: border-box;
 }
-:root {
-  --yellow-color: #FFCE1A;
-  --text-color: #0D0842;
-  --search-bg-color: #EAEAEA;
-  --book-desc-color: rgba(13, 8, 66, 52%);
-  --discount-color: #6C6C6C;
-  --text-color-for-black-bg: #FFFFF8;
-  --bg-color-website: #FFFFFF;
-  --nunito-sans: "Nunito Sans", sans-serif;
-  --montserrat: "Montserrat", sans-serif;
-}
 a {
   text-decoration: none;
 }
 
 body {
-  /* font-family: "Maven Pro", sans-serif; */
-  font-family: "Nunito Sans", sans-serif;
-  background-color: var(--bg-color-website);
-  color: var(--text-color);
+  @apply bg-websiteMobileBg lg:bg-white text-text;
 }
+@layer components {
+  .section-cont {
+    @apply ml-6 lg:w-[90%] lg:mx-auto;
+  }
+  .title {
+    @apply font-montserrat font-medium md:font-semibold mb-6 md:text-[24px];
+  }
+  .select {
+    @apply font-nunito bg-searchBg border-2 rounded-lg py-[6px] pl-[10px] pr-10;
+  }
+  .books {
+    @apply flex gap-6 overflow-hidden bg-white mt-[10px] py-[10px] px-[15px] rounded-md
+  }
+
+}
+
         /* Footer to the bottom */
         /* ******************** */
-html {
+/* html {
   min-height: 100%;
 }
 .App {
@@ -42,318 +48,4 @@ html {
 footer {
   margin-top: auto;
 }
-        /* Nav Bar */
-        /* ****** */
-.nav-main {
-  /* background-color: rgb(239, 245, 246); */
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-top: 35px;
-  margin-bottom: 76px;
-}
-.menu-cont {
-  display: flex;
-  gap: 100px;
-  justify-content: space-between;
-  align-items: center;
-}
-.search-cont {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  background-color: var(--search-bg-color);
-  width: 296px;
-  height: 36px;
-  border-radius: 12px;
-}
-.search-img {
-  margin-left: 15px;
-}
-.search {
-  border: none;
-  outline: none;
-  background-color: transparent;
-  font-size: 16px;
-  width: 190px;
-  height: 22px;
-}
-.account-cont {
-  display: flex;
-  align-items: center;
-  gap: 30px;
-  justify-content: space-between;
-}
-.basket-btn {
-  display: flex;
-  align-items: center;
-  background-color: var(--yellow-color);
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  gap: 20px;
-  padding: 7px 40px 7px 15px;
-  font-size: 16px;
-  font-weight: bold;
-  cursor: pointer;
-}
-.account-img, .favorite-img, .menu-img {
-  cursor: pointer;
-}
-              /* Home Page */
-              /* ********* */
-        /* New Relseases Section */
-        /* ********************* */
-.new-releases-section {
-  font-family: "Montserrat", sans-serif;
-  display: flex;
-  justify-content: space-between;
-  /* background-color: lightgray; */
-  margin-bottom: 76px;
-}
-.new-releases-cont {
-  padding-top: 64px;
-}
-.new-releases-cont h1 {
-  font-size: 35px;
-  padding-bottom: 30px;
-}
-.new-releases-par {
-  width: 450px;
-  padding-bottom: 40px;
-}
-.subscribe-btn {
-  background-color: var(--yellow-color);
-  border: none;
-  color: #fff;
-  font-size: 16px;
-  padding: 7px 49px;
-  border-radius: 8px;
-  cursor: pointer;
-}
-.cover-img {
-  width: 400px;
-}
-        /* Top Sellers Section */
-        /* ******************* */
-.top-sellers-section {
-  font-family: var(--montserrat);
-  margin-bottom: 76px;
-}
-.top-sellers-title {
-  width: fit-content;
-  font-size: 24px;
-  font-weight: 600;
-  margin-bottom: 20px;
-}
-.select-cont {
-  width: 188px;
-  background-color: var(--search-bg-color);
-  border-radius: 8px;
-}
-.top-sellers-select {
-  border: none;
-  outline: none;
-  background-color: transparent;
-  font-size: 16px;
-  padding: 7px 10px;
-}
-        /* Books Component */
-        /* *************** */
-.books {
-  margin-top: 37px;
-  /* background-color: rgb(246, 204, 210); */
-  display: flex;
-  gap: 40px;
-  overflow: hidden;
-  /* justify-content: space-between; */
-}
-.book {
-  display: flex;
-  /* background-color: lightcyan; */
-  width: fit-content;
-  gap: 40px;
-  align-items: end;
-}
-.book-contents {
-  width: 219px;
-}
-.book-title {
-  margin-bottom: 15px;
-}
-.book-desc {
-  font-family: var(--nunito-sans);
-  color: var(--book-desc-color); 
-}
-.book-price {
-  font-family: var(--nunito-sans);
-  display: flex;
-  width: fit-content;
-  gap: 15px;
-  margin-top: 15px;
-}
-.book-old-price {
-  color: var(--discount-color);
-  text-decoration: line-through;
-}
-.book-basket-btn {
-  font-family: var(--nunito-sans);
-  margin-top: 23px;
-  padding: 7px 20px 7px 15px;
-}
-        /* Recommended Section */
-        /* ******************* */
-.recommended-section {
-  margin-bottom: 120px;
-}
-.recommended-title, .news-title {
-  width: fit-content;
-  font-size: 24px;
-  font-weight: 600;
-}
-
-        /* News Section */
-        /************** */
-.news-section {
-  /* background-color: gray; */
-  margin-bottom: 220px;
-}
-.news-cont {
-  margin-top: 31px;
-  display: flex;
-  overflow: hidden;
-}
-.news {
-  display: flex;
-  gap: 45px;
-  margin-left: 45px;
-}
-.news-contents {
-  width: 386px;
-}
-.news-heading {
-  font-family: var(--montserrat);
-}
-.news-underline {
-  width: 50px;
-  border: 1px solid var(--yellow-color);
-  background: var(--yellow-color);
-  margin: 25px 0;
-}
-.news-desc {
-  font-size: 14px;
-}
-
-        /* Footer */
-        /* ****** */
-    /* Top Footer */
-    /* ********** */
-footer {
-  margin-bottom: 20px;
-}
-.top-footer {
-  /* background-color: lightblue; */
-  display: flex;
-  align-items: end;
-  justify-content: space-between;
-  margin-bottom: 140px;
-  /* gap: 50px; */
-}
-.footer-top-links {
-  margin-top: 40px;
-  display: flex;
-  gap: 40px;
-}
-.footer-top-links a, .footer-bottom-links a {
-  color: var(--text-color);
-  font-size: 18px;
-}
-.subscribe-cont {
-  display: flex;
-  flex-direction: column;
-  /* background-color: lightgreen; */
-  width: 420px;
-  /* align-items: end; */
-}
-.subscribe-text {
-  margin-bottom: 38px;
-}
-.email-cont {
-  /* width: 458px; */
-  display: flex;
-  border: 1px solid var(--yellow-color);
-  border-radius: 8px;
-}
-.email-cont input {
-  width: 283px;
-  height: 36px;
-  border: none;
-  outline: none;
-  border-top-left-radius: 8px;
-  border-bottom-left-radius: 8px;
-  text-indent: 25px;
-}
-.footer-subscribe-btn {
-  border-top-left-radius: 0;
-  border-bottom-left-radius: 0;
-  height: 36px;
-}
-
-    /* Horizental Line */
-    /* *************** */
-.footer-hr {
-  margin-bottom: 21px;
-  border: .7px solid rgba(13, 8, 66, 10%);
-}
-    /* Bottom Footer */
-    /* ************* */
-.bottom-footer {
-  display: flex;
-  justify-content: space-between;
-}
-.footer-bottom-links {
-  display: flex;
-  gap: 46px;
-}
-.social-media-icons {
-  display: flex;
-  gap: 50px;
-}
-    
-/* Bottom Footer */
-/* ************* */
-.page-not-found {
-  /* width: 90%; */
-  /* margin: 0 auto; */
-  text-align: center;
-  font-family: var(--montserrat);
-}
-.page-not-found-books {
-  /* background-color: red; */
-  width: fit-content;
-  margin: 0 auto;
-  display: flex;
-}
-/* .page-not-found-books img {
-  width: 100px;
-} */
-.four-o-four {
-  color: var(--yellow-color);
-  font-size: 228px;
-  font-weight: 500;
-}
-.page-not-found-looks-like {
-  font-size: 36px;
-  margin-bottom: 30px;
-}
-.page-not-found-the-page {
-  font-size: 24px;
-  color: rgba(13, 8, 66, 60%);
-  margin-bottom: 30px;
-}
-.page-not-found a {
-  font-family: var(--nunito-sans);
-  color: var(--yellow-color);
-  font-weight: bold;
-  font-size: 23px;
-}
+  */

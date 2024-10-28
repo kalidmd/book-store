@@ -4,7 +4,7 @@ const Search = ({ setSearch }) => {
   return (
     <input 
         type="text" 
-        className='search'
+        className='border-0 bg-transparent outline-none bg-lime-200 w-[190px]'
         placeholder='What are you looking for ?'
     />
   )

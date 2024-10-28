@@ -1,15 +1,31 @@
 import React from 'react'
 // images
-import BannerImage from '../assets/banner.png'
+// import BannerImage from '../assets/banner.png'
 // page sections
-import TopSellers from '../sections/TopSellers'
-import Recommended from '../sections/Recommended'
-import News from '../sections/News'
+// Page Sections
+import News from './sections/News'
+import TopSellers from './sections/TopSellers'
+import NewRelease from './sections/NewRelease'
+import Recommended from './sections/Recommended'
+import GetNow from './sections/GetNow'
 
 const Home = () => {
   return (
-    <main className='home-main'>
-      <section className='new-releases-section'>
+    <main className=''>
+      <div className='lg:hidden'>
+        <News />
+      </div>
+
+      <div className='hidden lg:block'>
+        <NewRelease />
+      </div>
+
+      <TopSellers />
+
+      <Recommended />
+
+      <GetNow />
+      {/* <section className='new-releases-section'>
         <div className='new-releases-cont'>
           <h1>New Releases This Week</h1>
           <p className="new-releases-par">
@@ -25,7 +41,7 @@ const Home = () => {
 
       <Recommended />
 
-      <News />
+      <News /> */}
     </main>
   )
 }
