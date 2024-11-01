@@ -15,6 +15,10 @@ module.exports = {
       fontFamily: {
         nunito: ['Nunito Sans', 'sans-serif'],
         montserrat: ['Montserrat', 'sans-serif']
+      },
+      width: {
+        large: '90%',
+        xLarge: '80%'
       }
     },
   },

@@ -13,13 +13,17 @@
 a {
   text-decoration: none;
 }
+img {
+  max-width: 100%;
+  height: auto;
+}
 
 body {
   @apply bg-websiteMobileBg lg:bg-white text-text;
 }
 @layer components {
   .section-cont {
-    @apply ml-6 lg:w-[90%] lg:mx-auto;
+    @apply ml-6 lg:w-large 2xl:w-xLarge lg:mx-auto;
   }
   .title {
     @apply font-montserrat font-medium md:font-semibold mb-6 md:text-[24px];

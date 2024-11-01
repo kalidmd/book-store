@@ -2,7 +2,7 @@ import React from 'react'
 import CoverImg from '../../assets/banner.png'
 const NewRelease = () => {
   return (
-    <section className='w-[90%] mx-auto my-[76px] font-montserrat flex items-center justify-between'>
+    <section className='w-large 2xl:w-xLarge mx-auto my-[76px] font-montserrat flex items-center justify-between'>
         <div>
             <h1 className='lg:text-[32px] font-medium mb-[30px] xl:text-[40px]'>New Releases This Week</h1>
             <p className='mb-10 w-[453px]'>
