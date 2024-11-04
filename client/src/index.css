@@ -17,6 +17,15 @@ img {
   max-width: 100%;
   height: auto;
 }
+/* Stick footer to the bottom */
+.App {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+footer {
+  margin-top: auto;
+}
 
 body {
   @apply bg-websiteMobileBg lg:bg-white text-text;
@@ -32,9 +41,23 @@ body {
     @apply font-nunito bg-searchBg border-2 rounded-lg py-[6px] pl-[10px] pr-10;
   }
   .books {
-    @apply flex gap-6 overflow-hidden bg-white mt-[10px] py-[10px] px-[15px] rounded-md
+    @apply flex gap-6 overflow-x-auto bg-white mt-[10px] py-[10px] px-[15px] rounded-md
   }
-
+  .admin-nav {
+    @apply p-2
+  }
+  .admin-nav.active {
+    @apply bg-white p-2 rounded
+  }
+  .admin-form {
+    /* @apply bg-red-500 */
+  }
+  .add-book-input {
+    @apply border border-gray-300 rounded indent-4 mb-2
+  }
+  .admin-form select {
+    @apply border border-gray-300 rounded indent-4 mb-2
+  }
 }
 
         /* Footer to the bottom */

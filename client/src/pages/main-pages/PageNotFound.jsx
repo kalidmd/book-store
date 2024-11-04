@@ -1,8 +1,8 @@
 import React from 'react'
-// images
-import Books from '../assets/404-page-books.png'
-// import Books from '../assets/page-not-found-books.png'
 import { NavLink } from 'react-router-dom'
+// images
+import Books from '../../assets/page-not-found-books.png'
+// import Books from '../assets/page-not-found-books.png'
 
 const PageNotFound = () => {
   return (

@@ -3,11 +3,11 @@ import React from 'react'
 // import BannerImage from '../assets/banner.png'
 // page sections
 // Page Sections
-import News from './sections/News'
-import TopSellers from './sections/TopSellers'
-import NewRelease from './sections/NewRelease'
-import Recommended from './sections/Recommended'
-import GetNow from './sections/GetNow'
+import News from '../sections/News'
+import TopSellers from '../sections/TopSellers'
+import NewRelease from '../sections/NewRelease'
+import Recommended from '../sections/Recommended'
+import GetNow from '../sections/GetNow'
 
 const Home = () => {
   return (

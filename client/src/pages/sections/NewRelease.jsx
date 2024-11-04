@@ -8,7 +8,7 @@ const NewRelease = () => {
             <p className='mb-10 w-[453px]'>
             It's time to update your reading list with some of the latest and greatest releases in the literary world. From heart-pumping thrillers to captivating memoirs, this week's new releases offer something for everyone
             </p>
-            <button className='bg-primary py-[7px] px-[49px] rounded-lg text-white'>Subscribe</button>
+            <button className='bg-primary py-[7px] px-[49px] rounded-lg text-black'>Subscribe</button>
         </div>
         <img className='w-[486px]' src={CoverImg} alt="banner" />
     </section>

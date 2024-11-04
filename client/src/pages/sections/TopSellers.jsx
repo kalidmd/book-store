@@ -1,8 +1,24 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Book from '../../components/Book'
-import Book1 from '../../assets/books/book-1.png';
 
 const TopSellers = () => {
+    const [books, setBooks] = useState([]);
+    // console.log(books);
+
+    useEffect(() => {
+        const fetchBooks = async () => {
+            try {
+                const res = await fetch('books.json')
+                const data = await res.json();
+                // console.log(data);
+                setBooks(data)
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        fetchBooks();
+    }, [])
+
     const selectOptions = ['Choose a genre', 'Fiction', 'Romance', 'Mystery', 'Horror'] 
 
     return (
@@ -16,38 +32,19 @@ const TopSellers = () => {
                 }
             </select>
             <div className='books'>
-                <Book
-                    src={Book1}
-                    alt={'book'}
-                    bookTitle={'The First Days'}
-                    bookDesc={'The House of Berethnet has ruled Inys for a thousand years. Still unwed, Queen Sabran...'}
-                    newPrice={'19.99'}
-                    oldPrice={'15.89'}
-                />
-                <Book
-                    src={Book1}
-                    alt={'book'}
-                    bookTitle={'The First Days'}
-                    bookDesc={'The House of Berethnet has ruled Inys for a thousand years. Still unwed, Queen Sabran...'}
-                    newPrice={'19.99'}
-                    oldPrice={'15.89'}
-                />
-                <Book
-                    src={Book1}
-                    alt={'book'}
-                    bookTitle={'The First Days'}
-                    bookDesc={'The House of Berethnet has ruled Inys for a thousand years. Still unwed, Queen Sabran...'}
-                    newPrice={'19.99'}
-                    oldPrice={'15.89'}
-                />
-                <Book
-                    src={Book1}
-                    alt={'book'}
-                    bookTitle={'The First Days'}
-                    bookDesc={'The House of Berethnet has ruled Inys for a thousand years. Still unwed, Queen Sabran...'}
-                    newPrice={'19.99'}
-                    oldPrice={'15.89'}
-                />
+                {
+                    books.map((book) => (
+                        <Book 
+                            key={book._id}
+                            src={book.coverImage}
+                            alt={book.title}
+                            bookTitle={book.title}
+                            bookDesc={book.description}
+                            newPrice={book.newPrice}
+                            oldPrice={book.oldPrice}
+                        />
+                    ))
+                }
             </div>
         </section>
     )

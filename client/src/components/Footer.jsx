@@ -67,7 +67,7 @@ export const Footer = () => {
                 type="text"
                 placeholder='Enter your email address'
                 />
-              <button className='bg-primary py-[7px] px-[49px] text-white w-[171px]'>Subscribe</button>
+              <button className='bg-primary py-[7px] px-[49px] text-black w-[171px]'>Subscribe</button>
             </div>
           </div>
         </div>

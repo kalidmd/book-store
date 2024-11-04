@@ -10,7 +10,10 @@ module.exports = {
         bookDesc: 'rgba(13, 8, 66, 52%)',
         discount: '#6C6C6C',
         websiteBg: '#FFFFFF',
-        websiteMobileBg: '#F3F3F3'
+        websiteMobileBg: '#F3F3F3',
+        adminNavBg: '#1e2834',
+        adminHomeBg: '#9432e9',
+        icon: '#BBBBBB'
       },
       fontFamily: {
         nunito: ['Nunito Sans', 'sans-serif'],
