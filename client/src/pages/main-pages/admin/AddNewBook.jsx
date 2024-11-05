@@ -3,7 +3,7 @@ import React from 'react'
 const AddNewBook = () => {
     const options = ['Choose A Catagory', 'Fiction', 'Romance', 'Mystery', 'Horror'];
   return (
-    <main className='w-[350px] mx-auto bg-white p-5 rounded'>
+    <main className='w-[400px] mx-auto bg-white p-5 rounded'>
         <h1 className='font-semibold text-xl mb-2'>Add New Book</h1>
         <form className='admin-form flex flex-col '>
             <label>Title</label>
@@ -21,7 +21,7 @@ const AddNewBook = () => {
             />
 
             <label>Catagory</label>
-            <select>
+            <select className='add-book-select'>
                 {
                     options.map((option) => (
                         <option>
@@ -30,7 +30,7 @@ const AddNewBook = () => {
                     ))
                 }
             </select>
-            <div className='mt-2'>
+            <div className='mb-2'>
                 <input
                     className='add-book-input'
                     type='checkbox'
@@ -58,7 +58,7 @@ const AddNewBook = () => {
                 type='file' 
             />
 
-            <button className='mt-4 bg-green-500 text-white text-sm py-1 rounded'> Add Book </button>
+            <button className='mt-4 bg-green-500 text-white py-1 rounded'> Add Book </button>
         </form>
     </main>
   )

@@ -52,11 +52,8 @@ body {
   .admin-form {
     /* @apply bg-red-500 */
   }
-  .add-book-input {
-    @apply border border-gray-300 rounded indent-4 mb-2
-  }
-  .admin-form select {
-    @apply border border-gray-300 rounded indent-4 mb-2
+  .add-book-input, .add-book-select {
+    @apply border border-gray-300 rounded indent-4 my-2 py-1
   }
 }
 
