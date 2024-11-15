@@ -26,10 +26,14 @@ const Home = () => {
 
       <GetNow />
 
-      <section className='section-cont mt-10 hidden lg:flex flex-col'>
+      <section className='section-cont mt-10 hidden lg:block'>
         <p className="title">News</p>
         <News />
       </section>
+      {/* <section className='section-cont mt-10 hidden lg:flex flex-col'>
+        <p className="title">News</p>
+        <News />
+      </section> */}
 
     </main>
   )

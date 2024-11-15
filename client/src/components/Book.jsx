@@ -1,24 +1,30 @@
 import React from 'react'
+import {Link} from 'react-router-dom';
+// icons
 import { IoCartOutline } from "react-icons/io5";
+import { MdFavorite } from "react-icons/md";
 
-import DefaultCartIcon from '../assets/icons/default-cart-icon-mobile.png'
-import DefaultFavIcon from '../assets/icons/default-favorite-icon-mobile.png'
-
-const Book = ({ src, alt, bookTitle, bookDesc, newPrice, oldPrice  }) => {
+const Book = ({ src, alt, bookID, bookTitle, bookDesc, newPrice, oldPrice  }) => {
   return (
     <div className="font-nunito flex min-w-[400px] gap-5 items-end">
-        <img src={src} alt={alt} />
+        <Link to={`books/${bookID}`}>
+          <img className='hover:scale-105 transition-all duration-200' src={src} alt={alt} />
+        </Link>
         <div className="w-[185px]">
-          <p className="md:text-[16px] font-montserrat text-[13px] font-medium mb-4"> {bookTitle} </p>
+          <Link to={`books/${bookID}`} className="md:text-[16px] font-montserrat text-[13px] font-medium mb-4 hover:text-blue-600"> {bookTitle} </Link>
           <p className=" md:text-[14px] text-[12px] text-bookDesc mb-4"> {bookDesc.length > 80 ? `${bookDesc.slice(0, 80)}...` : bookDesc} </p>
           <p className="md:hidden mb-4"> {`$ ${newPrice}`} </p>
           
           <div className='md:hidden flex gap-[10px] items-center'>
             <button>
-              <img src={DefaultCartIcon} alt="Cart" />
+              <div className='rounded-full bg-white border w-10 h-10 flex items-center justify-center'>
+                <IoCartOutline className='size-7 text-gray-500'/>
+              </div>
             </button>
             <button>
-              <img src={DefaultFavIcon} alt="Favorite" />
+              <div className='rounded-full bg-white border w-10 h-10 flex items-center justify-center'>
+                <MdFavorite className='size-7 text-gray-500'/>
+              </div>
             </button>
           </div>
         {/* above medium devices */}

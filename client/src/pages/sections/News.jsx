@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from 'react'
-// images
-// import News1 from '../../assets/news/news-1.png';
-// import Book1 from '../../assets/books/book-1.png'
+// Import Swiper React components
+import { Swiper, SwiperSlide } from 'swiper/react';
+// Import Swiper styles
+import 'swiper/css';
+import 'swiper/css/pagination';
+import 'swiper/css/navigation';
+// import required modules
+import { Navigation, Pagination } from 'swiper/modules'
 
 const News = () => {
   const [news, setNews] = useState([]);
-  console.log(news);
 
   useEffect(() => {
     const fetchNews = async () => {
@@ -23,20 +27,50 @@ const News = () => {
   }, [])
 
   return (
-    <main className='flex items-end gap-10 bg-white overflow-auto ml-[38px] p-3  my-5 lg:my-0 rounded-lg'> 
-      { news.map((news) => (
-        <>
-          <div className=''>
-            <p className='sm:text-lg text-sm font-montserrat font-medium'> {news.title} </p>
-            <div className='h-0.5 w-10 bg-primary my-5'></div>
-            <p className='sm:text-sm text-[12px] w-[300px] font-nunit h-[100px] overflow-hidden'> {news.description} </p>
-          </div>
+    <Swiper
+      slidesPerView={1}
+      spaceBetween={200}
+      pagination={{
+          dynamicBullets: true,
+          clickable: true
+      }}
+      // navigation={true}
+      breakpoints={{
+          640: {
+              slidesPerView: 1,
+              spaceBetween: 200,
+          },
+          768: {
+              slidesPerView: 2,
+              spaceBetween: 300,
+          },
+          1024: {
+              slidesPerView: 2,
+              spaceBetween: 300,
+          },
+          1180: {
+              slidesPerView: 3,
+              spaceBetween: 300,
+          }
+        }}
+      modules={[Pagination, Navigation]}
+      className="mySwiper bg-white ml-[38px] p-3 my-5 lg:my-0 rounded-lg select-none"
+    >
+      { news.map((news) => (   
+        <SwiperSlide key={news._id} className='' >     
+          <div className='flex'>
+            <div>
+              <p className='sm:text-lg w-[350px] text-sm font-montserrat font-medium'> { news.title} </p>
+              <div className='h-0.5 w-10 bg-primary my-5'></div>
+              <p className='sm:text-sm text-[12px] w-[300px] font-nunito'> {news.description.length > 160 ? `${news.description.slice(0, 160)}...` : news.description} </p>
+            </div>
 
-          <img className='sm:w-[120px] w-[108px]' src={news.image} alt={news.title} />
-        </>
+            <img src={news.image} alt={news.title} />
+          </div>
+        </SwiperSlide>
         ))
       }
-    </main>
+  </Swiper>
       
   )
 }

@@ -1,5 +1,6 @@
 import React from 'react'
 import CoverImg from '../../assets/banner.png'
+
 const NewRelease = () => {
   return (
     <section className='w-large 2xl:w-xLarge mx-auto my-[76px] font-montserrat flex items-center justify-between'>

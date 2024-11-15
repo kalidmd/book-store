@@ -30,6 +30,9 @@ footer {
 body {
   @apply bg-websiteMobileBg lg:bg-white text-text font-montserrat;
 }
+/* .swiper-slide {
+  width: fit-content !important;
+} */
 @layer components {
   .section-cont {
     @apply ml-6 lg:w-large 2xl:w-xLarge lg:mx-auto;
@@ -41,8 +44,11 @@ body {
     @apply font-nunito bg-searchBg border-2 rounded-lg py-[6px] pl-[10px] pr-10 focus:outline-none cursor-pointer;
   }
   .books {
-    @apply flex gap-6 overflow-x-auto bg-white mt-[10px] py-[10px] px-[15px] rounded-md
+    @apply flex overflow-x-auto bg-red-500 mt-[10px] py-[10px] px-[15px] rounded-md
   }
+  /* .books {
+    @apply flex bg-white mt-[10px] py-[10px] px-[15px] rounded-md
+  } */
   .admin-nav {
     @apply p-2
   }

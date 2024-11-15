@@ -8,6 +8,7 @@ import ManageBook from './pages/main-pages/admin/ManageBook';
 import AddNewBook from './pages/main-pages/admin/AddNewBook';
 import Login from './pages/main-pages/Login';
 import Register from './pages/main-pages/Register';
+import SingleBook from './pages/main-pages/SingleBook';
 // import AddBook from './pages/sub-pages/AddBook';
 
 
@@ -28,6 +29,10 @@ const router = createBrowserRouter([
             {
                 path: 'register',
                 element: <Register />
+            },            
+            {
+                path: 'books/:id',
+                element: <SingleBook />
             },            
             {
                 path: 'orders',
