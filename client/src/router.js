@@ -1,10 +1,13 @@
 import { createBrowserRouter } from 'react-router-dom'
 import App from './App';
+//pages
 import PageNotFound from './pages/main-pages/PageNotFound'
 import Home from './pages/main-pages/Home';
 import Dashboard from './pages/main-pages/admin/Dashboard';
 import ManageBook from './pages/main-pages/admin/ManageBook';
 import AddNewBook from './pages/main-pages/admin/AddNewBook';
+import Login from './pages/main-pages/Login';
+import Register from './pages/main-pages/Register';
 // import AddBook from './pages/sub-pages/AddBook';
 
 
@@ -20,7 +23,11 @@ const router = createBrowserRouter([
             },            
             {
                 path: 'login',
-                element: <h1> Login Page </h1>
+                element: <Login />
+            },            
+            {
+                path: 'register',
+                element: <Register />
             },            
             {
                 path: 'orders',

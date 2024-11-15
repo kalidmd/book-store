@@ -1,13 +1,13 @@
 import React, { useState } from 'react'
-import { NavLink } from 'react-router-dom'
-// icons
-import MenuIcon from '../assets/icons/menu-icon.png';
-import SearchIcon from '../assets/icons/search-icon.png';
-import AccountIcon from '../assets/icons/account-icon.png';
-import FavoriteIcon from '../assets/icons/favorite-icon.png';
-// import CartIconWhite from '../assets/icons/cart-icon-white.png';
-import CartIcon from '../assets/icons/cart-icon.png';
+import { Link, NavLink } from 'react-router-dom'
+// components
 import Search from './Search';
+// icons
+import { IoCartOutline } from "react-icons/io5";
+import { HiMiniBars3CenterLeft } from "react-icons/hi2";
+import { IoIosSearch } from "react-icons/io";
+import { FaRegUser } from "react-icons/fa";
+import { MdFavoriteBorder } from "react-icons/md";
 import AvatarImg from '../assets/avatar.png'
 
 const navigation = [
@@ -34,24 +34,29 @@ const Navbar = () => {
   // breakpoints bg
   // sm:bg-yellow-300 md:bg-green-500 lg:bg-red-400 xl:bg-teal-500 2xl:bg-purple-400'
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const currentUser = true;
+  const currentUser = false;
   console.log(isDropdownOpen);
 
   return (
-    <nav className='bg-white  pt-11 pb-5'>
+    <nav className='bg-white pt-11 pb-5'>
       <main className='flex items-center w-large 2xl:w-xLarge mx-auto justify-between gap-4'>
           {/* vissible less than 768px screen width */}
-          <img className='md:hidden' src={MenuIcon} alt="menu" />
+          <NavLink to='/' className='md:hidden'> 
+            <HiMiniBars3CenterLeft className='size-7' />
+          </NavLink>
           <div className='md:hidden flex items-center bg-searchBg w-fit rounded-md gap-3 py-1 px-3'>
-            <img className='' src={SearchIcon} alt="search" />
+            <IoIosSearch className='size-6'/>
             <Search placeholder='What are you looking for ?' />
           </div>
 
           {/* vissible more than 768px screen width */}
           <div className='hidden md:flex items-center gap-[100px]'>
-            <img className='' src={MenuIcon} alt="menu" />
+            <NavLink to={'/'}> 
+              <HiMiniBars3CenterLeft className='size-7' />
+            </NavLink>
+
             <div className='flex items-center bg-searchBg w-fit rounded-md gap-3 py-1 px-3'>
-              <img className='' src={SearchIcon} alt="search" />
+              <IoIosSearch className='size-6'/>
               <Search placeholder='What are you looking for ?'/>
             </div>
           </div>
@@ -80,16 +85,17 @@ const Navbar = () => {
                   </div>
               } 
               </div>:
-            <NavLink to='login'> <img src={AccountIcon} alt="login" /> </NavLink>
+            <NavLink to='login'> <FaRegUser className='size-6'/> </NavLink>
           }
-          {/* <img className='' src={currentUser ? AvatarImg : AccountIcon} alt="account" /> */}
-          <img className='hidden md:flex' src={FavoriteIcon} alt="favorite" />
-          <button className='hidden md:flex items-center gap-2 bg-primary py-[7px] pl-[15px] pr-[40px] rounded-lg'>
-            <img src={CartIcon} alt="cart" />
-            <p className='text-black'>basket</p>
+          <MdFavoriteBorder className='hidden md:flex size-7'/>
+          {/* <img className='hidden md:flex' src={FavoriteIcon} alt="favorite" /> */}
+         
+          <button className='hidden md:flex gap-1 bg-primary hover:bg-blue-500 hover:text-white py-2 px-3 rounded-lg'>
+            <IoCartOutline className='size-6' />
+            <p className=''>cart</p>
           </button>
         </div>
-        <img className='md:hidden' src={CartIcon} alt="cart" />
+        <IoCartOutline className='md:hidden size-6' />
       </main>
   
     </nav>

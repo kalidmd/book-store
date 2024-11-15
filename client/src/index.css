@@ -28,7 +28,7 @@ footer {
 }
 
 body {
-  @apply bg-websiteMobileBg lg:bg-white text-text;
+  @apply bg-websiteMobileBg lg:bg-white text-text font-montserrat;
 }
 @layer components {
   .section-cont {
@@ -38,7 +38,7 @@ body {
     @apply font-montserrat font-medium md:font-semibold mb-6 md:text-[24px];
   }
   .select {
-    @apply font-nunito bg-searchBg border-2 rounded-lg py-[6px] pl-[10px] pr-10;
+    @apply font-nunito bg-searchBg border-2 rounded-lg py-[6px] pl-[10px] pr-10 focus:outline-none cursor-pointer;
   }
   .books {
     @apply flex gap-6 overflow-x-auto bg-white mt-[10px] py-[10px] px-[15px] rounded-md
