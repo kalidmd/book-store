@@ -64,7 +64,7 @@ const TopSellers = () => {
                     },
                     1180: {
                         slidesPerView: 3,
-                        spaceBetween: 50,
+                        spaceBetween: 200,
                     },
                   }}
                 modules={[Pagination, Navigation]}

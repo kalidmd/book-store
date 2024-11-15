@@ -50,7 +50,7 @@ const News = () => {
           },
           1180: {
               slidesPerView: 3,
-              spaceBetween: 300,
+              spaceBetween: 400,
           }
         }}
       modules={[Pagination, Navigation]}
@@ -58,14 +58,14 @@ const News = () => {
     >
       { news.map((news) => (   
         <SwiperSlide key={news._id} className='' >     
-          <div className='flex'>
+          <div className='flex items-end gap-3'>
             <div>
-              <p className='sm:text-lg w-[350px] text-sm font-montserrat font-medium'> { news.title} </p>
+              <p className='sm:text-lg text-sm font-montserrat font-medium'> { news.title} </p>
               <div className='h-0.5 w-10 bg-primary my-5'></div>
               <p className='sm:text-sm text-[12px] w-[300px] font-nunito'> {news.description.length > 160 ? `${news.description.slice(0, 160)}...` : news.description} </p>
             </div>
 
-            <img src={news.image} alt={news.title} />
+            <img className='min-w-fit' src={news.image} alt={news.title} />
           </div>
         </SwiperSlide>
         ))

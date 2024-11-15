@@ -43,6 +43,7 @@ export const Footer = () => {
           </a>
         </div>
       </main>
+
       {/* footer for larger screens */}
       <main className='font-nunito w-large 2xl:w-xLarge mx-auto mt-[170px] mb-5 hidden lg:flex flex-col'>
         <div className="flex items-end justify-between mb-[161px] ">
@@ -63,7 +64,7 @@ export const Footer = () => {
             </p>
             <div className="flex justify-between border border-primary rounded">
               <input 
-                className='w-[283px] indent-4'
+                className='w-[283px] indent-4 focus:outline-none'
                 type="text"
                 placeholder='Enter your email address'
                 />

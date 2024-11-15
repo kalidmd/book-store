@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Link, NavLink } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 // components
 import Search from './Search';
 // icons
@@ -88,7 +88,6 @@ const Navbar = () => {
             <NavLink to='login'> <FaRegUser className='size-6'/> </NavLink>
           }
           <MdFavoriteBorder className='hidden md:flex size-7'/>
-          {/* <img className='hidden md:flex' src={FavoriteIcon} alt="favorite" /> */}
          
           <button className='hidden md:flex gap-1 bg-primary hover:bg-blue-500 hover:text-white py-2 px-3 rounded-lg'>
             <IoCartOutline className='size-6' />

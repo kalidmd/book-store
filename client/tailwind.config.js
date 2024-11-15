@@ -22,6 +22,10 @@ module.exports = {
       width: {
         large: '90%',
         xLarge: '80%'
+      },
+      screens: {
+        'xxs': '0px',
+        'xs': '480px'
       }
     },
   },
