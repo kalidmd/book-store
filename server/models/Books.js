@@ -3,11 +3,13 @@ const mongoose = require('mongoose');
 const bookSchema = new mongoose.Schema({
     title: {
         type: String,
-        required: [true, 'Please Provide Title']
+        required: [true, 'Please Provide Title'],
+        unique: true,
     },
     description: {
         type: String,
-        required: [true, 'Please Provide Description']
+        required: [true, 'Please Provide Description'],
+        unique: true,
     },
     category: {
         type: String,
@@ -33,7 +35,7 @@ const bookSchema = new mongoose.Schema({
     createdBy: {
         type: mongoose.Types.ObjectId,
         ref: 'User',
-        // required: [true, 'Please Provide User']
+        required: [true, 'Please Provide User']
     }
 
 }, {timestamps: true})

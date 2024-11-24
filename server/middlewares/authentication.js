@@ -16,7 +16,8 @@ const authMiddleware = async (req, res, next ) => {
         // attach the user with protected routes
         req.user = {
             userId: payload.userId,
-            name: payload.name
+            name: payload.name,
+            isAdmin: payload.isAdmin
         }
         next()
     } catch (error) {

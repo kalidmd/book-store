@@ -21,11 +21,9 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: [true, 'Please Provide Password']
     },
-    role: {
+    isAdmin: {
         type: String,
-        enum: ['user', 'admin'],
-        default: 'user',
-        required: [true, 'Please Provide User Role']
+        default: false,
     }
 
 }, {timestamps: true})
@@ -44,7 +42,7 @@ userSchema.methods.comparePassword = async function (candidatePassword) {
 
 // creating jwt token instance
 userSchema.methods.createJWT = function () {
-    return jwt.sign({ userId: this._id, name: this.name }, process.env.JWT_SECRECT, { expiresIn: process.env.JWT_lIFETIME });
+    return jwt.sign({ userId: this._id, name: this.name, isAdmin: this.isAdmin }, process.env.JWT_SECRECT, { expiresIn: process.env.JWT_lIFETIME });
 }
 
 

@@ -11,6 +11,7 @@ import Register from './pages/main-pages/Register';
 import SingleBook from './pages/main-pages/SingleBook';
 import CartPage from './pages/main-pages/CartPage';
 import CheckoutPage from './pages/main-pages/CheckoutPage';
+import PrivateRoute from './components/PrivateRoute';
 // import AddBook from './pages/sub-pages/AddBook';
 
 
@@ -46,7 +47,7 @@ const router = createBrowserRouter([
             },            
             {
                 path: 'checkout',
-                element: <CheckoutPage />
+                element: <PrivateRoute Component={CheckoutPage} />
             },            
         ]
     },
