@@ -61,6 +61,16 @@ body {
   .add-book-input, .add-book-select {
     @apply border border-gray-300 rounded indent-4 my-2 py-1
   }
+  /* checkout form */
+  .checkout-form {
+    @apply flex flex-col
+  }
+  .checkout-form input {
+    @apply border-2 py-1 indent-2 rounded focus:outline-none;
+  }
+  .checkout-form label {
+    @apply my-2
+  }
 }
 
         /* Footer to the bottom */

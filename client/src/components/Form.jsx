@@ -9,21 +9,21 @@ const Form = ({
     DirectToText, 
     HREF, 
     DirectTo, 
-    Message, 
+    ErrorMessage, 
     NameValue, 
     SetName, 
     EmailValue, 
     SetEmail, 
     PasswordValue, 
     SetPassword, 
-    Data 
+    handleForm
 }) => {
 
 
-    const handleForm = (e) => {
-        e.preventDefault();
-        console.log(Data);
-    }
+    // const handleForm = (e) => {
+    //     e.preventDefault();
+    //     console.log(Data);
+    // }
 
     const handleGoogleSignIn = () => {
         console.log('google sign in');
@@ -67,7 +67,7 @@ const Form = ({
         />
 
         {
-            Message && <p className='text-red-500 text-xs italic mt-2'> {Message} </p>
+            ErrorMessage && <p className='text-red-500 text-xs italic mt-2'> {ErrorMessage} </p>
         }
 
         <button className='my-2 bg-blue-500 hover:bg-blue-700 w-fit text-white text-sm font-medium py-1 px-2 rounded'> {Button} </button>

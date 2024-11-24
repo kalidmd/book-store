@@ -9,6 +9,8 @@ import AddNewBook from './pages/main-pages/admin/AddNewBook';
 import Login from './pages/main-pages/Login';
 import Register from './pages/main-pages/Register';
 import SingleBook from './pages/main-pages/SingleBook';
+import CartPage from './pages/main-pages/CartPage';
+import CheckoutPage from './pages/main-pages/CheckoutPage';
 // import AddBook from './pages/sub-pages/AddBook';
 
 
@@ -40,11 +42,11 @@ const router = createBrowserRouter([
             },            
             {
                 path: 'cart',
-                element: <h1> Cart Page </h1>
+                element: <CartPage />
             },            
             {
                 path: 'checkout',
-                element: <h1> Checkout </h1>
+                element: <CheckoutPage />
             },            
         ]
     },

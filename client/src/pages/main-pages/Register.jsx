@@ -1,12 +1,51 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import Form from '../../components/Form';
+import { useNavigate } from 'react-router-dom';
+import { UserContext } from '../../context/userContext';
 
 const Register = () => {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [error, setError] = useState(false);
+    const {register} = useContext(UserContext);
+
+    // console.log(error);
+    const navigate = useNavigate();
     
-    const data = { name, email, password};
+    // const data = { name, email, password};
+
+    const localUrl = 'http://localhost:5000/api/v1';
+    // const productionUrl =
+    
+    const handleRegister = async (e) => {
+      e.preventDefault();
+      // console.log(data);
+      console.log(error);
+        const res = await fetch(`${localUrl}/users/register`, {
+          method: 'post',
+          body: JSON.stringify({ name, email, password }),
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        })
+        const data = await res.json();
+        
+        if(data.msg) {
+          // console.log(error);
+          localStorage.removeItem('token');
+          setError(data.msg);
+        } else { 
+          // localStorage.setItem('token', data.token);
+          register(data.token);
+          setError(false);
+          setName('');
+          setEmail('');
+          setPassword('');
+          navigate('/')
+        }
+    }
+
   return (
    <div>
      <Form 
@@ -22,7 +61,8 @@ const Register = () => {
         SetEmail={setEmail}
         PasswordValue={password}
         SetPassword={setPassword}
-        Data={data}
+        handleForm={handleRegister}
+        ErrorMessage={error}
     />
    </div>
   )

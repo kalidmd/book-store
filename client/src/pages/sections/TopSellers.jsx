@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 // Custom Components
 import Book from '../../components/Book'
 // Import Swiper React components
@@ -9,11 +9,23 @@ import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 // import required modules
 import { Navigation, Pagination } from 'swiper/modules'
+import { CartContext } from '../../context/CartContext';
+// Components
+// import AddToCart from '../../components/AddToCart';
 
 
 const TopSellers = () => {
+    const {AddToCart} = useContext(CartContext);
     const [books, setBooks] = useState([]);
+    const categories = ['Choose a genre', 'Fiction', 'Romance', 'Mystery', 'Horror', 'Business', 'Adventure', 'Marketing'];
+    const [selectedCategory, setSelectedCategory] = useState('Choose a genre');
 
+    const filterdBooks = selectedCategory === 'Choose a genre' ? books: books.filter(book => book.category === selectedCategory.toLowerCase());
+
+
+    const handleCart = (bookId) => {
+        AddToCart(books, bookId);
+    }
 
     useEffect(() => {
         const fetchBooks = async () => {
@@ -28,15 +40,14 @@ const TopSellers = () => {
         }
         fetchBooks();
     }, [])
-
-    const selectOptions = ['Choose a genre', 'Fiction', 'Romance', 'Mystery', 'Horror'] 
+ 
 
     return (
         <section className='section-cont'>
             <h1 className='title'>Top Sellers</h1>
-            <select className='select'>
+            <select onChange={(e) => setSelectedCategory(e.target.value)} className='select'>
                 {
-                    selectOptions.map((item,index) => (
+                    categories.map((item,index) => (
                         <option key={index} value={item}> {item} </option>
                     ))
                 }
@@ -69,22 +80,27 @@ const TopSellers = () => {
                   }}
                 modules={[Pagination, Navigation]}
                 className="mySwiper bg-white mt-[10px] py-[10px] px-[12px] rounded-md select-none"
-            >
-                {
-                   books && books.map((book) => (
-                            <SwiperSlide className='' >
-                                <Book 
-                                    src={book.coverImage}
-                                    alt={book.title}
-                                    bookID={book._id}
-                                    bookTitle={book.title}
-                                    bookDesc={book.description}
-                                    newPrice={book.newPrice}
-                                    oldPrice={book.oldPrice}
-                                />
-                            </SwiperSlide>
-                    ))
-                }
+            >   
+                <>
+                    {
+                        filterdBooks.length > 0 ? 
+                            filterdBooks.map((book) => (
+                                <SwiperSlide key={book._id} >
+                                    <Book 
+                                        src={book.coverImage}
+                                        alt={book.title}
+                                        bookID={book._id}
+                                        bookTitle={book.title}
+                                        bookDesc={book.description}
+                                        newPrice={book.newPrice}
+                                        oldPrice={book.oldPrice}
+                                        handleCart={() => handleCart(book._id)}
+                                        />
+                                </SwiperSlide>
+                            )) :
+                            <p className='py-10 text-sm md:text-2xl'> {`No Book Found Under ${selectedCategory} Category For Now. Try Again Next Time.`} </p>
+                    }
+                </>
             </Swiper>
         </section>
     )

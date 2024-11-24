@@ -9,14 +9,19 @@ const bookSchema = new mongoose.Schema({
         type: String,
         required: [true, 'Please Provide Description']
     },
-    catagory: {
+    category: {
         type: String,
-        enum: ['Fiction', 'Romance', 'Mystery', 'Horror'],
-        required: [true, 'Please Select Catagory']
+        enum: ['Fiction', 'Romance', 'Mystery', 'Horror', 'Business', 'Adventure', 'Marketing'],
+        required: [true, 'Please Select Category']
     },
-    // trending: {
-    //     type: 
-    // },
+    trending: {
+        type: Boolean,
+        required : [true, 'Please Provide Trending Value'] 
+    },
+    coverImage: {
+        type: String,
+        required: [true, 'Please Provide Cover Image']
+    },
     oldPrice : {
         type: Number,
         required: [true, 'Please Provide Old Price'],
@@ -24,8 +29,13 @@ const bookSchema = new mongoose.Schema({
     newPrice : {
         type: Number,
         required: [true, 'Please Provide New Price'],
+    },
+    createdBy: {
+        type: mongoose.Types.ObjectId,
+        ref: 'User',
+        // required: [true, 'Please Provide User']
     }
 
 }, {timestamps: true})
 
-module.exports = mongoose.model('books', bookSchema)
+module.exports = mongoose.model('Book', bookSchema)

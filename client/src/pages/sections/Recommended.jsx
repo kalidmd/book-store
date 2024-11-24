@@ -1,6 +1,8 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
+
+// Components
 import Book from '../../components/Book'
-// import Book4 from '../../assets/books/book-4.png'
+// import { AddToCart } from '../../components/AddToCart';
 
 // Import Swiper React components
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -8,11 +10,19 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
+
 // import required modules
 import { Navigation, Pagination } from 'swiper/modules'
+import { CartContext } from '../../context/CartContext';
 
 const Recommended = () => {
-    const [books, setBooks] = useState(undefined);
+    const {AddToCart} = useContext(CartContext);
+    const [books, setBooks] = useState([]);
+
+    const handleCart = (bookId) => {
+        console.log('Added To cart recommende');
+        AddToCart(books, bookId);
+    }
 
     useEffect(() => {
         const fetchBooks = async () => {
@@ -61,7 +71,7 @@ const Recommended = () => {
             >
                 {
                     books && books.map((book) => (
-                            <SwiperSlide className='' >
+                            <SwiperSlide key={book._id} >
                                 <Book 
                                     src={book.coverImage}
                                     alt={book.title}
@@ -70,6 +80,7 @@ const Recommended = () => {
                                     bookDesc={book.description}
                                     newPrice={book.newPrice}
                                     oldPrice={book.oldPrice}
+                                    handleCart={() => handleCart(book._id)}
                                 />
                             </SwiperSlide>
                     ))
