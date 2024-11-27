@@ -6,11 +6,21 @@ import { Link, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 
 const CartPage = () => {
-    const {cartItems, setCartItems} = useContext(CartContext);
-    const navigate = useNavigate();
+    const {cartItems, setCartItems, totalPrice} = useContext(CartContext);
 
+    // const cart = JSON.parse(sessionStorage.getItem('cart'));
     
-    const totalPrice = cartItems.reduce((acc,item) => acc + item.newPrice, 0).toFixed();
+    // console.log(cartItems);
+    const handleQuantity = (e, itemId) => {
+        const newQuantity = parseInt(e.target.value);
+        setCartItems(prevItems => 
+            prevItems.map(item => (
+                item._id === itemId ? { ...item, quantity: newQuantity } : item 
+            ))
+        );
+    };
+
+    const navigate = useNavigate();
 
     const clearCart = () => {
         Swal.fire({
@@ -24,6 +34,8 @@ const CartPage = () => {
         }).then((result) => {
             if (result.isConfirmed) {
                 setCartItems([]);
+                localStorage.removeItem('carts');
+                // sessionStorage.setItem('cart', JSON.stringify([]))
               Swal.fire({
                 title: "Cleared!",
                 text: "Your Cart has been cleared.",
@@ -48,6 +60,9 @@ const CartPage = () => {
         }).then((result) => {
             if (result.isConfirmed) {
                 setCartItems(filteredItems);
+                localStorage.setItem('carts', JSON.stringify(filteredItems));
+                JSON.parse(localStorage.getItem('carts'));
+                // localStorage.setItem('carts', JSON.stringify([...cartItems, clickedBook]))
               Swal.fire({
                 title: "Removed!",
                 text: `${selecedItem.title} has been removed!`,
@@ -81,7 +96,18 @@ const CartPage = () => {
                                             <p> {item.title} </p>
                                             <p> Catagory: {item.category}</p>
                                         </div>
-                                        <p> Qty: </p>
+
+                                        <form >
+                                            <label > Qty: </label>
+                                            <input
+                                                className='w-10 ml-2 rounded'
+                                                value={item.quantity}
+                                                onChange={(e) => handleQuantity(e, item._id)} 
+                                                type="number" 
+                                                min={1}
+                                            />
+                                        </form>
+
                                     </div>
                                 </div>
                                 <div className='flex flex-col justify-between items-end'>
@@ -107,7 +133,17 @@ const CartPage = () => {
                     Shipping and taxes calculated at checkout.
                 </p>
 
-                <button onClick={navigateToCheckout} className='bg-blue-700 text-white w-full rounded py-2 my-4'> Checkout </button>
+                {
+                    cartItems.length > 0 ? 
+                        <button onClick={navigateToCheckout} className='bg-blue-700 text-white w-full rounded py-2 my-4'> 
+                            Checkout 
+                        </button>:
+                        <button disabled onClick={navigateToCheckout} className='bg-gray-400 text-white w-full rounded py-2 my-4'> 
+                        Checkout 
+                    </button>
+
+                }
+
 
                 <Link className='text-center block' to='/'> 
                     <p className='text-blue-700 font-medium text-sm'>

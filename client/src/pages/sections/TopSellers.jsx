@@ -17,11 +17,15 @@ import { CartContext } from '../../context/CartContext';
 const TopSellers = () => {
     const {AddToCart} = useContext(CartContext);
     const [books, setBooks] = useState([]);
-    const categories = ['Choose a genre', 'Fiction', 'Romance', 'Mystery', 'Horror', 'Business', 'Adventure', 'Marketing'];
+    const [error, setError] = useState(null);
+    const categories = ['Choose a genre', 'Fiction', 'Romance', 'Fantasy', 'Horror', 'Business', 'Adventure'];
     const [selectedCategory, setSelectedCategory] = useState('Choose a genre');
 
     const filterdBooks = selectedCategory === 'Choose a genre' ? books: books.filter(book => book.category === selectedCategory.toLowerCase());
 
+    // api url
+    const localUrl = 'http://localhost:5000/api/v1';
+    // const productionUrl =
 
     const handleCart = (bookId) => {
         AddToCart(books, bookId);
@@ -30,12 +34,14 @@ const TopSellers = () => {
     useEffect(() => {
         const fetchBooks = async () => {
             try {
-                const res = await fetch('books.json')
-                const data = await res.json();
+                const response = await fetch(`${localUrl}/books`)
+                const data = await response.json();
                 // console.log(data);
-                setBooks(data)
-            } catch (error) {
+                setBooks(data.book);
+
+            } catch(error) {
                 console.log(error);
+                setError(error);
             }
         }
         fetchBooks();
@@ -83,7 +89,7 @@ const TopSellers = () => {
             >   
                 <>
                     {
-                        filterdBooks.length > 0 ? 
+                        filterdBooks && filterdBooks.length > 0 ? 
                             filterdBooks.map((book) => (
                                 <SwiperSlide key={book._id} >
                                     <Book 
@@ -98,10 +104,11 @@ const TopSellers = () => {
                                         />
                                 </SwiperSlide>
                             )) :
-                            <p className='py-10 text-sm md:text-2xl'> {`No Book Found Under ${selectedCategory} Category For Now. Try Again Next Time.`} </p>
+                            <p className='py-10 text-sm md:text-2xl'> {`Cant't Find Books, Please Try Again Later.`} </p>
                     }
                 </>
             </Swiper>
+            {error && <p className='italic text-red-300 text-sm'> {error} </p>}
         </section>
     )
 }

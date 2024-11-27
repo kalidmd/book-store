@@ -24,6 +24,9 @@ const userSchema = new mongoose.Schema({
     isAdmin: {
         type: String,
         default: false,
+    },
+    avatar: {
+        type: String,
     }
 
 }, {timestamps: true})
@@ -42,7 +45,13 @@ userSchema.methods.comparePassword = async function (candidatePassword) {
 
 // creating jwt token instance
 userSchema.methods.createJWT = function () {
-    return jwt.sign({ userId: this._id, name: this.name, isAdmin: this.isAdmin }, process.env.JWT_SECRECT, { expiresIn: process.env.JWT_lIFETIME });
+    const payload = {
+        userId: this._id,
+        name: this.name,
+        email: this.email,
+        isAdmin: this.isAdmin
+    }
+    return jwt.sign(payload, process.env.JWT_SECRECT, { expiresIn: process.env.JWT_lIFETIME });
 }
 
 

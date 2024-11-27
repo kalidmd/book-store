@@ -1,10 +1,13 @@
-import React, { useContext, useState } from 'react'
-import { Link } from 'react-router-dom'
+import React, { useContext, useEffect, useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import { CartContext } from '../../context/CartContext'
+// import { createAnOrder } from '../../../../server/controllers/order';
+import Swal from 'sweetalert2'
 
 const CheckoutPage = () => {
-  const {cartItems, totalPrice} = useContext(CartContext);
-  const currentUser = true;
+  const {cartItems, setCartItems, totalPrice, item} = useContext(CartContext);
+  const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -16,35 +19,98 @@ const CheckoutPage = () => {
   const [zipcode, setZipcode] = useState('');
   const [isChecked, setIsChecked] = useState(false);
 
-  // const data = {name, email, phone, address, city, country, state, zipcode, isChecked};
+  const localUrl = 'http://localhost:5000/api/v1';
 
-  const handleCheckoutForm = (e) => {
+  useEffect(() => {
+
+    const fetchUser = async (id) => {
+      const token = localStorage.getItem('token');
+      const response = await fetch(`${localUrl}/users/${id}`, {
+        method: 'get',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      })
+      const data = await response.json();
+      if (data.msg) {
+        console.log(data.msg);
+      } else {
+        // console.log(data);
+        // setCurrentUser(data.user);
+        setName(data.user.name);
+        setEmail(data.user.email);
+      }
+    }
+
+    fetchUser();
+
+  }, [])
+    
+  const createAnOrder = async (e) => {
     e.preventDefault();
 
     const newOrder = {
-      name: name,
-      email: currentUser?.email,
-      location: {
-        address: address,
-        city: city,
-        country: country,
-        state: state,
-        zipcode: zipcode
-      },
-      phone: phone,
-      productIds: cartItems.map(item => item?._id),
-      totalPrice: totalPrice
+        name: name,
+        email: email,
+        location: {
+          address: address,
+          city: city,
+          country: country,
+          state: state,
+          zipcode: zipcode
+        },
+        phone: phone,
+        productIds: cartItems.map(item => item?._id),
+        totalPrice: totalPrice
     }
 
-    console.log(newOrder);
-  } 
+      const token = localStorage.getItem('token');
+
+      Swal.fire({
+        title: "Confirm Order",
+        text: "Would You Like To Confirm Your Order?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, Confirm Order!"
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          try {
+            const response = await fetch(`${localUrl}/orders`, {
+              method: 'post',
+              body: JSON.stringify( newOrder ),
+              headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json'
+              }
+            })
+        
+            const data = await response.json();
+      
+            if(data.msg) {
+              setError(data.msg);
+            } else {
+              setError(false);
+              console.log(data);
+              setCartItems([]);
+              localStorage.removeItem('carts');
+              navigate('/orders');
+            }
+          } catch (error) {
+            console.log(error);
+          }
+        }
+      });
+  }
 
   return (
     <div className='bg-gray-100 w-large 2xl:w-xLarge mx-auto py-10 lg:bg-searchBg lg:p-20'>
       <div className='mb-3'>
         <h2 className='font-bold'> Cash On Delivery </h2>
         <p className='text-gray-500 font-medium'> Total Price : ${totalPrice} </p>
-        <p className='text-gray-500 font-medium'> Items: {cartItems.length} </p>
+        <p className='text-gray-500 font-medium'> Items: { item } </p>
       </div>
 
       <div className='bg-white p-3 lg:flex justify-between py-10 px-4'>
@@ -54,7 +120,7 @@ const CheckoutPage = () => {
         </div>
 
         <div>
-          <form onSubmit={handleCheckoutForm} className='checkout-form'>
+          <form onSubmit={createAnOrder} className='checkout-form'>
             <label >Full Name</label>
             <input 
               className=''
@@ -128,7 +194,6 @@ const CheckoutPage = () => {
                   className=''
                   type="text"
                   placeholder='State'
-                  required 
                   value={state}
                   onChange={(e) => setState(e.target.value)}
                 />
@@ -140,12 +205,16 @@ const CheckoutPage = () => {
                   className='lg:w-[90px]'
                   type="text"
                   placeholder='Zipcode'
-                  required 
                   value={zipcode}
                   onChange={(e) => setZipcode(e.target.value)}
                 />
               </div>
             </div>
+
+            {
+              error && 
+                <p className='mt-4 text-sm italic text-red-500'> {error} </p>
+            }
 
             <div className='text-center mt-4 lg:text-start'>
               <input 

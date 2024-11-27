@@ -13,7 +13,7 @@ const bookSchema = new mongoose.Schema({
     },
     category: {
         type: String,
-        enum: ['Fiction', 'Romance', 'Mystery', 'Horror', 'Business', 'Adventure', 'Marketing'],
+        enum: ['fiction', 'non-fictional','romance', 'fantasy', 'horror', 'business', 'adventure'],
         required: [true, 'Please Select Category']
     },
     trending: {
@@ -24,6 +24,14 @@ const bookSchema = new mongoose.Schema({
         type: String,
         required: [true, 'Please Provide Cover Image']
     },
+    author: {
+        type: String,
+        required: [true, 'Please Provide Author']
+    },
+    published: {
+        type: String,
+        required: [true, 'Please Provide Published']
+    },
     oldPrice : {
         type: Number,
         required: [true, 'Please Provide Old Price'],
@@ -32,11 +40,16 @@ const bookSchema = new mongoose.Schema({
         type: Number,
         required: [true, 'Please Provide New Price'],
     },
-    createdBy: {
-        type: mongoose.Types.ObjectId,
-        ref: 'User',
-        required: [true, 'Please Provide User']
+    quantity : {
+        type: Number,
+        required: [true, 'Please Provide Quantity'],
+        default: 1
     }
+    // createdBy: {
+    //     type: mongoose.Types.ObjectId,
+    //     ref: 'User',
+    //     required: [true, 'Please Provide User']
+    // }
 
 }, {timestamps: true})
 

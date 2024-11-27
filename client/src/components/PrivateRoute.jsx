@@ -1,11 +1,21 @@
-import { useContext } from "react"
-import { UserContext } from "../context/userContext"
-import { Navigate } from "react-router-dom";
+import { useEffect } from "react"
+// import { UserContext } from "../context/userContext"
+import { useLocation, useNavigate } from "react-router-dom";
 
-const PrivateRoute = ({Component}) => {
-    const {currentUser} = useContext(UserContext);
+const PrivateRoute = ({ children }) => {
+    // const {currentUser} = useContext(UserContext);
+    const navigate = useNavigate();
+    const location = useLocation();
+
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+
+        if(!token) {
+            navigate('/login', { state: { from: location } });
+        }
+    }, [navigate, location]);
     
-    return currentUser ? <Component /> : <Navigate to='/login' />
+    return children
 }
 
 export default PrivateRoute;

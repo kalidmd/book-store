@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import { Link, NavLink } from 'react-router-dom'
+// import  { jwtDecode } from 'jwt-decode';
 // components
 import Search from './Search';
 // icons
@@ -9,21 +10,24 @@ import { IoIosSearch } from "react-icons/io";
 import { FaRegUser } from "react-icons/fa";
 import { MdFavoriteBorder } from "react-icons/md";
 import AvatarImg from '../assets/avatar.png'
-import { CartContext } from '../context/CartContext';
+// import { CartContext } from '../context/CartContext';
 import { UserContext } from '../context/userContext';
+import { CartContext } from '../context/CartContext';
 // import { UserContext } from '../context/userContext';
 
 const Navbar = () => {
   // breakpoints bg
   // sm:bg-yellow-300 md:bg-green-500 lg:bg-red-400 xl:bg-teal-500 2xl:bg-purple-400'
+  // const {cartItems} = useContext(CartContext);
   const {cartItems} = useContext(CartContext);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
   const {logout, currentUser} = useContext(UserContext);
 
-  console.log(currentUser);
-  
+  // console.log(user);
+
   useEffect(() => {
+
     const handleClickOutside = (event) => {
       if(dropdownRef.current && !dropdownRef.current.contains(event.target)){
         setIsDropdownOpen(false);
@@ -41,9 +45,6 @@ const Navbar = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
 
-  // const handleLogout = () => {
-  //   logout
-  // }
   const handleLogout = () => {
     logout();
   }
@@ -61,6 +62,7 @@ const Navbar = () => {
       name: 'Cart Page',
       href: 'cart',
     },
+    cartItems.length > 0 &&
     {
       name: 'Checkout',
       href: 'checkout',

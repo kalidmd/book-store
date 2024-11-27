@@ -3,16 +3,20 @@ import { CartContext } from "./CartContext";
 import Swal from "sweetalert2";
 
 export const CartProvider = ({children}) => {
-    const [cartItems, setCartItems] = useState([]);
+    const [cartItems, setCartItems] = useState(localStorage.getItem('carts') ? JSON.parse(localStorage.getItem('carts')) : []);
 
-    const totalPrice = cartItems.reduce((acc, item) => acc + item.newPrice, 0).toFixed();
+    const totalPrice = cartItems.reduce((acc, item) => (acc + item.newPrice) * item.quantity, 0).toFixed();
+    const item = cartItems.reduce((acc, item) => acc + item.quantity, 0).toFixed();
+
 
     const AddToCart = (books, bookId,) => {
         const clickedBook = books.find(book => book._id === bookId);
         let existingBook = cartItems.find(item => item._id === clickedBook._id);
+
         
         if(!existingBook) {
             setCartItems([...cartItems, clickedBook]);
+            localStorage.setItem('carts', JSON.stringify([...cartItems, clickedBook]));
             Swal.fire({
                 position: "center",
                 icon: "success",
@@ -20,7 +24,6 @@ export const CartProvider = ({children}) => {
                 showConfirmButton: false,
                 timer: 1500
             });
-            // alert(`${clickedBook.title} is Added to Cart!`)
         } else {
             Swal.fire({
                 title: `${clickedBook.title} Already Added To Cart!`,
@@ -31,12 +34,17 @@ export const CartProvider = ({children}) => {
                 confirmButtonText: "Ok"
                 });
         }
-
     }
-    // console.log(cartItems);
+    const value = {
+        cartItems, 
+        setCartItems, 
+        AddToCart, 
+        totalPrice,
+        item
+    }
 
     return (
-        <CartContext.Provider value={{cartItems, setCartItems, AddToCart, totalPrice}}>
+        <CartContext.Provider value={value}>
             {children}
         </CartContext.Provider>
     )

@@ -17,7 +17,7 @@ const Login = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    const res = await fetch(`${localUrl}/users/login`, {
+    const res = await fetch(`${localUrl}/auth/login`, {
       method: 'post',
       body: JSON.stringify({ email, password }),
       headers: {

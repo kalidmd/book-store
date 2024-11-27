@@ -22,7 +22,7 @@ const Register = () => {
       e.preventDefault();
       // console.log(data);
       console.log(error);
-        const res = await fetch(`${localUrl}/users/register`, {
+        const res = await fetch(`${localUrl}/auth/register`, {
           method: 'post',
           body: JSON.stringify({ name, email, password }),
           headers: {

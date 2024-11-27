@@ -12,6 +12,7 @@ import SingleBook from './pages/main-pages/SingleBook';
 import CartPage from './pages/main-pages/CartPage';
 import CheckoutPage from './pages/main-pages/CheckoutPage';
 import PrivateRoute from './components/PrivateRoute';
+import OrderPage from './pages/main-pages/OrderPage';
 // import AddBook from './pages/sub-pages/AddBook';
 
 
@@ -39,7 +40,7 @@ const router = createBrowserRouter([
             },            
             {
                 path: 'orders',
-                element: <h1> Orders Page </h1>
+                element: <OrderPage />
             },            
             {
                 path: 'cart',
@@ -47,7 +48,7 @@ const router = createBrowserRouter([
             },            
             {
                 path: 'checkout',
-                element: <PrivateRoute Component={CheckoutPage} />
+                element: <PrivateRoute> <CheckoutPage /> </PrivateRoute>
             },            
         ]
     },
