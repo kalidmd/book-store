@@ -1,5 +1,5 @@
 const { StatusCodes } = require('http-status-codes');
-const Order = require('../models/Order');
+const Order = require('../models/orderModel');
 const { NotFoundError } = require('../error');
 
 const createAnOrder = async (req, res) => {

@@ -13,13 +13,15 @@ import 'swiper/css/navigation';
 
 // import required modules
 import { Navigation, Pagination } from 'swiper/modules'
-import { CartContext } from '../../context/CartContext';
+import { CartContext } from '../../context/cartContext';
 
 const Recommended = () => {
     const {AddToCart} = useContext(CartContext);
-    const [books, setBooks] = useState([]);
-    const [error, setError] = useState(null);
-    const recommendedBooks = books.slice(5, books.length);
+    const [books, setBooks] = useState([null]);
+    const [error, setError] = useState(false);
+    const [fetchError, setFetchError] = useState(null);
+
+    const recommendedBooks = books.length > 0 && books.slice(5, books.length);
 
     const localUrl = 'http://localhost:5000/api/v1';
     // const productionUrl = 
@@ -31,19 +33,24 @@ const Recommended = () => {
 
     useEffect(() => {
         const fetchBooks = async () => {
-            const response = await fetch(`${localUrl}/books`)
-            const data = await response.json();
-            // console.log(data);
-            if (data.msg) {
-                setError(error);
+            try {
+                const response = await fetch(`${localUrl}/books`)
+                const data = await response.json();
+                // console.log(data);
+                if (data.msg) {
+                    setError(data.msg);
 
-            } else {
-                setBooks(data.book);
+                } else {
+                    setBooks(data.book);
+                    setError(false);
+                }
+            } catch (error) {
+                setFetchError(error);
+                // console.error(error);
             }
-            
         }
         fetchBooks();
-    }, [error])
+    }, [])
 
   return (
     <section className='section-cont mt-10'>
@@ -78,7 +85,7 @@ const Recommended = () => {
                 className="mySwiper bg-white mt-[10px] py-[10px] px-[12px] rounded-md select-none"
             >
                 {
-                    recommendedBooks && recommendedBooks.map((book) => (
+                    recommendedBooks.length > 0 && recommendedBooks.map((book) => (
                             <SwiperSlide key={book._id} >
                                 <Book 
                                     src={book.coverImage}
@@ -92,8 +99,17 @@ const Recommended = () => {
                                 />
                             </SwiperSlide>
                     ))
+
+                }
+                {
+                   fetchError ? 
+                    <p className='mt-4 italic text-red-500 text-center text-lg'> 
+                        Failed to fetch data. Please try again later. 
+                    </p> : 
+                   error && <p className='mt-4 italic text-red-500 text-center text-lg'> { error } </p>
                 }
             </Swiper>
+
     </section>
   )
 }

@@ -4,9 +4,10 @@ const jwt = require('jsonwebtoken');
 
 
 const userSchema = new mongoose.Schema({
-    name: {
+    username: {
         type: String,
-        required: [true, 'Please Provide Name']
+        required: [true, 'Please Provide username'],
+        unique: true
     },
     email: {
         type: String,
@@ -21,12 +22,11 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: [true, 'Please Provide Password']
     },
-    isAdmin: {
+    role: {
         type: String,
-        default: false,
-    },
-    avatar: {
-        type: String,
+        enum: ['admin', 'user'],
+        default: 'user',
+        required: true
     }
 
 }, {timestamps: true})
@@ -47,9 +47,9 @@ userSchema.methods.comparePassword = async function (candidatePassword) {
 userSchema.methods.createJWT = function () {
     const payload = {
         userId: this._id,
-        name: this.name,
+        username: this.username,
         email: this.email,
-        isAdmin: this.isAdmin
+        role: this.role
     }
     return jwt.sign(payload, process.env.JWT_SECRECT, { expiresIn: process.env.JWT_lIFETIME });
 }

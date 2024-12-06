@@ -17,29 +17,38 @@ const Login = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    const res = await fetch(`${localUrl}/auth/login`, {
-      method: 'post',
-      body: JSON.stringify({ email, password }),
-      headers: {
-        'Content-Type': 'application/json'
+    try {
+      const res = await fetch(`${localUrl}/auth/login`, {
+        method: 'post',
+        body: JSON.stringify({ email, password }),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+  
+      const data = await res.json();
+  
+      if(data.msg) {
+        localStorage.removeItem('token');
+        setError(data.msg);
+        setEmail('');
+        setPassword('');
+  
+      } else {
+        if(data.user.role === 'admin') {
+          localStorage.setItem('adminToken', data.token);
+        }
+        login(data.token);
+        setError(false);
+        setEmail('');
+        setPassword('');
+        navigate('/');
       }
-    })
-
-    const data = await res.json();
-
-    if(data.msg) {
-      localStorage.removeItem('token');
-      setError(data.msg);
-      setEmail('');
-      setPassword('');
-
-    } else {
-      login(data.token);
-      setError(false);
-      setEmail('');
-      setPassword('');
-      navigate('/');
+    } catch (error) {
+      setError(error);
+      console.error(error);
     }
+
 
   }
 

@@ -1,12 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { CartContext } from '../../context/CartContext'
+import { CartContext } from '../../context/cartContext'
 // import { createAnOrder } from '../../../../server/controllers/order';
 import Swal from 'sweetalert2'
 
 const CheckoutPage = () => {
   const {cartItems, setCartItems, totalPrice, item} = useContext(CartContext);
-  const [error, setError] = useState(null);
+  // const [error, setError] = useState(null);
   const navigate = useNavigate();
 
   const [name, setName] = useState('');
@@ -18,34 +18,48 @@ const CheckoutPage = () => {
   const [state, setState] = useState('');
   const [zipcode, setZipcode] = useState('');
   const [isChecked, setIsChecked] = useState(false);
+  // const [isLoading, setIsLoading] = useState(false);
+
+  const [error, setError] = useState(false);
+  const [fetchError, setFetchError] = useState(false);
 
   const localUrl = 'http://localhost:5000/api/v1';
 
   useEffect(() => {
 
     const fetchUser = async (id) => {
-      const token = localStorage.getItem('token');
-      const response = await fetch(`${localUrl}/users/${id}`, {
-        method: 'get',
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json'
+      try {
+        const token = localStorage.getItem('token');
+        const response = await fetch(`${localUrl}/users/user/${id}`, {
+          method: 'get',
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
+        })
+
+        const data = await response.json();
+
+        if (data.msg) {
+          console.log(data.msg);
+          setError(data.msg)
+        } else {
+          setName(data.user.username);
+          setEmail(data.user.email);
+          setError(false);
         }
-      })
-      const data = await response.json();
-      if (data.msg) {
-        console.log(data.msg);
-      } else {
-        // console.log(data);
-        // setCurrentUser(data.user);
-        setName(data.user.name);
-        setEmail(data.user.email);
+      } catch (error) {
+        // setError(error);
+        setFetchError(error);
+        console.error(error);
       }
+      
     }
 
     fetchUser();
 
   }, [])
+
     
   const createAnOrder = async (e) => {
     e.preventDefault();
@@ -65,7 +79,6 @@ const CheckoutPage = () => {
         totalPrice: totalPrice
     }
 
-      const token = localStorage.getItem('token');
 
       Swal.fire({
         title: "Confirm Order",
@@ -78,6 +91,8 @@ const CheckoutPage = () => {
       }).then(async (result) => {
         if (result.isConfirmed) {
           try {
+            const token = localStorage.getItem('token');
+            // setIsLoading(true);
             const response = await fetch(`${localUrl}/orders`, {
               method: 'post',
               body: JSON.stringify( newOrder ),
@@ -91,19 +106,26 @@ const CheckoutPage = () => {
       
             if(data.msg) {
               setError(data.msg);
+              // setIsLoading(false);
+
             } else {
+              // setIsLoading(false);
               setError(false);
-              console.log(data);
               setCartItems([]);
               localStorage.removeItem('carts');
               navigate('/orders');
             }
           } catch (error) {
-            console.log(error);
+            console.error(error);
+            setFetchError(error);
           }
         }
       });
   }
+
+  // if(isLoading) {
+  //   return <h1> Loading... </h1>
+  // }
 
   return (
     <div className='bg-gray-100 w-large 2xl:w-xLarge mx-auto py-10 lg:bg-searchBg lg:p-20'>
@@ -212,14 +234,17 @@ const CheckoutPage = () => {
             </div>
 
             {
-              error && 
-                <p className='mt-4 text-sm italic text-red-500'> {error} </p>
+              fetchError ? 
+              <p className='mt-4 italic text-red-500 text-center text-lg'> 
+                  Failed to fetch data. Please try again later. 
+              </p> : 
+              error && <p className='mt-4 italic text-red-500 text-center text-lg'> { error } </p>
             }
 
             <div className='text-center mt-4 lg:text-start'>
               <input 
                 type="checkbox" 
-                value={isChecked}
+                checked={isChecked}
                 onChange={(e) => setIsChecked(!isChecked)}
                 
               />

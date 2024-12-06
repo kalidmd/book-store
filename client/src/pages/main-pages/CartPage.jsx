@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import { CartContext } from '../../context/CartContext'
+import { CartContext } from '../../context/cartContext'
 // Icons
 import { MdArrowRightAlt } from "react-icons/md";
 import { Link, useNavigate } from 'react-router-dom';
@@ -8,9 +8,6 @@ import Swal from 'sweetalert2';
 const CartPage = () => {
     const {cartItems, setCartItems, totalPrice} = useContext(CartContext);
 
-    // const cart = JSON.parse(sessionStorage.getItem('cart'));
-    
-    // console.log(cartItems);
     const handleQuantity = (e, itemId) => {
         const newQuantity = parseInt(e.target.value);
         setCartItems(prevItems => 
@@ -152,6 +149,7 @@ const CartPage = () => {
                         <MdArrowRightAlt  className='inline'/> 
                     </p> 
                 </Link>
+
             </div>
 
         </div>

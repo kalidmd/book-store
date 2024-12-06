@@ -9,7 +9,7 @@ import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 // import required modules
 import { Navigation, Pagination } from 'swiper/modules'
-import { CartContext } from '../../context/CartContext';
+import { CartContext } from '../../context/cartContext';
 // Components
 // import AddToCart from '../../components/AddToCart';
 
@@ -18,10 +18,13 @@ const TopSellers = () => {
     const {AddToCart} = useContext(CartContext);
     const [books, setBooks] = useState([]);
     const [error, setError] = useState(null);
-    const categories = ['Choose a genre', 'Fiction', 'Romance', 'Fantasy', 'Horror', 'Business', 'Adventure'];
-    const [selectedCategory, setSelectedCategory] = useState('Choose a genre');
+    const [fetchError, setFetchError] = useState(null);
 
-    const filterdBooks = selectedCategory === 'Choose a genre' ? books: books.filter(book => book.category === selectedCategory.toLowerCase());
+    const categories = ['Choose a genre', 'Fiction', 'Romance', 'Fantasy', 'Horror', 'Business', 'Adventure', 'Non-fictional'];
+    const [selectedCategory, setSelectedCategory] = useState('Choose a genre');
+    
+
+    const filterdBooks = selectedCategory === 'Choose a genre' ? books.length > 0 && books: books.length > 0 && books.filter(book => book.category === selectedCategory);
 
     // api url
     const localUrl = 'http://localhost:5000/api/v1';
@@ -29,6 +32,7 @@ const TopSellers = () => {
 
     const handleCart = (bookId) => {
         AddToCart(books, bookId);
+        
     }
 
     useEffect(() => {
@@ -39,9 +43,14 @@ const TopSellers = () => {
                 // console.log(data);
                 setBooks(data.book);
 
+                if(data.msg) {
+                    setError(data.msg);
+                } else {
+                    setError(false);
+                }
+
             } catch(error) {
-                console.log(error);
-                setError(error);
+                setFetchError(error);                
             }
         }
         fetchBooks();
@@ -89,7 +98,7 @@ const TopSellers = () => {
             >   
                 <>
                     {
-                        filterdBooks && filterdBooks.length > 0 ? 
+                        filterdBooks && filterdBooks.length > 0 &&
                             filterdBooks.map((book) => (
                                 <SwiperSlide key={book._id} >
                                     <Book 
@@ -103,12 +112,18 @@ const TopSellers = () => {
                                         handleCart={() => handleCart(book._id)}
                                         />
                                 </SwiperSlide>
-                            )) :
-                            <p className='py-10 text-sm md:text-2xl'> {`Cant't Find Books, Please Try Again Later.`} </p>
+                            )) 
+                    }
+
+                    {
+                    fetchError ? 
+                        <p className='mt-4 italic text-red-500 text-center text-lg'> 
+                            Failed to fetch data. Please try again later. 
+                        </p> : 
+                    error && <p className='mt-4 italic text-red-500 text-center text-lg'> { error } </p>
                     }
                 </>
-            </Swiper>
-            {error && <p className='italic text-red-300 text-sm'> {error} </p>}
+            </Swiper> 
         </section>
     )
 }

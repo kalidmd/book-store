@@ -1,5 +1,5 @@
 const { StatusCodes } = require('http-status-codes');
-const User = require('../models/Users');
+const User = require('../models/userModel');
 const { BadRequestError, UnauthorizedError } = require('../error');
 
 const register = async (req, res) => {
@@ -33,7 +33,7 @@ const login = async (req, res) => {
 
     const token = await user.createJWT();
 
-    return res.status(StatusCodes.OK).json({ user: user.name, token })
+    return res.status(StatusCodes.OK).json({ user, token })
 }
 
 const dashboard = async (req, res) => {

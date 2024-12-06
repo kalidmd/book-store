@@ -1,4 +1,4 @@
-const { UnauthorizedError } = require('../error');
+const { UnauthorizedError, ForbiddenError } = require('../error');
 const jwt = require('jsonwebtoken');
 
 const authMiddleware = async (req, res, next ) => {
@@ -16,11 +16,12 @@ const authMiddleware = async (req, res, next ) => {
         // attach the user with protected routes
         req.user = {
             userId: payload.userId,
-            name: payload.name,
+            username: payload.username,
             email: payload.email,
-            isAdmin: payload.isAdmin
+            role: payload.role
         }
-        next()
+       
+        next();
     } catch (error) {
         throw new UnauthorizedError('Unauthorized');
     }

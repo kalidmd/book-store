@@ -1,19 +1,22 @@
 const { StatusCodes } = require('http-status-codes');
-const Book = require('../models/Books');
-const { NotFoundError } = require('../error');
+const Book = require('../models/bookModel');
+const { NotFoundError, UnauthorizedError, BadRequestError } = require('../error');
 
 const createBook = async (req, res) => {
 
-    const book = await Book.create(req.body);
+    const { filename } = req.file;
 
-    res.status(StatusCodes.OK).json(book);
+    const book = await Book.create({ ...req.body, coverImage: `./images/${filename}` })
+    
+    res.status(StatusCodes.CREATED).json({ book });
+
 }
 
 const getBooks = async (req, res) => {
     const book = await Book.find({ }).sort('-updatedAt');
 
     if(book.length < 1) {
-        throw new NotFoundError('Can\'t find book')
+        throw new NotFoundError('Couldn\'t find books.')
     }
     res.status(StatusCodes.OK).json({ book });
 }

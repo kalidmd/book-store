@@ -11,8 +11,11 @@ import Register from './pages/main-pages/Register';
 import SingleBook from './pages/main-pages/SingleBook';
 import CartPage from './pages/main-pages/CartPage';
 import CheckoutPage from './pages/main-pages/CheckoutPage';
-import PrivateRoute from './components/PrivateRoute';
 import OrderPage from './pages/main-pages/OrderPage';
+import AdminLogin from './pages/main-pages/admin/AdminLogin';
+import UsersRoute from './protected-routes/UsersRoute';
+import AdminRoute from './protected-routes/AdminRoute';
+
 // import AddBook from './pages/sub-pages/AddBook';
 
 
@@ -45,26 +48,46 @@ const router = createBrowserRouter([
             {
                 path: 'cart',
                 element: <CartPage />
-            },            
+            },    
             {
-                path: 'checkout',
-                element: <PrivateRoute> <CheckoutPage /> </PrivateRoute>
-            },            
+                path: '/',
+                element: <UsersRoute />,
+                children: [
+                    {
+                        path: 'checkout',
+                        element: <CheckoutPage /> 
+                    }
+                ]
+            },               
         ]
     },
+    // {
+    //     path: 'dashboard',
+    //     element: <Dashboard />
+    // },
     {
-        path: 'dashboard/',
-        element: <Dashboard />,
+        path: '',
+        element: <AdminRoute />,
         children: [
             {
-                path: 'add-new-books',
-                element: <AddNewBook />
-            },
-            {
-                path: 'manage-books',
-                element: <ManageBook />
-            },
-        ]
+                path: 'dashboard',
+                element: <Dashboard />,
+                children: [
+                            {
+                                path: 'add-new-books',
+                                element: <AddNewBook />  
+                            },
+                            {
+                                path: 'manage-books',
+                                element: <ManageBook />  
+                            }
+                        ]
+            }
+        ] 
+    },
+    {
+        path: 'admin',
+        element: <AdminLogin />
     }
 ])
 

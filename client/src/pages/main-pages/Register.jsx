@@ -21,7 +21,7 @@ const Register = () => {
     const handleRegister = async (e) => {
       e.preventDefault();
       // console.log(data);
-      console.log(error);
+      try {
         const res = await fetch(`${localUrl}/auth/register`, {
           method: 'post',
           body: JSON.stringify({ name, email, password }),
@@ -44,6 +44,11 @@ const Register = () => {
           setPassword('');
           navigate('/')
         }
+      } catch (error) {
+        setError(error);
+        console.error(error);
+      }
+        
     }
 
   return (

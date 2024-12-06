@@ -12,7 +12,7 @@ import { MdFavoriteBorder } from "react-icons/md";
 import AvatarImg from '../assets/avatar.png'
 // import { CartContext } from '../context/CartContext';
 import { UserContext } from '../context/userContext';
-import { CartContext } from '../context/CartContext';
+import { CartContext } from '../context/cartContext';
 // import { UserContext } from '../context/userContext';
 
 const Navbar = () => {
@@ -22,9 +22,9 @@ const Navbar = () => {
   const {cartItems} = useContext(CartContext);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
-  const {logout, currentUser} = useContext(UserContext);
-
+  const {logout, currentUser, user} = useContext(UserContext);
   // console.log(user);
+
 
   useEffect(() => {
 
@@ -50,7 +50,7 @@ const Navbar = () => {
   }
 
   const navigation = [
-    {
+    user.role ==='admin' && {
       name: 'Dashboard',
       href: 'dashboard',
     },

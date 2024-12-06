@@ -10,8 +10,8 @@ const Book = ({
 
   return (
     <div className="font-nunito flex min-w-[400px] gap-5 items-end">
-        <Link to={`books/${bookID}`}>
-          <img className='hover:scale-105 transition-all duration-200' src={src} alt={alt} />
+        <Link className='w-[180px] h-[250px] rounded-md' to={`books/${bookID}`}>
+          <img className='w-full h-full object-cover rounded-md hover:scale-105 transition-all duration-200' src={src} alt={alt} />
         </Link>
 
         <div className="w-[185px]">

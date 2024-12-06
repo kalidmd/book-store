@@ -2,14 +2,14 @@ import React, { useContext, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 // icons
 import { IoCartOutline } from "react-icons/io5";
-import { CartContext } from '../../context/CartContext';
+import { CartContext } from '../../context/cartContext';
 
 
 const SingleBook = () => {
   const { AddToCart } = useContext(CartContext);
   const params = useParams();
   const [books, setBooks] = useState([]);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState(false);
   // const dateObj = new Date(books.createdAt);
 
   const capitalLetter = (word) => {
@@ -27,15 +27,22 @@ const SingleBook = () => {
   useEffect(()=> {
       const {id: bookId} = params;
       const localUrl = 'http://localhost:5000/api/v1/books'
-      const fetchSingleBook = async (req, res) => {
-        const response = await fetch(`${localUrl}/${bookId}`);
-        const data = await response.json();
 
-        console.log(data);
-        if(data.msg) {
-          setError(data.msg);
-        } else {
-          setBooks([data.book]);
+      const fetchSingleBook = async (req, res) => {
+        try {
+          const response = await fetch(`${localUrl}/${bookId}`);
+          const data = await response.json();
+
+          console.log(data);
+          if(data.msg) {
+            setError(data.msg);
+          } else {
+            setBooks([data.book]);
+            setError(false);
+          }
+        } catch (error) {
+          setError(error);
+          console.error(error);
         }
       }
 
@@ -69,6 +76,11 @@ const SingleBook = () => {
                 <IoCartOutline  className='size-6'/>
                 <p className=''> Add to Cart </p>
               </button>
+
+              {
+              error && 
+                <p className='mt-4 text-sm italic text-red-500'> {error} </p>
+            }
           </div>
          ))
       }

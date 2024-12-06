@@ -10,16 +10,19 @@ import { Navigation, Pagination } from 'swiper/modules'
 
 const News = () => {
   const [news, setNews] = useState([]);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
     const fetchNews = async () => {
       try {
         const res = await fetch('news.json');
         const data = await res.json();
-        // console.log(data);
+      
         setNews(data);
+        setError(false);
       } catch (error) {
         console.log(error);
+        setError(error);
       }
     }
 
@@ -69,6 +72,10 @@ const News = () => {
           </div>
         </SwiperSlide>
         ))
+      }
+
+      {  error && 
+            <p className='mt-4 text-sm italic text-red-500'> {error} </p>
       }
   </Swiper>
       

@@ -7,15 +7,19 @@ const app = express();
 //import DB
 const connectDB = require('./db/connect')
 // import Routes
-const authRouter = require('./routes/auth');
-const booksRouter = require('./routes/books');
-const usersRouter = require('./routes/users');
-const orderRouter = require('./routes/order');
+const authRouter = require('./routes/authRoute');
+const booksRouter = require('./routes/bookRoute');
+const usersRouter = require('./routes/userRoute');
+const orderRouter = require('./routes/orderRoute');
 // import middlewares
 const errorHandlerMiddleware = require('./middlewares/error-handler');
 const authMiddleware = require('./middlewares/authentication');
 
-app.use(cors());
+app.use(cors({
+    origin: ['http://localhost:3000'],
+    credentials: true
+}));
+
 app.use(express.json());
 
 // routes
@@ -23,9 +27,6 @@ app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/books', booksRouter);
 app.use('/api/v1/users', authMiddleware, usersRouter);
 app.use('/api/v1/orders', authMiddleware, orderRouter);
-
-// app.use('/api/v1/users', usersRouter);
-// app.use('/api/v1/books', booksRouter);
 
 // middlewares
 app.use(errorHandlerMiddleware);
