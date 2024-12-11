@@ -1,26 +1,29 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Swal from 'sweetalert2';
+import { SearchContext } from '../../../context/searchContext';
 
 const ManageBook = () => {
+      // Search Context Usage
+  const { search } = useContext(SearchContext);
       // Use Navigate Hook Defentiotion
   const navigate = useNavigate();
       // Book State Defenition
-  const [books, setBooks] = useState([null]);
+  const [books, setBooks] = useState([]);
       // Error Handling States Def
   const [error, setError] = useState(false);
   const [fetchError, setFetchError] = useState(false);
       // API Endpoints
   const localUrl = 'http://localhost:5000/api/v1';
 
-  useEffect(() => {
-    getBooks();
-  }, [])
 
-  const getBooks = async () => {
+  const bookFoundText = books.length === 1 ? 'Book Found' : 'Books Found';
+
+
+  const getBooks = async (search) => {
     try {
-      const { data } = await axios.get(`${localUrl}/books`)
+      const { data } = await axios.get(`${localUrl}/books?search=${search}`)
       
       setBooks(data.book);
       setError(false);
@@ -36,6 +39,10 @@ const ManageBook = () => {
       }
     }
   }
+
+  useEffect(() => {
+    getBooks(search);
+  }, [search])
 
   const editBook = (id) => {
     navigate(`/dashboard/edit-book/${id}`)
@@ -72,14 +79,14 @@ const ManageBook = () => {
       }
     }
 
-    getBooks();
+    getBooks(search);
   }    
 
   return (
     <div className='bg-white mt-20 p-4 rounded-md'>
       <div className='flex justify-between mb-4'>
         <h1> All Books </h1>
-        { books && books.length > 1 && <p className='italic font-medium'> { books.length } Books Found </p> }
+        { books && books.length > 0 && <p className='italic font-medium'> { `${books.length} ${bookFoundText}` } </p> }
         <button> See All </button>
       </div>
 
@@ -97,7 +104,7 @@ const ManageBook = () => {
 
           <tbody>
             {
-              books!== null && books.length > 0 && books.map((book, index) => (
+              !error && books && books.length > 0 && books.map((book, index) => (
                 <tr key={book && book._id} className='text-left'>
                   <td className='py-4'> 
                     { book && `${index + 1}.` } 

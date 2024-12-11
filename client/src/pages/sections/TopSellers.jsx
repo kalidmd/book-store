@@ -11,13 +11,19 @@ import 'swiper/css/navigation';
 import { Navigation, Pagination } from 'swiper/modules'
 import { CartContext } from '../../context/cartContext';
 import axios from 'axios';
+import { SearchContext } from '../../context/searchContext';
 // Components
 // import AddToCart from '../../components/AddToCart';
 
 
 const TopSellers = () => {
-    const {AddToCart} = useContext(CartContext);
+        // Cart Context Usage
+    const { AddToCart } = useContext(CartContext);
+        // Search Context Usage
+    const { search } = useContext(SearchContext);
+        // States Def
     const [books, setBooks] = useState([]);
+        // Error Handling States
     const [error, setError] = useState(null);
     const [fetchError, setFetchError] = useState(null);
 
@@ -39,10 +45,11 @@ const TopSellers = () => {
     useEffect(() => {
         const fetchBooks = async () => {
             try {
-                const { data } = await axios.get(`${localUrl}/books`)
+                const { data } = await axios.get(`${localUrl}/books?search=${search}`)
 
-                // console.log(data);
                 setBooks(data.book);
+                setError(false);
+                setFetchError(false);
 
             } catch (error) {
                 if (error.response) {
@@ -51,100 +58,86 @@ const TopSellers = () => {
                     setFetchError(error.message);
                 }
             }
-
-            // try {
-            //     const response = await fetch(`${localUrl}/books`)
-            //     const data = await response.json();
-            //     // console.log(data);
-            //     setBooks(data.book);
-
-            //     if(data.msg) {
-            //         setError(data.msg);
-            //     } else {
-            //         setError(false);
-            //     }
-
-            // } catch(error) {
-            //     setFetchError(error);                
-            // }
         }
         fetchBooks();
-    }, [])
+    }, [search])
  
 
     return (
         <section className='section-cont'>
-            { filterdBooks && filterdBooks.length > 0 &&
-            <>
-            
-                <h1 className='title'>Top Sellers</h1>
-                <select onChange={(e) => setSelectedCategory(e.target.value)} className='select'>
-                    {
-                        categories.map((item,index) => (
-                            <option key={index} value={item}> {item} </option>
-                        ))
-                    }
-                </select>
-                <Swiper
-                    slidesPerView={1}
-                    spaceBetween={50}
-                    pagination={{
-                        dynamicBullets: true,
-                        clickable: true
-                    }}
-                    navigation={true}
-                    breakpoints={{
-                        640: {
-                            slidesPerView: 1,
-                            spaceBetween: 50,
-                        },
-                        768: {
-                            slidesPerView: 2,
-                            spaceBetween: 100,
-                        },
-                        1024: {
-                            slidesPerView: 2,
-                            spaceBetween: 50,
-                        },
-                        1180: {
-                            slidesPerView: 3,
-                            spaceBetween: 200,
-                        },
-                    }}
-                    modules={[Pagination, Navigation]}
-                    className="mySwiper bg-white mt-[10px] py-[10px] px-[12px] rounded-md select-none"
-                >   
-                    <>
+            { 
+            !error && filterdBooks && filterdBooks.length > 0 &&
+                <>
+                
+                    <h1 className='title'>Top Sellers</h1>
+                    <select onChange={(e) => setSelectedCategory(e.target.value)} className='select'>
                         {
-                            filterdBooks && filterdBooks.length > 0 &&
-                                filterdBooks.map((book) => (
-                                    <SwiperSlide key={book._id} >
-                                        <Book 
-                                            src={book.coverImage.url}
-                                            alt={book.title}
-                                            bookID={book._id}
-                                            bookTitle={book.title}
-                                            bookDesc={book.description}
-                                            newPrice={book.newPrice}
-                                            oldPrice={book.oldPrice}
-                                            handleCart={() => handleCart(book._id)}
-                                            />
-                                    </SwiperSlide>
-                                )) 
+                            categories.map((item,index) => (
+                                <option key={index} value={item}> {item} </option>
+                            ))
                         }
-
-                        {
-                        fetchError ? 
-                            <p className='mt-4 italic text-red-500 text-center text-lg'> 
-                                { fetchError } 
-                            </p> : 
-                        error && <p className='mt-4 italic text-red-500 text-center text-lg'> { error } </p>
-                        }
-                    </>
+                    </select>
+                    <Swiper
+                        slidesPerView={1}
+                        spaceBetween={50}
+                        pagination={{
+                            dynamicBullets: true,
+                            clickable: true
+                        }}
+                        navigation={true}
+                        breakpoints={{
+                            640: {
+                                slidesPerView: 1,
+                                spaceBetween: 50,
+                            },
+                            768: {
+                                slidesPerView: 2,
+                                spaceBetween: 100,
+                            },
+                            1024: {
+                                slidesPerView: 2,
+                                spaceBetween: 50,
+                            },
+                            1180: {
+                                slidesPerView: 3,
+                                spaceBetween: 200,
+                            },
+                        }}
+                        modules={[Pagination, Navigation]}
+                        className="mySwiper bg-white mt-[10px] py-[10px] px-[12px] rounded-md select-none"
+                    >   
+                        <>
+                            {
+                                filterdBooks && filterdBooks.length > 0 &&
+                                    filterdBooks.map((book) => (
+                                        <SwiperSlide key={book._id} >
+                                            <Book 
+                                                src={book.coverImage.url}
+                                                alt={book.title}
+                                                bookID={book._id}
+                                                bookTitle={book.title}
+                                                bookDesc={book.description}
+                                                newPrice={book.newPrice}
+                                                oldPrice={book.oldPrice}
+                                                handleCart={() => handleCart(book._id)}
+                                                />
+                                        </SwiperSlide>
+                                    )) 
+                            }
+                        </>
                 </Swiper> 
-            </>}
+            </>
+            }
+
+            {
+                fetchError ? 
+                    <p className='mt-4 italic text-red-500 text-center text-lg'> 
+                        { fetchError } 
+                    </p> : 
+                error && <p className='mt-4 italic text-red-500 text-center text-lg'> { error } </p>
+            }
         </section>
     )
 }
 
-export default TopSellers
+export default TopSellers;

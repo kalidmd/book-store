@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useRef, useState } from 'react'
-import { NavLink, Outlet, useNavigate } from 'react-router-dom'
+import { NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom'
   // Components
 import Search from '../Search'
   // Icons
@@ -11,14 +11,20 @@ import { IoMdAdd } from "react-icons/io";
   // Images
 import AdminProfile from '../../assets/avatar.png'
 import { UserContext } from '../../context/userContext';
-
+import { SearchContext } from '../../context/searchContext';
 
 const DashboardMain = () => {
-    // User Context Defenition
+      // User Context Defenition
   const { user } = useContext(UserContext);
-    // Dropdown Ref Hook Defenition
+      // Search Context Def
+  const { search, setSearch } = useContext(SearchContext);
+     // Dropdown Ref Hook Defenition
   const dropdownRef = useRef(null);
-    // Dropdown State Defenition
+      // Use Location Hook Def
+  const location = useLocation();
+      // Use Navigate Def 
+  const navigate = useNavigate();
+     // Dropdown State Defenition
   const [isAdminDropdownOpen, setisAdminDropdownOpen] = useState(false);
   
     // Method to Convert the First Letter of Username to Capital
@@ -44,9 +50,6 @@ const DashboardMain = () => {
 
   }, [dropdownRef])
 
-  const navigate = useNavigate();
-
-
   const handleDropdown = (e) => {
     if(dropdownRef.current && dropdownRef.current.contains(e.target)) {
       return;
@@ -63,13 +66,22 @@ const DashboardMain = () => {
     <main className='w-full'>
       {/* // Profile  */}
         <section className='w-full 2xl:w-xLarge bg-white'>
-          <div className='w-large mx-auto 2xl:w-xLarge flex items-center py-3 justify-between'>
-            <div className='flex items-center gap-3 py-1 px-3'>
-                <IoIosSearch className='size-6'/>
-                <Search placeholder='search'/>
-            </div>
+          <div className={`w-large mx-auto 2xl:w-xLarge flex flex-col-reverse items-end gap-3 pt-4 pb-2 `}>
 
-            <div className='flex items-center gap-4 relative'>
+            { location.pathname === '/dashboard/manage-books' &&
+              <div className='w-fit mx-auto flex items-center gap-3 py-1 px-3'>
+                <IoIosSearch className='size-6'/>
+                <input 
+                    type="text" 
+                    className='border-0 bg-transparent outline-none w-[200px] '
+                    value={search}
+                    placeholder='search for book, author'
+                    onChange={(e) => setSearch(e.target.value)}
+                />
+              </div>
+            }
+
+            <div className='flex items-center w-fit gap-4 relative xxs:text-[10px] xs:text-xs'>
                 <div className='flex flex-col items-end'> 
                 { user && user?.username && <p className='font-medium'> { toCapital(user?.username) } </p> }
                   { user && user?.role &&
@@ -81,7 +93,7 @@ const DashboardMain = () => {
                   }
                 </div>
 
-                <div className='outline outline-adminHomeBg outline-offset-2 rounded-full w-10 h-10'>
+                <div className='outline outline-adminHomeBg outline-offset-2 rounded-full w-8 h-8'>
                   <img className='w-full h-full rounded-full' src={AdminProfile} alt="Teddy Jeff" />
                 </div>
 
@@ -90,33 +102,28 @@ const DashboardMain = () => {
                 </button>
 
                 { isAdminDropdownOpen &&
-                  <ul ref={dropdownRef} className='bg-gray-200 rounded-md py-2 px-4 absolute top-14 right-20 z-20'>
-                    <li> item </li>
-                    <li> item </li>
-                    <li> item </li>
-                    <li> item </li>
+                  <ul ref={dropdownRef} className='bg-gray-200 rounded-md py-4 px-2 absolute top-12 right-0 z-20'>
+                    <li> 
+                      <button onClick={logoutAdmin}>
+                        <span>Logout</span>
+                        <RxExit className='inline-block ml-1 size-3 text-gray-700' />
+                      </button> 
+                    </li>
                   </ul>
                 }
-
-                <div className='border-l-2 h-8 '></div>
-
-                <IoIosNotificationsOutline className='size-6 text-gray-500'/>
-                <button onClick={logoutAdmin}>
-                  <RxExit className='size-5 text-gray-500' />
-
-                </button>
+    
             </div>
           </div>
         </section>
 
         <section className='w-large mx-auto 2xl:w-xLarge'>
-          <div className='flex justify-between my-5 bg-blue-70'>
+          <div className='flex flex-col items-center text-center justify-between my-5 bg-blue-70'>
             <div>
-              <h1 className='text-2xl font-medium'> Dashboard </h1>
+              <h1 className='text-xl font-medium'> Dashboard </h1>
               <p className='text-gray-600'>Book Store Inventory</p>
             </div>
 
-            <div className='flex items-center gap-6'>
+            <div className='flex items-center gap-6 mt-5 xxs:text-[10px] xs:text-xs '>
               <NavLink 
                 to={'manage-books'} 
                 className='border border-adminHomeBg p-2 rounded-md'> 

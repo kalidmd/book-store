@@ -7,16 +7,19 @@ import 'sweetalert2/dist/sweetalert2.js'
 import App from './App';
 import { UserContextProvider } from './context/userContext';
 import { CartProvider } from './context/cartContext';
+import { SearchContextProvider } from './context/searchContext';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <UserContextProvider>
-      <CartProvider>
-        <RouterProvider router={router}>
-          <App />
-        </RouterProvider>
-      </CartProvider>
+      <SearchContextProvider>
+        <CartProvider>
+          <RouterProvider router={router}>
+            <App />
+          </RouterProvider>
+        </CartProvider>
+      </SearchContextProvider>
     </UserContextProvider>
   </React.StrictMode>
 );

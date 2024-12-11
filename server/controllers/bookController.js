@@ -23,12 +23,21 @@ const createBook = async (req, res) => {
 }
 
 const getBooks = async (req, res) => {
-    const book = await Book.find({ }).sort('-updatedAt');
+    const search = req.query.search || '';
 
-    if(book.length < 1) {
+    const book = await Book.find({ 
+        $or: [
+            { title: { $regex: search, $options: 'i' } },
+            { author: { $regex: search, $options: 'i' } },
+            { category: { $regex: search, $options: 'i' } }
+        ]
+    }).sort('-updatedAt');
+
+    if(book.length === 0) {
         throw new NotFoundError('No Book Found!')
     }
-    res.status(StatusCodes.OK).json({ book });
+
+    res.status(StatusCodes.OK).json({ count: book.length, book });
 }
 
 const getSingleBook = async (req, res) => {

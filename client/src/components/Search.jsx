@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { } from 'react'
 
 const Search = ({ setSearch, placeholder }) => {
   return (
@@ -6,6 +6,7 @@ const Search = ({ setSearch, placeholder }) => {
         type="text" 
         className='border-0 bg-transparent outline-none xxs:w-[90px] xs:w-[220px]'
         placeholder={placeholder}
+        onChange={(e) => setSearch(e.target.value)}
     />
   )
 }

@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useRef, useState } from 'react'
-import { Link, NavLink } from 'react-router-dom'
+import { Link, NavLink, useLocation } from 'react-router-dom'
     // Contexts
 import { UserContext } from '../context/userContext';
 import { CartContext } from '../context/cartContext';
@@ -13,15 +13,19 @@ import { FaRegUser } from "react-icons/fa";
 import { MdFavoriteBorder } from "react-icons/md";
     // Images
 import AvatarImg from '../assets/avatar.png'
+import { SearchContext } from '../context/searchContext';
 
 const Navbar = () => {
   // Breakpoints Memo
   // sm:bg-yellow-300 md:bg-green-500 lg:bg-red-400 xl:bg-teal-500 2xl:bg-purple-400'
-      
+      // Use Location Hook Def
+  const location = useLocation();
       // Cart Context Usage
   const {cartItems} = useContext(CartContext);
       // User Context Usage
   const {logout, currentUser, user} = useContext(UserContext);
+      // Search Context Usage
+  const { search, setSearch } = useContext(SearchContext);
       // Dropdown Ref Hook Defenition
   const dropdownRef = useRef(null);
       // Dropdown State Defenition
@@ -34,6 +38,8 @@ const Navbar = () => {
     
     return firstLetter + restOfTheWords;
   };
+
+  console.log(location);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -98,10 +104,12 @@ const Navbar = () => {
           <NavLink to='/' className='md:hidden'> 
             <HiMiniBars3CenterLeft className='size-7' />
           </NavLink>
+
+          {location.pathname === '/' && 
           <div className='md:hidden flex items-center bg-searchBg w-fit rounded-md gap-3 py-1 px-3'>
             <IoIosSearch className='size-6'/>
-            <Search placeholder='What are you looking for ?' />
-          </div>
+            <Search setSearch={(search) => setSearch(search)} placeholder='search for book, author' />
+          </div>}
 
           {/* vissible more than 768px screen width */}
           <div className='hidden md:flex items-center gap-[100px]'>
@@ -109,10 +117,11 @@ const Navbar = () => {
               <HiMiniBars3CenterLeft className='size-7' />
             </NavLink>
 
-            <div className='flex items-center bg-searchBg w-fit rounded-md gap-3 py-1 px-3'>
+            { location.pathname === '/' &&
+              <div className='flex items-center bg-searchBg w-fit rounded-md gap-3 py-1 px-3'>
               <IoIosSearch className='size-6'/>
-              <Search placeholder='What are you looking for ?'/>
-            </div>
+              <Search setSearch={(search) => setSearch(search)} placeholder='search for book, author'/>
+            </div>}
           </div>
 
         <div className='md:flex items-center justify-center gap-[30px] md:ml-20 lg:ml-36'>
