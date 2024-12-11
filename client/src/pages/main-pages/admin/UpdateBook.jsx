@@ -1,8 +1,10 @@
-import React, { useState } from 'react'
+import axios from 'axios';
+import React, { useEffect, useState } from 'react'
+import { useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
-import axios from 'axios'
 
-const AddNewBook = () => {
+const UpdateBook = () => {
         // states
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
@@ -22,15 +24,44 @@ const AddNewBook = () => {
         // select option
     const options = ['Choose A Catagory', 'Fiction', 'Non-fictional', 'Romance', 'Fantasy', 'Horror', 'Business', 'Adventure'];
 
-    // const navigate = useNavigate();
-
+    const navigate = useNavigate();
+    const params = useParams();
     const localUrl = 'http://localhost:5000/api/v1';
-    
-    // console.log(coverImage);
+
+
+    useEffect(() => {
+        const getSingleBook = async () => {
+            try {
+                const { data } = await axios.get(`${localUrl}/books/${params.id}`)
+
+                setTitle(data.book.title);
+                setDescription(data.book.description);
+                setCategory(data.book.category);
+                setTrending(data.book.trending);
+                setAuthor(data.book.author);
+                setPublished(data.book.published);
+                setCoverImage(data.book.coverImage);
+                setOldPrice(data.book.oldPrice);
+                setNewPrice(data.book.newPrice);
+
+                
+            } catch (error) {
+                if(error.response) {
+                    setError(error.response.data.msg);
+                } else {
+                    setFetchError(error.message);
+                }
+            }
+        }
+
+        getSingleBook();
+
+    }, [params])
+
 
     const handleImageChange = (e) => {
         const file = e.target.files[0];
-        setImageFileName(file?.name);
+        setImageFileName(file.name);
         setFileToBase(file);
     }
     
@@ -41,16 +72,15 @@ const AddNewBook = () => {
             setCoverImage(reader.result);
         }
     }
-    
 
-    const createBook = async (e) => {
+    const updateBook = async (e) => {
         e.preventDefault();
 
         try {
             setIsLoading(true);
             const token = localStorage.getItem('adminToken');
 
-            const { data } = await axios.post(`${localUrl}/books`, { 
+            await axios.put(`${localUrl}/books/${params.id}`, { 
                 title, description, category, trending, coverImage, author, published, oldPrice, newPrice 
             }, 
             {
@@ -60,25 +90,16 @@ const AddNewBook = () => {
             });
 
             setError(false);
-            console.log(data);
             Swal.fire({
                 position: "center",
                 icon: "success",
-                title: "Book has been created!",
+                title: "Book has been updated!",
                 showConfirmButton: false,
                 timer: 1500
                 });
-            setTitle('');
-            setDescription('');
-            setCategory('');
-            setTrending(false);
-            setOldPrice('');
-            setNewPrice('');
-            setAuthor('');
-            setPublished('');
-            setCoverImage(null);
-            setImageFileName('');
             setIsLoading(false);
+            navigate('/dashboard/manage-books')
+
             
         } catch (error) {
             setIsLoading(false);
@@ -91,12 +112,11 @@ const AddNewBook = () => {
         }
     }
 
-
   return (
     <main className='w-[400px] mx-auto bg-white p-5 rounded my-10'>
-        <h1 className='font-semibold text-xl mb-2'>Add New Book</h1>
+        <h1 className='font-semibold text-xl mb-2'>Update Book</h1>
 
-        <form onSubmit={createBook} className='admin-form flex flex-col '>
+        <form onSubmit={updateBook} className='admin-form flex flex-col '>
             {/* title */}
             <label>Title</label>
             <input
@@ -204,12 +224,12 @@ const AddNewBook = () => {
                 <input 
                     className='border-none'
                     type='file'
-                    required 
+                    // required 
                     name='coverImage'
                     onChange={handleImageChange}
                 />
                 { imageFileName && 
-                <p className='text-sm text-gray-500 mt-2'>
+                <p className='text-sm text-gray-500'>
                     Selected: {imageFileName}
                 </p> }
             </div>
@@ -217,20 +237,15 @@ const AddNewBook = () => {
             {
                 fetchError ? 
                 <p className='mt-4 italic text-red-500 text-center text-lg'> 
-                    {/* Failed to fetch data. Please try again later.  */}
                     {fetchError}
                 </p> : 
                 error && <p className='mt-4 italic text-red-500 text-center text-lg'> { error } </p>
             }
 
-            <button className='mt-4 bg-green-500 text-white py-1 rounded'> 
-                {
-                    isLoading ? 'Adding Book...' : 'Add Book'
-                } 
-            </button>
+            <button className='mt-4 bg-green-500 text-white py-1 rounded'> {isLoading ? 'Updating Book...' : 'Update Book'} </button>
         </form>
     </main>
   )
 }
 
-export default AddNewBook
+export default UpdateBook

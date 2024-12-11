@@ -9,7 +9,8 @@ const Form = ({
     DirectToText, 
     HREF, 
     DirectTo, 
-    ErrorMessage, 
+    error,
+    fetchError, 
     NameValue, 
     SetName, 
     EmailValue, 
@@ -19,15 +20,9 @@ const Form = ({
     handleForm
 }) => {
 
-
-    // const handleForm = (e) => {
-    //     e.preventDefault();
-    //     console.log(Data);
-    // }
-
-    const handleGoogleSignIn = () => {
-        console.log('google sign in');
-    }
+  const handleGoogleSignIn = () => {
+      console.log('google sign in');
+  }
 
   return (
     <div className='shadow-md w-fit mx-auto my-20 font-montserrat py-5 px-8 bg-white'>
@@ -67,8 +62,12 @@ const Form = ({
         />
 
         {
-            ErrorMessage && <p className='text-red-500 text-xs italic mt-2'> {ErrorMessage} </p>
-        }
+          fetchError ? 
+          <p className='mt-4 italic text-red-500 text-lg'> 
+              { fetchError } 
+          </p> : 
+          error && <p className='mt-4 italic text-red-500 text-lg'> { error } </p>
+        } 
 
         <button className='my-2 bg-blue-500 hover:bg-blue-700 w-fit text-white text-sm font-medium py-1 px-2 rounded'> {Button} </button>
     </form>

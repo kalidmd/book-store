@@ -1,37 +1,40 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 
 const OrderPage = () => {
-  const [orders, setOrders] = useState([]);
+  const [orders, setOrders] = useState([null]);
+    // Error Handler States
   const [error, setError] = useState(false);
   const [fetchError, setFetchError] = useState(false);
-
+    // Loader State
+  const [isLoading, setisLoading] = useState(false);
+    // API Endpoints
   const localUrl = 'http://localhost:5000/api/v1';
-
-  // console.log(orders);
+  // const productionUrl = '';
 
   useEffect(() => {
     const getOrders = async () => {
       const token = localStorage.getItem('token');
-      try {
-        const response = await fetch(`${localUrl}/orders`, {
-          method: 'get',
-          headers: {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json'
-          }
-        });
-        const data = await response.json();
 
-        if(data.msg) {
-          setError(data.msg);
-        } else {
-          setError(false);
-          setOrders(data.order);
-        }
-    
+      try {
+        setisLoading(true);
+        const { data } = await axios.get(`${localUrl}/orders`, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        })
+
+        setisLoading(false);
+        console.log(data);
+        setOrders(data.order);
+
       } catch (error) {
-        console.error(error);
-        setFetchError(error);
+          setisLoading(false);
+          if (error.response) {
+            setError(error.response.data.msg);
+          } else {
+            setFetchError(error.message);
+          }
       }
     }
     getOrders();
@@ -42,7 +45,7 @@ const OrderPage = () => {
       <h1 className='font-bold text-xl'>Your Orders</h1>
       
       {
-        orders.length > 0 && orders.map((order, index) => {
+        orders && orders.length > 1 && orders.map((order, index) => {
           return (
              <div key={order._id} className='flex flex-col gap-1 my-4'>
                 <h2 className='bg-text w-fit text-white rounded py-1 px-2'> 
@@ -73,17 +76,21 @@ const OrderPage = () => {
                   )) } 
                 </div>
                 <hr className='mt-2 border-gray-400'/>
-
-                 {
-                   fetchError ? 
-                    <p className='mt-4 italic text-red-500 text-center text-lg'> 
-                        Failed to fetch data. Please try again later. 
-                    </p> : 
-                   error && <p className='mt-4 italic text-red-500 text-center text-lg'> { error } </p>
-                }
               </div>
             )
         })
+      }
+
+      {
+        isLoading && <p> Loading... </p>
+      }
+
+      {
+          fetchError ? 
+          <p className='mt-4 italic text-red-500 text-lg'> 
+              { fetchError } 
+          </p> : 
+          error && <p className='mt-4 italic text-red-500 text-lg'> { error } </p>
       }
     </div>
   )

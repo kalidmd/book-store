@@ -1,16 +1,16 @@
-const { createContext, useState, useEffect } = require("react");
+import React, { createContext, useState, useEffect } from 'react'
+import axios from 'axios';
 
+  // User Context Created
 export const UserContext = createContext();
-
-// Context Provider
-
+  // User Context Provider
 export const UserContextProvider = ({ children }) => {
+      // State Defenition
     const [currentUser, setCurrentUser] = useState(null);
     const [user, setUser] = useState([null]);
-    const [isAdmin, setIsAdmin] = useState(null);
-    // console.log(currentUser);
+      // API Endpoints
     const localUrl = 'http://localhost:5000/api/v1';
-
+    // const productionUrl = '';
 
     useEffect(() => {
         const token = localStorage.getItem('token');
@@ -18,27 +18,19 @@ export const UserContextProvider = ({ children }) => {
 
         const fetchUser = async (id) => {
           try {
-            const token = localStorage.getItem('token');
-            const response = await fetch(`${localUrl}/users/user/${id}`, {
-              method: 'get',
+            const { data } = await axios.get(`${localUrl}/users/user/${id}`, {
               headers: {
-                Authorization: `Bearer ${token}`,
-                'Content-Type': 'application/json'
+                Authorization: `Bearer ${token}`
               }
             })
 
-            const data = await response.json();
-
-            if (data.msg) {
-              console.log(data.msg);
-              setCurrentUser(false);
-            } else {
-              setUser(data.user);
-              setCurrentUser(true);
-            }
+            setUser(data.user);
+            setCurrentUser(true);
 
           } catch (error) {
-            console.error(error);
+            if (error.response) {
+              setCurrentUser(false);
+            }
           }
         }
 
@@ -62,15 +54,12 @@ export const UserContextProvider = ({ children }) => {
         setCurrentUser(false);
     };
    
-
     const value = {
         currentUser,
         user,
         register,
         login,
-        logout,
-        isAdmin,
-        setIsAdmin
+        logout
     }
 
     return(

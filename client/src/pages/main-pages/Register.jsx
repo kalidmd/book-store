@@ -2,53 +2,42 @@ import React, { useContext, useState } from 'react'
 import Form from '../../components/Form';
 import { useNavigate } from 'react-router-dom';
 import { UserContext } from '../../context/userContext';
+import axios from 'axios';
 
 const Register = () => {
-    const [name, setName] = useState('');
+        // User Context Usage
+    const { register } = useContext(UserContext);
+        // Use Navigate Hook Defenition
+    const navigate = useNavigate();
+        // State Defenition
+    const [username, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+        // Error Handling State Defenition
     const [error, setError] = useState(false);
-    const {register} = useContext(UserContext);
-
-    // console.log(error);
-    const navigate = useNavigate();
-    
-    // const data = { name, email, password};
-
+    const [fetchError, setFetchError] = useState(false);
+        // API Endpoints
     const localUrl = 'http://localhost:5000/api/v1';
     // const productionUrl =
     
     const handleRegister = async (e) => {
       e.preventDefault();
-      // console.log(data);
       try {
-        const res = await fetch(`${localUrl}/auth/register`, {
-          method: 'post',
-          body: JSON.stringify({ name, email, password }),
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        })
-        const data = await res.json();
-        
-        if(data.msg) {
-          // console.log(error);
-          localStorage.removeItem('token');
-          setError(data.msg);
-        } else { 
-          // localStorage.setItem('token', data.token);
-          register(data.token);
-          setError(false);
-          setName('');
-          setEmail('');
-          setPassword('');
-          navigate('/')
-        }
+        const { data } = await axios.post(`${localUrl}/auth/register`, { username, email, password });
+
+        setError(false);
+        setFetchError(false);
+        register(data.token);
+        navigate('/');
+
       } catch (error) {
-        setError(error);
-        console.error(error);
+        if (error.response) {
+          localStorage.removeItem('token')
+          setError(error.response.data.msg);
+        } else {
+          setFetchError(error.message);
+        }
       }
-        
     }
 
   return (
@@ -60,17 +49,18 @@ const Register = () => {
         DirectToText={'Already have an accont?'}
         HREF={'/login'}
         DirectTo={'Login'}
-        NameValue={name}
+        NameValue={username}
         SetName={setName}
         EmailValue={email}
         SetEmail={setEmail}
         PasswordValue={password}
         SetPassword={setPassword}
         handleForm={handleRegister}
-        ErrorMessage={error}
+        error={error}
+        fetchError={fetchError}
     />
    </div>
   )
 }
 
-export default Register
+export default Register;

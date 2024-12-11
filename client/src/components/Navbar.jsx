@@ -1,33 +1,41 @@
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import { Link, NavLink } from 'react-router-dom'
-// import  { jwtDecode } from 'jwt-decode';
-// components
+    // Contexts
+import { UserContext } from '../context/userContext';
+import { CartContext } from '../context/cartContext';
+    // Components
 import Search from './Search';
-// icons
+    // React Icons
 import { IoCartOutline } from "react-icons/io5";
 import { HiMiniBars3CenterLeft } from "react-icons/hi2";
 import { IoIosSearch } from "react-icons/io";
 import { FaRegUser } from "react-icons/fa";
 import { MdFavoriteBorder } from "react-icons/md";
+    // Images
 import AvatarImg from '../assets/avatar.png'
-// import { CartContext } from '../context/CartContext';
-import { UserContext } from '../context/userContext';
-import { CartContext } from '../context/cartContext';
-// import { UserContext } from '../context/userContext';
 
 const Navbar = () => {
-  // breakpoints bg
+  // Breakpoints Memo
   // sm:bg-yellow-300 md:bg-green-500 lg:bg-red-400 xl:bg-teal-500 2xl:bg-purple-400'
-  // const {cartItems} = useContext(CartContext);
+      
+      // Cart Context Usage
   const {cartItems} = useContext(CartContext);
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const dropdownRef = useRef(null);
+      // User Context Usage
   const {logout, currentUser, user} = useContext(UserContext);
-  // console.log(user);
+      // Dropdown Ref Hook Defenition
+  const dropdownRef = useRef(null);
+      // Dropdown State Defenition
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
+      // Method to Convert the First Letter of Username to Capital
+  const toCapital = (username) => {
+    const firstLetter = username?.charAt(0).toUpperCase();
+    const restOfTheWords = username?.substring(1);
+    
+    return firstLetter + restOfTheWords;
+  };
 
   useEffect(() => {
-
     const handleClickOutside = (event) => {
       if(dropdownRef.current && !dropdownRef.current.contains(event.target)){
         setIsDropdownOpen(false);
@@ -50,26 +58,35 @@ const Navbar = () => {
   }
 
   const navigation = [
-    user.role ==='admin' && {
+    user &&  {
+      name: `Hi, ${toCapital(user?.username)}`,
+      link: false,
+    },
+    user?.role ==='admin' && {
       name: 'Dashboard',
       href: 'dashboard',
+      link: true,
     },
     {
       name: 'Orders',
       href: 'orders',
+      link: true,
     },
     {
       name: 'Cart Page',
       href: 'cart',
+      link: true,
     },
     cartItems.length > 0 &&
     {
       name: 'Checkout',
       href: 'checkout',
+      link: true,
     },
     {
       name: 'Logout',
       href: '/',
+      link: true,
       onClick: logout
     }
   ]
@@ -112,7 +129,7 @@ const Navbar = () => {
                     className='py- pl-1 absolute w-[105px] md:w-40  bg-white mt-10 shadow-lg rounded-md z-40 '>
                     {navigation.map((item, index) => (
                       <NavLink
-                        className='block mb-1 hover:bg-gray-200' 
+                        className={ item.link ? `block mb-1 hover:bg-gray-200` : `font-bold`} 
                         key={index} 
                         to={item.href} 
                         onClick={() => {
@@ -154,4 +171,4 @@ const Navbar = () => {
   )
 }
 
-export default Navbar
+export default Navbar;

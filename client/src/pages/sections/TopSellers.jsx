@@ -10,6 +10,7 @@ import 'swiper/css/navigation';
 // import required modules
 import { Navigation, Pagination } from 'swiper/modules'
 import { CartContext } from '../../context/cartContext';
+import axios from 'axios';
 // Components
 // import AddToCart from '../../components/AddToCart';
 
@@ -24,7 +25,7 @@ const TopSellers = () => {
     const [selectedCategory, setSelectedCategory] = useState('Choose a genre');
     
 
-    const filterdBooks = selectedCategory === 'Choose a genre' ? books.length > 0 && books: books.length > 0 && books.filter(book => book.category === selectedCategory);
+    const filterdBooks = selectedCategory === 'Choose a genre' ? books && books.length > 0 && books : books && books.length > 0 && books.filter(book => book.category === selectedCategory);
 
     // api url
     const localUrl = 'http://localhost:5000/api/v1';
@@ -38,20 +39,34 @@ const TopSellers = () => {
     useEffect(() => {
         const fetchBooks = async () => {
             try {
-                const response = await fetch(`${localUrl}/books`)
-                const data = await response.json();
+                const { data } = await axios.get(`${localUrl}/books`)
+
                 // console.log(data);
                 setBooks(data.book);
 
-                if(data.msg) {
-                    setError(data.msg);
+            } catch (error) {
+                if (error.response) {
+                    setError(error.response.data.msg);
                 } else {
-                    setError(false);
+                    setFetchError(error.message);
                 }
-
-            } catch(error) {
-                setFetchError(error);                
             }
+
+            // try {
+            //     const response = await fetch(`${localUrl}/books`)
+            //     const data = await response.json();
+            //     // console.log(data);
+            //     setBooks(data.book);
+
+            //     if(data.msg) {
+            //         setError(data.msg);
+            //     } else {
+            //         setError(false);
+            //     }
+
+            // } catch(error) {
+            //     setFetchError(error);                
+            // }
         }
         fetchBooks();
     }, [])
@@ -59,71 +74,75 @@ const TopSellers = () => {
 
     return (
         <section className='section-cont'>
-            <h1 className='title'>Top Sellers</h1>
-            <select onChange={(e) => setSelectedCategory(e.target.value)} className='select'>
-                {
-                    categories.map((item,index) => (
-                        <option key={index} value={item}> {item} </option>
-                    ))
-                }
-            </select>
-            <Swiper
-                slidesPerView={1}
-                spaceBetween={50}
-                pagination={{
-                    dynamicBullets: true,
-                    clickable: true
-                }}
-                navigation={true}
-                breakpoints={{
-                    640: {
-                        slidesPerView: 1,
-                        spaceBetween: 50,
-                    },
-                    768: {
-                        slidesPerView: 2,
-                        spaceBetween: 100,
-                    },
-                    1024: {
-                        slidesPerView: 2,
-                        spaceBetween: 50,
-                    },
-                    1180: {
-                        slidesPerView: 3,
-                        spaceBetween: 200,
-                    },
-                  }}
-                modules={[Pagination, Navigation]}
-                className="mySwiper bg-white mt-[10px] py-[10px] px-[12px] rounded-md select-none"
-            >   
-                <>
+            { filterdBooks && filterdBooks.length > 0 &&
+            <>
+            
+                <h1 className='title'>Top Sellers</h1>
+                <select onChange={(e) => setSelectedCategory(e.target.value)} className='select'>
                     {
-                        filterdBooks && filterdBooks.length > 0 &&
-                            filterdBooks.map((book) => (
-                                <SwiperSlide key={book._id} >
-                                    <Book 
-                                        src={book.coverImage}
-                                        alt={book.title}
-                                        bookID={book._id}
-                                        bookTitle={book.title}
-                                        bookDesc={book.description}
-                                        newPrice={book.newPrice}
-                                        oldPrice={book.oldPrice}
-                                        handleCart={() => handleCart(book._id)}
-                                        />
-                                </SwiperSlide>
-                            )) 
+                        categories.map((item,index) => (
+                            <option key={index} value={item}> {item} </option>
+                        ))
                     }
+                </select>
+                <Swiper
+                    slidesPerView={1}
+                    spaceBetween={50}
+                    pagination={{
+                        dynamicBullets: true,
+                        clickable: true
+                    }}
+                    navigation={true}
+                    breakpoints={{
+                        640: {
+                            slidesPerView: 1,
+                            spaceBetween: 50,
+                        },
+                        768: {
+                            slidesPerView: 2,
+                            spaceBetween: 100,
+                        },
+                        1024: {
+                            slidesPerView: 2,
+                            spaceBetween: 50,
+                        },
+                        1180: {
+                            slidesPerView: 3,
+                            spaceBetween: 200,
+                        },
+                    }}
+                    modules={[Pagination, Navigation]}
+                    className="mySwiper bg-white mt-[10px] py-[10px] px-[12px] rounded-md select-none"
+                >   
+                    <>
+                        {
+                            filterdBooks && filterdBooks.length > 0 &&
+                                filterdBooks.map((book) => (
+                                    <SwiperSlide key={book._id} >
+                                        <Book 
+                                            src={book.coverImage.url}
+                                            alt={book.title}
+                                            bookID={book._id}
+                                            bookTitle={book.title}
+                                            bookDesc={book.description}
+                                            newPrice={book.newPrice}
+                                            oldPrice={book.oldPrice}
+                                            handleCart={() => handleCart(book._id)}
+                                            />
+                                    </SwiperSlide>
+                                )) 
+                        }
 
-                    {
-                    fetchError ? 
-                        <p className='mt-4 italic text-red-500 text-center text-lg'> 
-                            Failed to fetch data. Please try again later. 
-                        </p> : 
-                    error && <p className='mt-4 italic text-red-500 text-center text-lg'> { error } </p>
-                    }
-                </>
-            </Swiper> 
+                        {
+                        fetchError ? 
+                            <p className='mt-4 italic text-red-500 text-center text-lg'> 
+                                { fetchError } 
+                            </p> : 
+                        error && <p className='mt-4 italic text-red-500 text-center text-lg'> { error } </p>
+                        }
+                    </>
+                </Swiper> 
+            </>}
         </section>
     )
 }

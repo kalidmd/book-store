@@ -1,12 +1,22 @@
 const { StatusCodes } = require('http-status-codes');
+const cloudinary = require('../utils/cloudinary');
 const Book = require('../models/bookModel');
-const { NotFoundError, UnauthorizedError, BadRequestError } = require('../error');
+
+const { NotFoundError } = require('../error');
 
 const createBook = async (req, res) => {
+    const { coverImage } = req.body;
+    
+    const result = await cloudinary.uploader.upload(coverImage, {
+        folder: 'books'
+    })
 
-    const { filename } = req.file;
-
-    const book = await Book.create({ ...req.body, coverImage: `./images/${filename}` })
+    const book = await Book.create({ 
+        ...req.body, 
+        coverImage: {
+            public_id: result.public_id,
+            url: result.url
+    } });
     
     res.status(StatusCodes.CREATED).json({ book });
 
@@ -16,13 +26,12 @@ const getBooks = async (req, res) => {
     const book = await Book.find({ }).sort('-updatedAt');
 
     if(book.length < 1) {
-        throw new NotFoundError('Couldn\'t find books.')
+        throw new NotFoundError('No Book Found!')
     }
     res.status(StatusCodes.OK).json({ book });
 }
 
 const getSingleBook = async (req, res) => {
-    // console.log(req.params);
     const { id: bookId } = req.params;
 
     const book = await Book.findOne({ _id: bookId });
@@ -35,8 +44,27 @@ const getSingleBook = async (req, res) => {
 }
 
 const updateBook = async (req, res) => {
-    const {params: {id: bookId}, user: {userId}} = req;
-    const book = await Book.findOneAndUpdate({ _id: bookId, createdBy: userId }, req.body, {new: true, runValidators: true})
+    const { id: bookId } = req.params;
+    const { coverImage } = req.body;
+
+    const result = await cloudinary.uploader.upload(coverImage, {
+        folder: 'books'
+    })
+
+    const book = await Book.findOneAndUpdate({ _id: bookId }, {...req.body, coverImage: {
+        public_id: result.public_id,
+        url: result.url
+    }}, {new: true, runValidators: true})
+
+    // const book = await Book.findOneAndUpdate({ _id: bookId }, 
+    //     {
+    //         ...req.body, 
+    //         coverImage: {
+    //             public_id: result.public_id,
+    //             url: result.url
+    //         }
+    //     }, 
+    //     {new: true, runValidators: true})
 
     if(!book) {
         throw new NotFoundError(`No Book Found With ID ${bookId}`);
@@ -46,8 +74,8 @@ const updateBook = async (req, res) => {
 }
 
 const deleteBook = async (req, res) => {
-    const {params: {id: bookId}, user: {userId}} = req;
-    const book = await Book.findOneAndDelete({ _id: bookId, createdBy: userId });
+    const {params: {id: bookId}} = req;
+    const book = await Book.findOneAndDelete({ _id: bookId });
 
     if(!book) {
         throw new NotFoundError(`No Book Found With ID ${bookId}`);

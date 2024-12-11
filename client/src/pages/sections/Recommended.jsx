@@ -54,8 +54,10 @@ const Recommended = () => {
 
   return (
     <section className='section-cont mt-10'>
-        <p className="title">Recommended for you</p>
-        <Swiper
+        { recommendedBooks && recommendedBooks.length > 0 &&
+        <> 
+            <p className="title">Recommended for you</p>
+            <Swiper
                 slidesPerView={1}
                 spaceBetween={50}
                 pagination={{
@@ -80,7 +82,7 @@ const Recommended = () => {
                         slidesPerView: 3,
                         spaceBetween: 200,
                     },
-                  }}
+                }}
                 modules={[Pagination, Navigation]}
                 className="mySwiper bg-white mt-[10px] py-[10px] px-[12px] rounded-md select-none"
             >
@@ -88,7 +90,7 @@ const Recommended = () => {
                     recommendedBooks.length > 0 && recommendedBooks.map((book) => (
                             <SwiperSlide key={book._id} >
                                 <Book 
-                                    src={book.coverImage}
+                                    src={book.coverImage.url}
                                     alt={book.title}
                                     bookID={book._id}
                                     bookTitle={book.title}
@@ -102,14 +104,14 @@ const Recommended = () => {
 
                 }
                 {
-                   fetchError ? 
+                fetchError ? 
                     <p className='mt-4 italic text-red-500 text-center text-lg'> 
-                        Failed to fetch data. Please try again later. 
+                        Failed to fetch data. Please refresh the page or try again later. 
                     </p> : 
-                   error && <p className='mt-4 italic text-red-500 text-center text-lg'> { error } </p>
+                error && <p className='mt-4 italic text-red-500 text-center text-lg'> { error } </p>
                 }
             </Swiper>
-
+        </>}
     </section>
   )
 }

@@ -243,12 +243,13 @@ const CheckoutPage = () => {
 
             <div className='text-center mt-4 lg:text-start'>
               <input 
-                type="checkbox" 
+                type="checkbox"
+                className='cursor-pointer' 
                 checked={isChecked}
-                onChange={(e) => setIsChecked(!isChecked)}
+                onChange={() => setIsChecked(!isChecked)}
                 
               />
-              <label className='text-sm ml-1'> 
+              <label onClick={() => setIsChecked(!isChecked)} className='select-none cursor-pointer text-sm ml-1'> 
                 I aggree to the 
                 <Link className='text-blue-600 underline' to='/terms-and-conditions'> Terms & Conditions </Link> and
                 <Link className='text-blue-600 underline' to='/shopping-policy'> Shopping Policy </Link> 

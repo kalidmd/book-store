@@ -36,7 +36,9 @@ const CartPage = () => {
               Swal.fire({
                 title: "Cleared!",
                 text: "Your Cart has been cleared.",
-                icon: "success"
+                icon: "success",
+                timer: 2000,
+                showConfirmButton: false
               });
             }
         })
@@ -63,7 +65,9 @@ const CartPage = () => {
               Swal.fire({
                 title: "Removed!",
                 text: `${selecedItem.title} has been removed!`,
-                icon: "success"
+                icon: "success",
+                showConfirmButton: false,
+                timer: 2000
               });
             }
         })
@@ -86,7 +90,7 @@ const CartPage = () => {
                             <div className='flex justify-between'>
                                 <div className='flex gap-4'>
                                     <div className={`h-28 w-24 rounded-md`}>
-                                        <img className='h-full w-full object-cover rounded-md' src={item.coverImage} alt={item.title} />
+                                        <img className='h-full w-full object-cover rounded-md' src={item.coverImage.url} alt={item.title} />
                                     </div>
                                     <div className='flex flex-col justify-between'>
                                         <div>

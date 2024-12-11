@@ -1,12 +1,10 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
-// icons 
-// import { IoBook } from "react-icons/io5";
+    // React Icons 
 import { MdOutlineMenuBook } from "react-icons/md";
 import { TbChartBar } from "react-icons/tb";
 import { IoAddCircleSharp } from "react-icons/io5";
-import { IoMdSettings } from "react-icons/io";
-
+import { AiFillEdit } from "react-icons/ai";
 
 const AdminNav = () => {
 
@@ -43,7 +41,7 @@ const AdminNav = () => {
                     `${isActive ? 'bg-white p-2 rounded text-adminHomeBg': 'p-2 hover:text-adminHomeBg'}`
                 }
             > 
-                <IoMdSettings className='size-7'/>
+                <AiFillEdit className='size-7' />
             </NavLink>
         </div>
         
@@ -51,4 +49,4 @@ const AdminNav = () => {
   )
 }
 
-export default AdminNav
+export default AdminNav;

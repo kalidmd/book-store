@@ -16,7 +16,7 @@ const Book = ({
 
         <div className="w-[185px]">
           <Link to={`books/${bookID}`} className="md:text-[16px] font-montserrat text-[13px] font-medium mb-4 hover:text-blue-600"> {bookTitle} </Link>
-          <p className=" md:text-[14px] text-[12px] text-bookDesc mb-4"> {bookDesc.length > 80 ? `${bookDesc.slice(0, 80)}...` : bookDesc} </p>
+          <p className=" md:text-[14px] text-[12px] text-bookDesc mb-4"> {bookDesc && bookDesc.length > 80 ? `${bookDesc.slice(0, 80)}...` : bookDesc} </p>
           <p className="md:hidden mb-4"> {`$ ${newPrice}`} </p>
           
           <div className='md:hidden flex gap-[10px] items-center'>

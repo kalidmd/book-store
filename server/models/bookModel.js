@@ -9,7 +9,6 @@ const bookSchema = new mongoose.Schema({
     description: {
         type: String,
         required: [true, 'Please Provide Description'],
-        unique: true,
     },
     category: {
         type: String,
@@ -20,9 +19,19 @@ const bookSchema = new mongoose.Schema({
         type: Boolean,
         required : [true, 'Please Provide Trending Value'] 
     },
+    // coverImage: {
+    //    type: String,
+    //    required : [true, 'Please Provide Cover Image'] 
+    // },
     coverImage: {
-        type: String,
-        required: [true, 'Please Provide Cover Image']
+        public_id: {
+            type: String,
+            required: [true, 'Please Provide Cover Image Public ID']
+        },
+        url: {
+            type: String,
+            required: [true, 'Please Provide Cover Image URL']
+        }
     },
     author: {
         type: String,

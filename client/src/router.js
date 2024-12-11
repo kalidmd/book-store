@@ -15,6 +15,7 @@ import OrderPage from './pages/main-pages/OrderPage';
 import AdminLogin from './pages/main-pages/admin/AdminLogin';
 import UsersRoute from './protected-routes/UsersRoute';
 import AdminRoute from './protected-routes/AdminRoute';
+import UpdateBook from './pages/main-pages/admin/UpdateBook';
 
 // import AddBook from './pages/sub-pages/AddBook';
 
@@ -40,11 +41,7 @@ const router = createBrowserRouter([
             {
                 path: 'books/:id',
                 element: <SingleBook />
-            },            
-            {
-                path: 'orders',
-                element: <OrderPage />
-            },            
+            },                    
             {
                 path: 'cart',
                 element: <CartPage />
@@ -56,15 +53,15 @@ const router = createBrowserRouter([
                     {
                         path: 'checkout',
                         element: <CheckoutPage /> 
-                    }
+                    },
+                    {
+                        path: 'orders',
+                        element: <OrderPage />
+                    },    
                 ]
             },               
         ]
     },
-    // {
-    //     path: 'dashboard',
-    //     element: <Dashboard />
-    // },
     {
         path: '',
         element: <AdminRoute />,
@@ -80,6 +77,10 @@ const router = createBrowserRouter([
                             {
                                 path: 'manage-books',
                                 element: <ManageBook />  
+                            },
+                            {
+                                path: 'edit-book/:id',
+                                element: <UpdateBook />
                             }
                         ]
             }

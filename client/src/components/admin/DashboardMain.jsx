@@ -1,30 +1,62 @@
-import React, { useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import { NavLink, Outlet, useNavigate } from 'react-router-dom'
+  // Components
 import Search from '../Search'
-
-// icons
+  // Icons
 import { IoIosSearch } from "react-icons/io";
 import { MdKeyboardArrowDown } from "react-icons/md";
 import { IoIosNotificationsOutline } from "react-icons/io";
 import { RxExit } from "react-icons/rx";
 import { IoMdAdd } from "react-icons/io";
-// images
-import AdminProfile from '../../assets/admin-profile.jpg'
+  // Images
+import AdminProfile from '../../assets/avatar.png'
+import { UserContext } from '../../context/userContext';
 
 
 const DashboardMain = () => {
+    // User Context Defenition
+  const { user } = useContext(UserContext);
+    // Dropdown Ref Hook Defenition
+  const dropdownRef = useRef(null);
+    // Dropdown State Defenition
   const [isAdminDropdownOpen, setisAdminDropdownOpen] = useState(false);
+  
+    // Method to Convert the First Letter of Username to Capital
+  const toCapital = (username) => {
+      const firstLetter = username?.charAt(0).toUpperCase();
+      const restOfTheWords = username?.substring(1);
+      
+      return firstLetter + restOfTheWords;
+  };
+  
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if(dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+        setisAdminDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+
+  }, [dropdownRef])
+
   const navigate = useNavigate();
 
 
-  const handleDropdown = () => {
+  const handleDropdown = (e) => {
+    if(dropdownRef.current && dropdownRef.current.contains(e.target)) {
+      return;
+    }
     setisAdminDropdownOpen(!isAdminDropdownOpen);
   }
 
   const logoutAdmin = () => {
     localStorage.removeItem('adminToken');
     navigate('/');
-    
   }
 
   return (
@@ -37,10 +69,16 @@ const DashboardMain = () => {
                 <Search placeholder='search'/>
             </div>
 
-            <div className='flex items-center gap-4 '>
+            <div className='flex items-center gap-4 relative'>
                 <div className='flex flex-col items-end'> 
-                  <p className='font-medium'>Teddy Jeff</p>
-                  <p className='text-gray-600'>Lecturer</p>
+                { user && user?.username && <p className='font-medium'> { toCapital(user?.username) } </p> }
+                  { user && user?.role &&
+                    <div>
+                      <span className='text-gray-600'> { user?.role } </span>
+                      |
+                      <span className='text-gray-600'> { user?.email } </span>
+                    </div>
+                  }
                 </div>
 
                 <div className='outline outline-adminHomeBg outline-offset-2 rounded-full w-10 h-10'>
@@ -50,6 +88,15 @@ const DashboardMain = () => {
                 <button onClick={ handleDropdown }>
                   <MdKeyboardArrowDown className='text-gray-500'/>
                 </button>
+
+                { isAdminDropdownOpen &&
+                  <ul ref={dropdownRef} className='bg-gray-200 rounded-md py-2 px-4 absolute top-14 right-20 z-20'>
+                    <li> item </li>
+                    <li> item </li>
+                    <li> item </li>
+                    <li> item </li>
+                  </ul>
+                }
 
                 <div className='border-l-2 h-8 '></div>
 

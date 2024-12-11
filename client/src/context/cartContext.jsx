@@ -1,12 +1,12 @@
 import { useState, createContext } from "react";
 import Swal from "sweetalert2";
-
+    // Cart Context Created
 export const CartContext = createContext([]);
-
+    // Cart Provider 
 export const CartProvider = ({children}) => {
     const [cartItems, setCartItems] = useState(localStorage.getItem('carts') ? JSON.parse(localStorage.getItem('carts')) : []);
 
-    const totalPrice = cartItems.reduce((acc, item) => (acc + item.newPrice) * item.quantity, 0).toFixed();
+    const totalPrice = cartItems.reduce((acc, item) => acc + (item.newPrice * item.quantity), 0).toFixed();
     const item = cartItems.reduce((acc, item) => acc + item.quantity, 0).toFixed();
 
     const AddToCart = (books, bookId,) => {

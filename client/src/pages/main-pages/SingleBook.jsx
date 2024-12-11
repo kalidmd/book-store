@@ -33,7 +33,6 @@ const SingleBook = () => {
           const response = await fetch(`${localUrl}/${bookId}`);
           const data = await response.json();
 
-          console.log(data);
           if(data.msg) {
             setError(data.msg);
           } else {
@@ -56,7 +55,7 @@ const SingleBook = () => {
           <div key={book._id} className='w-fit my-10 shadow bg-white p-4'>
             <h1 className='text-xl font-bold'> {book.title} </h1>
             <div className='w-[150px] h-[200px] rounded my-4 '>
-              <img className='object-cover w-full h-full rounded' src={`.${book.coverImage}`} alt={book.title} />
+              <img className='object-cover w-full h-full rounded' src={book.coverImage.url} alt={book.title} />
             </div>
 
             <p className='font-semibold'> Author: &nbsp; 

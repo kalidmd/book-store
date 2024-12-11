@@ -16,7 +16,7 @@ const getOrders = async (req, res) => {
 
     const order = await Order.find({ createdBy: userId }).sort('-updatedAt');
     if (order.length < 1) {
-        throw new NotFoundError('Cant find Orders');
+        throw new NotFoundError('No Orders Found!');
     }
 
     res.status(StatusCodes.OK).json({count: order.length,  order })

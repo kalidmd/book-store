@@ -36,9 +36,5 @@ const login = async (req, res) => {
     return res.status(StatusCodes.OK).json({ user, token })
 }
 
-const dashboard = async (req, res) => {
-    // console.log(req.body);
-    res.status(200).json({msg: 'dashboard'});
-}
 
-module.exports = { register, login, dashboard};
+module.exports = { register, login };
