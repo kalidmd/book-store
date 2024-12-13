@@ -39,8 +39,6 @@ const Navbar = () => {
     return firstLetter + restOfTheWords;
   };
 
-  console.log(location);
-
   useEffect(() => {
     const handleClickOutside = (event) => {
       if(dropdownRef.current && !dropdownRef.current.contains(event.target)){
@@ -108,7 +106,15 @@ const Navbar = () => {
           {location.pathname === '/' && 
           <div className='md:hidden flex items-center bg-searchBg w-fit rounded-md gap-3 py-1 px-3'>
             <IoIosSearch className='size-6'/>
-            <Search setSearch={(search) => setSearch(search)} placeholder='search for book, author' />
+            <input 
+                type="text" 
+                className='border-0 bg-transparent outline-none xxs:w-[90px] xs:w-[130px] sm:w-[200px]'
+                value={search}
+                placeholder='search for book, author'
+                onChange={(e) => setSearch(e.target.value)}
+            />
+
+            {/* <Search setSearch={(search) => setSearch(search)} placeholder='search for book, author' /> */}
           </div>}
 
           {/* vissible more than 768px screen width */}

@@ -11,9 +11,11 @@ const authRouter = require('./routes/authRoute');
 const booksRouter = require('./routes/bookRoute');
 const usersRouter = require('./routes/userRoute');
 const orderRouter = require('./routes/orderRoute');
+const dashboardRouter = require('./routes/dashboardRoute');
     // Import Middlewares
 const errorHandlerMiddleware = require('./middlewares/error-handler');
 const authMiddleware = require('./middlewares/authentication');
+const roleAuthMiddleware = require('./middlewares/role-based-authentication-middleware');
 
 app.use(cors({
     origin: ['http://localhost:3000'],
@@ -21,13 +23,15 @@ app.use(cors({
 }));
 
 app.use(express.json({ limit: '50mb' }));
-app.use(express.urlencoded({ extended: false, limit: '50mb' }))
+app.use(express.urlencoded({ extended: false, limit: '50mb' }));
+// app.use(express.urlencoded({ extended: false }));
 
     // Routes Usage
 app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/books', booksRouter);
 app.use('/api/v1/users', authMiddleware, usersRouter);
 app.use('/api/v1/orders', authMiddleware, orderRouter);
+app.use('/api/v1/admin/dashboard', authMiddleware, roleAuthMiddleware('admin'), dashboardRouter);
 
     // Middlewares Usage
 app.use(errorHandlerMiddleware);

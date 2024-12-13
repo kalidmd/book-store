@@ -8,10 +8,12 @@ import DashboardMain from '../../../components/admin/DashboardMain'
 const Dashboard = () => {
 
   return (
-    <div className='flex justify-between font-montserrat'>    
-        <AdminNav />
-        <DashboardMain />
-    </div>
+    <main>
+      <div className='lg:bg-websiteMobileBg flex justify-between font-montserrat'>    
+          <AdminNav />
+          <DashboardMain />
+      </div>
+    </main>
   )
 }
 

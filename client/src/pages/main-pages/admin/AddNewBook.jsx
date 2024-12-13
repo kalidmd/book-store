@@ -41,7 +41,6 @@ const AddNewBook = () => {
             setCoverImage(reader.result);
         }
     }
-    
 
     const createBook = async (e) => {
         e.preventDefault();
@@ -90,10 +89,10 @@ const AddNewBook = () => {
 
         }
     }
-
+    // xxs:w-[240px] xs:w-[280px]
 
   return (
-    <main className='w-[400px] mx-auto bg-white p-5 rounded my-10'>
+    <main className='bg-white w-[280px] sm:w-[400px] mx-auto p-5 rounded my-10'>
         <h1 className='font-semibold text-xl mb-2'>Add New Book</h1>
 
         <form onSubmit={createBook} className='admin-form flex flex-col '>

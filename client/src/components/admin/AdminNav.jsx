@@ -10,9 +10,9 @@ const AdminNav = () => {
 
   return (  
     <div className='bg-adminNavBg flex flex-col w-fit min-h-screen gap-10 items-center'>
-        <div className=' bg-adminHomeBg flex p-5'>
+        <div className=' bg-adminHomeBg flex p-3 sm:py-6 md:p-6'>
             <NavLink to='/' className=''> 
-                <MdOutlineMenuBook className='size-6 text-white hover:scale-110'/> 
+                <MdOutlineMenuBook className='size-6 md:size-7 text-white hover:scale-110'/> 
             </NavLink>
 
         </div>
@@ -24,7 +24,7 @@ const AdminNav = () => {
                 `${isActive ? 'bg-white p-1 rounded text-adminHomeBg' : 'p-1 hover:text-adminHomeBg'}  `
                 }
             > 
-                <TbChartBar className='size-5'/> 
+                <TbChartBar className='size-5 md:size-6'/> 
             </NavLink>
 
             <NavLink 
@@ -33,7 +33,7 @@ const AdminNav = () => {
                     `${isActive ? 'bg-white p-1 rounded text-adminHomeBg': 'p-1 hover:text-adminHomeBg'}`
                 }
             > 
-                <IoAddCircleSharp className='size-5'/>
+                <IoAddCircleSharp className='size-5 md:size-6'/>
             </NavLink>
             <NavLink 
                 to='manage-books' 
@@ -41,7 +41,7 @@ const AdminNav = () => {
                     `${isActive ? 'bg-white p-1 rounded text-adminHomeBg': 'p-1 hover:text-adminHomeBg'}`
                 }
             > 
-                <AiFillEdit className='size-5' />
+                <AiFillEdit className='size-5 md:size-6' />
             </NavLink>
         </div>
         

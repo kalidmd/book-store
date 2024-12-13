@@ -22,7 +22,6 @@ const AdminLogin = () => {
     try {
       const { data } = await axios.post(`${localUrl}/auth/login`, { email, password })
 
-      console.log(data);
       setError(false);
       setFetchError(false);
 
@@ -39,6 +38,8 @@ const AdminLogin = () => {
       } else {
         setFetchError(error.message);
       }
+      setEmail('');
+      setPassword('');
     }
   }
 

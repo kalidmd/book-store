@@ -113,7 +113,7 @@ const UpdateBook = () => {
     }
 
   return (
-    <main className='w-[400px] mx-auto bg-white p-5 rounded my-10'>
+    <main className='w-[280px] sm:w-[400px] mx-auto bg-white p-5 rounded my-10'>
         <h1 className='font-semibold text-xl mb-2'>Update Book</h1>
 
         <form onSubmit={updateBook} className='admin-form flex flex-col '>
@@ -224,7 +224,7 @@ const UpdateBook = () => {
                 <input 
                     className='border-none'
                     type='file'
-                    // required 
+                    required 
                     name='coverImage'
                     onChange={handleImageChange}
                 />

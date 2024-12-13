@@ -1,11 +1,8 @@
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import { NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom'
-  // Components
-import Search from '../Search'
-  // Icons
+  // React Icons
 import { IoIosSearch } from "react-icons/io";
 import { MdKeyboardArrowDown } from "react-icons/md";
-import { IoIosNotificationsOutline } from "react-icons/io";
 import { RxExit } from "react-icons/rx";
 import { IoMdAdd } from "react-icons/io";
   // Images
@@ -65,12 +62,12 @@ const DashboardMain = () => {
   return (
     <main className='w-full'>
       {/* // Profile  */}
-        <section className='w-full 2xl:w-xLarge bg-white'>
-          <div className={`w-large mx-auto 2xl:w-xLarge flex flex-col-reverse items-end gap-3 pt-4 pb-2 `}>
+        <section className='w-full bg-white'>
+          <div className={`w-large mx-auto 2xl:w-xLarge flex flex-col-reverse sm:flex-row sm:items-center items-end gap-3 pt-4 md:pt-5 pb-2 ${location.pathname === '/dashboard/manage-books' ? 'sm:justify-between' : 'sm:justify-end'}`}>
 
             { location.pathname === '/dashboard/manage-books' &&
-              <div className='w-fit mx-auto flex items-center gap-3 py-1 px-3'>
-                <IoIosSearch className='size-6'/>
+              <div className='w-fit mx-auto sm:mx-0 flex items-center gap-2 text-xs sm:text-base'>
+                <IoIosSearch className='size-5'/>
                 <input 
                     type="text" 
                     className='border-0 bg-transparent outline-none w-[200px] '
@@ -81,7 +78,7 @@ const DashboardMain = () => {
               </div>
             }
 
-            <div className='flex items-center w-fit gap-4 relative xxs:text-[10px] xs:text-xs'>
+            <div className='flex items-center w-fit gap-4 relative text-[12px] sm:text-base'>
                 <div className='flex flex-col items-end'> 
                 { user && user?.username && <p className='font-medium'> { toCapital(user?.username) } </p> }
                   { user && user?.role &&
@@ -102,11 +99,11 @@ const DashboardMain = () => {
                 </button>
 
                 { isAdminDropdownOpen &&
-                  <ul ref={dropdownRef} className='bg-gray-200 rounded-md py-4 px-2 absolute top-12 right-0 z-20'>
-                    <li> 
-                      <button onClick={logoutAdmin}>
+                  <ul ref={dropdownRef} className='bg-gray-200 rounded-md py-4 absolute top-12 right-0 z-20'>
+                    <li className='px-3 hover:bg-gray-100 w-full'> 
+                      <button className='flex items-center gap-1' onClick={logoutAdmin}>
                         <span>Logout</span>
-                        <RxExit className='inline-block ml-1 size-3 text-gray-700' />
+                        <RxExit className='inline-block size-3 text-text' />
                       </button> 
                     </li>
                   </ul>
@@ -117,13 +114,13 @@ const DashboardMain = () => {
         </section>
 
         <section className='w-large mx-auto 2xl:w-xLarge'>
-          <div className='flex flex-col items-center text-center justify-between my-5 bg-blue-70'>
+          <div className='flex flex-col md:flex-row items-center md:text-left text-center justify-between my-5'>
             <div>
               <h1 className='text-xl font-medium'> Dashboard </h1>
               <p className='text-gray-600'>Book Store Inventory</p>
             </div>
 
-            <div className='flex items-center gap-6 mt-5 xxs:text-[10px] xs:text-xs '>
+            <div className='flex items-center gap-6 md:mt-0 mt-5 text-[11px] sm:text-base'>
               <NavLink 
                 to={'manage-books'} 
                 className='border border-adminHomeBg p-2 rounded-md'> 

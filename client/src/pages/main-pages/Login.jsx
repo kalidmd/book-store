@@ -2,13 +2,18 @@ import React, { useContext, useState } from 'react'
 import Form from '../../components/Form'
 import { useNavigate } from 'react-router-dom'
 import { UserContext } from '../../context/userContext'
+import axios from 'axios'
 
 const Login = () => {
-  // const [message, setMessage] = useState('')
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [error, setError] = useState(false);
+    // User Context Usage
   const {login} = useContext(UserContext);
+    // States Def
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+    // Error Handling States Def
+  const [error, setError] = useState(false);
+  const [fetchError, setFetchError] = useState(false);
+  
 
   const navigate = useNavigate();
   
@@ -17,39 +22,31 @@ const Login = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    try {
-      const res = await fetch(`${localUrl}/auth/login`, {
-        method: 'post',
-        body: JSON.stringify({ email, password }),
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      })
-  
-      const data = await res.json();
-  
-      if(data.msg) {
-        localStorage.removeItem('token');
-        setError(data.msg);
-        setEmail('');
-        setPassword('');
-  
-      } else {
-        if(data.user.role === 'admin') {
-          localStorage.setItem('adminToken', data.token);
-        }
-        login(data.token);
+      try {
+        const { data } = await axios.post(`${localUrl}/auth/login`, { email, password });
+
+        console.log(data);
         setError(false);
-        setEmail('');
-        setPassword('');
+        setFetchError(false);
+        
+        if (data.user.role === 'admin') {
+          localStorage.setItem('adminToken', data.token);
+        } else {
+          localStorage.removeItem('adminToken');
+        };
+
+        login(data.token);
         navigate('/');
+
+      } catch (error) {
+          if (error.response) {
+            setError(error.response.data.msg);
+          } else {
+            setFetchError(error.message);
+          }
+          setEmail('');
+          setPassword('');
       }
-    } catch (error) {
-      setError(error);
-      console.error(error);
-    }
-
-
   }
 
   return (
@@ -59,7 +56,8 @@ const Login = () => {
       DirectToText={'Don\'t have an account?'}
       HREF={'/register'}
       DirectTo={'Register'}
-      ErrorMessage={error}
+      error={error}
+      fetchError={fetchError}
       EmailValue={email}
       SetEmail={setEmail}
       PasswordValue={password}

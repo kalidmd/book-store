@@ -2,7 +2,9 @@ import React, { useContext, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Swal from 'sweetalert2';
+ // React Icons
 import { SearchContext } from '../../../context/searchContext';
+import { MdDeleteForever } from "react-icons/md";
 
 const ManageBook = () => {
       // Search Context Usage
@@ -83,7 +85,7 @@ const ManageBook = () => {
   }    
 
   return (
-    <div className='bg-white mt-20 p-4 rounded-md'>
+    <div className='bg-white mt-12 p-4 rounded-md text-[10px] sm:text-base'>
       <div className='flex justify-between mb-4'>
         <h1> All Books </h1>
         { books && books.length > 0 && <p className='italic font-medium'> { `${books.length} ${bookFoundText}` } </p> }
@@ -93,7 +95,7 @@ const ManageBook = () => {
       <div>
         <table className='w-full'>
           <thead>
-            <tr className='w-full bg-red text-left border-t border-b'>
+            <tr className='w-full bg-red text-left border-t border-b text-[10px] sm:text-base'>
               <th className='py-4'> # </th>
               <th> BOOK TITLE </th>
               <th> CATEGORY </th>
@@ -111,7 +113,7 @@ const ManageBook = () => {
                   </td>
                   
                   <td> 
-                    { book &&  book.title } 
+                    { book &&  book.title.length > 15 ? `${book.title.slice(0, 15)}...` : book.title } 
                   </td>
                   
                   <td> 
@@ -124,7 +126,7 @@ const ManageBook = () => {
                   
                   {
                     book &&
-                    <td> 
+                    <td className='flex flex-col sm:flex-row sm:py-4 items-center gap-1'> 
                       <button 
                         className='hover:text-gray-600'
                         onClick={() => editBook(book._id)}> 
@@ -133,9 +135,10 @@ const ManageBook = () => {
                       
                       <button 
                         onClick={() => deleteBook(book._id)}
-                        className='ml-3 bg-red-500 text-white rounded-xl px-2 hover:bg-red-600'
+                        className='text-white rounded-xl px-2'
                       > 
-                        Delete 
+                        <MdDeleteForever className='text-red-500 size-4 sm:size-5'/>
+                        {/* Delete  */}
                       </button>
                     </td>
                   }
