@@ -79,16 +79,21 @@ const DashboardMain = () => {
             }
 
             <div className='flex items-center w-fit gap-4 relative text-[12px] sm:text-base'>
-                <div className='flex flex-col items-end'> 
-                { user && user?.username && <p className='font-medium'> { toCapital(user?.username) } </p> }
-                  { user && user?.role &&
+              { 
+                user && 
+                  <div className='flex flex-col items-end'> 
+                      <p className='font-medium'> 
+                        { toCapital(user && user?.username) } 
+                      </p> 
+                        
                     <div>
-                      <span className='text-gray-600'> { user?.role } </span>
+                      <span className='text-gray-600'> { user && user?.role } </span>
                       |
-                      <span className='text-gray-600'> { user?.email } </span>
+                      <span className='text-gray-600'> { user && user?.email } </span>
                     </div>
-                  }
-                </div>
+                    
+                  </div>
+              }
 
                 <div className='outline outline-adminHomeBg outline-offset-2 rounded-full w-8 h-8'>
                   <img className='w-full h-full rounded-full' src={AdminProfile} alt="Teddy Jeff" />
@@ -141,4 +146,4 @@ const DashboardMain = () => {
   )
 }
 
-export default DashboardMain
+export default DashboardMain;

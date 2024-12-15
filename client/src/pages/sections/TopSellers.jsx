@@ -1,19 +1,20 @@
 import React, { useContext, useEffect, useState } from 'react'
-// Custom Components
+    // Custom Components
 import Book from '../../components/Book'
-// Import Swiper React components
+    // Import Swiper React components
 import { Swiper, SwiperSlide } from 'swiper/react';
-// Import Swiper styles
+    // Import Swiper styles
 import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
-// import required modules
+    // import required modules
 import { Navigation, Pagination } from 'swiper/modules'
 import { CartContext } from '../../context/cartContext';
 import axios from 'axios';
 import { SearchContext } from '../../context/searchContext';
-// Components
-// import AddToCart from '../../components/AddToCart';
+    // React Spinner / Loader
+// import MoonLoader from "react-spinners/MoonLoader";
+import ScaleLoader from "react-spinners/ScaleLoader";
 
 
 const TopSellers = () => {
@@ -26,6 +27,8 @@ const TopSellers = () => {
         // Error Handling States
     const [error, setError] = useState(null);
     const [fetchError, setFetchError] = useState(null);
+        // Loader State
+    const [isloading, setIsLoading] = useState(false);
 
     const categories = ['Choose a genre', 'Fiction', 'Romance', 'Fantasy', 'Horror', 'Business', 'Adventure', 'Non-fictional'];
     const [selectedCategory, setSelectedCategory] = useState('Choose a genre');
@@ -45,16 +48,21 @@ const TopSellers = () => {
     useEffect(() => {
         const fetchBooks = async () => {
             try {
+                setIsLoading(true);
                 const { data } = await axios.get(`${localUrl}/books?search=${search}`)
 
                 setBooks(data.book);
                 setError(false);
                 setFetchError(false);
+                setIsLoading(false);
 
             } catch (error) {
+                setIsLoading(false);
                 if (error.response) {
+                        // Error From Backend
                     setError(error.response.data.msg);
                 } else {
+                        // Axios Error
                     setFetchError(error.message);
                 }
             }
@@ -128,6 +136,13 @@ const TopSellers = () => {
                 </Swiper> 
             </>
             }
+            
+            <ScaleLoader
+                className='text-center' 
+                color='#4484f2' 
+                loading={isloading}
+                size={40} 
+            />
 
             {
                 fetchError ? 

@@ -7,7 +7,7 @@ export const UserContext = createContext();
 export const UserContextProvider = ({ children }) => {
       // State Defenition
     const [currentUser, setCurrentUser] = useState(null);
-    const [user, setUser] = useState([null]);
+    const [user, setUser] = useState(null);
       // API Endpoints
     const localUrl = 'http://localhost:5000/api/v1';
     // const productionUrl = '';
@@ -30,6 +30,7 @@ export const UserContextProvider = ({ children }) => {
           } catch (error) {
             if (error.response) {
               setCurrentUser(false);
+              setUser(null);
             }
           }
         }

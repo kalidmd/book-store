@@ -61,9 +61,11 @@ const Navbar = () => {
     logout();
   }
 
+  console.log(user);
+
   const navigation = [
-    user &&  {
-      name: `Hi, ${toCapital(user?.username)}`,
+    user && {
+      name: `Hi, ${toCapital( user?.username )}`,
       link: false,
     },
     user?.role ==='admin' && {
@@ -103,7 +105,6 @@ const Navbar = () => {
             <HiMiniBars3CenterLeft className='size-7' />
           </NavLink>
 
-          {location.pathname === '/' && 
           <div className='md:hidden flex items-center bg-searchBg w-fit rounded-md gap-3 py-1 px-3'>
             <IoIosSearch className='size-6'/>
             <input 
@@ -114,8 +115,20 @@ const Navbar = () => {
                 onChange={(e) => setSearch(e.target.value)}
             />
 
-            {/* <Search setSearch={(search) => setSearch(search)} placeholder='search for book, author' /> */}
-          </div>}
+          </div>
+
+
+          {/* {location.pathname === '/' && 
+          <div className='md:hidden flex items-center bg-searchBg w-fit rounded-md gap-3 py-1 px-3'>
+            <IoIosSearch className='size-6'/>
+            <input 
+                type="text" 
+                className='border-0 bg-transparent outline-none xxs:w-[90px] xs:w-[130px] sm:w-[200px]'
+                value={search}
+                placeholder='search for book, author'
+                onChange={(e) => setSearch(e.target.value)}
+            />
+          </div>} */}
 
           {/* vissible more than 768px screen width */}
           <div className='hidden md:flex items-center gap-[100px]'>

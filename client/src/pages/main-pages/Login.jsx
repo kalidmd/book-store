@@ -24,8 +24,6 @@ const Login = () => {
     e.preventDefault();
       try {
         const { data } = await axios.post(`${localUrl}/auth/login`, { email, password });
-
-        console.log(data);
         setError(false);
         setFetchError(false);
         
