@@ -16,7 +16,7 @@ import AdminLogin from './pages/main-pages/admin/AdminLogin';
 import UsersRoute from './protected-routes/UsersRoute';
 import AdminRoute from './protected-routes/AdminRoute';
 import UpdateBook from './pages/main-pages/admin/UpdateBook';
-import DashboardStats from './components/admin/DashboardStats';
+import DashboardStats from './pages/main-pages/admin/DashboardStats';
 
 // import AddBook from './pages/sub-pages/AddBook';
 

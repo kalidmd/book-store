@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import { NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom'
+// import Loading from '../Loading';
   // React Icons
 import { IoIosSearch } from "react-icons/io";
 import { MdKeyboardArrowDown } from "react-icons/md";
@@ -58,6 +59,10 @@ const DashboardMain = () => {
     localStorage.removeItem('adminToken');
     navigate('/');
   }
+
+  // console.log(loading);
+
+  // if (loading) return <Loading />
 
   return (
     <main className='w-full'>

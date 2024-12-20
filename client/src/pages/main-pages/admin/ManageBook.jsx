@@ -5,6 +5,7 @@ import Swal from 'sweetalert2';
  // React Icons
 import { SearchContext } from '../../../context/searchContext';
 import { MdDeleteForever } from "react-icons/md";
+import Loading from '../../../components/Loading';
 
 const ManageBook = () => {
       // Search Context Usage
@@ -16,20 +17,22 @@ const ManageBook = () => {
       // Error Handling States Def
   const [error, setError] = useState(false);
   const [fetchError, setFetchError] = useState(false);
+      // Loading State
+  const [loading, setLoading] = useState(false);
       // API Endpoints
   const localUrl = 'http://localhost:5000/api/v1';
 
-
   const bookFoundText = books.length === 1 ? 'Book Found' : 'Books Found';
-
 
   const getBooks = async (search) => {
     try {
+      setLoading(true);
       const { data } = await axios.get(`${localUrl}/books?search=${search}`)
       
       setBooks(data.book);
       setError(false);
       setFetchError(false);
+      setLoading(false);
 
     } catch (error) {
       if (error.response) {
@@ -39,6 +42,7 @@ const ManageBook = () => {
           // Axios Error
         setFetchError(error.message);
       }
+      setLoading(false);
     }
   }
 
@@ -83,6 +87,10 @@ const ManageBook = () => {
 
     getBooks(search);
   }    
+
+  if (loading) {
+    return <Loading />
+  }
 
   return (
     <div className='bg-white mt-12 p-4 rounded-md text-[10px] sm:text-base'>

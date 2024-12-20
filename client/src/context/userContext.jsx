@@ -8,6 +8,7 @@ export const UserContextProvider = ({ children }) => {
       // State Defenition
     const [currentUser, setCurrentUser] = useState(null);
     const [user, setUser] = useState(null);
+    // const [loading, setLoading] = useState(false);
       // API Endpoints
     const localUrl = 'http://localhost:5000/api/v1';
     // const productionUrl = '';

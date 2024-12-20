@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react'
+// import { UserContext } from '../../../context/userContext';
 import axios from 'axios';
 // React Icons
 import { LuBookOpen } from "react-icons/lu";
 import { IoTrendingDownSharp } from "react-icons/io5";
 import { IoTrendingUpOutline } from "react-icons/io5";
 import { IoPieChart } from "react-icons/io5";
+import Loading from '../../../components/Loading';
 
 const DashboardStats = () => {
   const [totalBooks, setTotalBooks] = useState('');
@@ -14,13 +16,19 @@ const DashboardStats = () => {
     // Error Handling States
   const [error, setError] = useState(null);
   const [fetchError, setFetchError] = useState(null);
+    // Loading State
+  const [loading, setLoading] = useState(false);
     // API URL
   const localUrl = 'http://localhost:5000/api/v1';
   // const productionUrl = '';
+
+
+  // console.log(loading);
   
   useEffect(() => {
     const dashboardStats = async () => {
       try {
+        setLoading(true);
         const token = localStorage.getItem('adminToken');
         const { data } = await axios.get(`${localUrl}/admin/dashboard`, {
           headers: {
@@ -35,6 +43,7 @@ const DashboardStats = () => {
         setTotalSales(data.totalSales);
         setTrendingBooks(data.trendingBooks);
         setTotalOrders(data.totalOrders);
+        setLoading(false);
 
       } catch (error) {
         if (error.response) {
@@ -44,11 +53,14 @@ const DashboardStats = () => {
             // Axios Error
           setFetchError(error.message);
         }
+        setLoading(false);
       }
     }
 
     dashboardStats();
   }, [])
+
+  if (loading) return <Loading/>
 
   return (
     <main >

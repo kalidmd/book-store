@@ -3,6 +3,8 @@ import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
+import Loading from '../../../components/Loading';
+import ScaleLoader from 'react-spinners/ScaleLoader';
 
 const UpdateBook = () => {
         // states
@@ -19,8 +21,9 @@ const UpdateBook = () => {
         // error handling states
     const [error, setError] = useState(false);
     const [fetchError, setFetchError] = useState(false);
-        // loading state
-    const [isLoading, setIsLoading] = useState(false);
+        // loading states
+    const [isLoading, setIsLoading] = useState(true);
+    const [getBookLoading, setGetBookLoading] = useState(false);
         // select option
     const options = ['Choose A Catagory', 'Fiction', 'Non-fictional', 'Romance', 'Fantasy', 'Horror', 'Business', 'Adventure'];
 
@@ -32,6 +35,7 @@ const UpdateBook = () => {
     useEffect(() => {
         const getSingleBook = async () => {
             try {
+                setGetBookLoading(true);
                 const { data } = await axios.get(`${localUrl}/books/${params.id}`)
 
                 setTitle(data.book.title);
@@ -44,6 +48,8 @@ const UpdateBook = () => {
                 setOldPrice(data.book.oldPrice);
                 setNewPrice(data.book.newPrice);
 
+                setGetBookLoading(false);
+
                 
             } catch (error) {
                 if(error.response) {
@@ -51,6 +57,7 @@ const UpdateBook = () => {
                 } else {
                     setFetchError(error.message);
                 }
+                setGetBookLoading(false);
             }
         }
 
@@ -97,7 +104,7 @@ const UpdateBook = () => {
                 showConfirmButton: false,
                 timer: 1500
                 });
-            setIsLoading(false);
+            // setIsLoading(false);
             navigate('/dashboard/manage-books')
 
             
@@ -111,6 +118,10 @@ const UpdateBook = () => {
 
         }
     }
+
+  if (getBookLoading) {
+    return <Loading />
+  }
 
   return (
     <main className='w-[280px] sm:w-[400px] mx-auto bg-white p-5 rounded my-10'>
@@ -242,7 +253,23 @@ const UpdateBook = () => {
                 error && <p className='mt-4 italic text-red-500 text-center text-lg'> { error } </p>
             }
 
-            <button className='mt-4 bg-green-500 text-white py-1 rounded'> {isLoading ? 'Updating Book...' : 'Update Book'} </button>
+            <ScaleLoader
+                className='text-center' 
+                color='#0000' 
+                loading={true}
+                size={150} 
+            />
+
+            {/* <button className='mt-4 bg-green-500 text-white py-1 rounded'> 
+                {isLoading ?  
+                    <ScaleLoader
+                        className='text-center' 
+                        color='#FFFFFF' 
+                        size={150} 
+                    /> : 
+                    'Update Book'
+                } 
+            </button> */}
         </form>
     </main>
   )
