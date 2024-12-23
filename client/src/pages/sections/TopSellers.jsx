@@ -12,9 +12,7 @@ import { Navigation, Pagination } from 'swiper/modules'
 import { CartContext } from '../../context/cartContext';
 import axios from 'axios';
 import { SearchContext } from '../../context/searchContext';
-    // React Spinner / Loader
-// import MoonLoader from "react-spinners/MoonLoader";
-import ScaleLoader from "react-spinners/ScaleLoader";
+import Loading from '../../components/Loading';
 
 
 const TopSellers = () => {
@@ -73,84 +71,74 @@ const TopSellers = () => {
 
     return (
         <section className='section-cont'>
-            { 
-            !error && filterdBooks && filterdBooks.length > 0 &&
+            <h1 className='title'>Top Sellers</h1>
+            <select onChange={(e) => setSelectedCategory(e.target.value)} className='select'>
+                {
+                    categories.map((item,index) => (
+                        <option key={index} value={item}> {item} </option>
+                    ))
+                }
+            </select>
+            <Swiper
+                slidesPerView={1}
+                spaceBetween={50}
+                pagination={{
+                    dynamicBullets: true,
+                    clickable: true
+                }}
+                navigation={true}
+                breakpoints={{
+                    640: {
+                        slidesPerView: 1,
+                        spaceBetween: 50,
+                    },
+                    768: {
+                        slidesPerView: 2,
+                        spaceBetween: 100,
+                    },
+                    1024: {
+                        slidesPerView: 2,
+                        spaceBetween: 50,
+                    },
+                    1180: {
+                        slidesPerView: 3,
+                        spaceBetween: 200,
+                    },
+                }}
+                modules={[Pagination, Navigation]}
+                className="mySwiper bg-white mt-[10px] py-[10px] px-[12px] rounded-md select-none"
+            >   
                 <>
-                
-                    <h1 className='title'>Top Sellers</h1>
-                    <select onChange={(e) => setSelectedCategory(e.target.value)} className='select'>
-                        {
-                            categories.map((item,index) => (
-                                <option key={index} value={item}> {item} </option>
-                            ))
-                        }
-                    </select>
-                    <Swiper
-                        slidesPerView={1}
-                        spaceBetween={50}
-                        pagination={{
-                            dynamicBullets: true,
-                            clickable: true
-                        }}
-                        navigation={true}
-                        breakpoints={{
-                            640: {
-                                slidesPerView: 1,
-                                spaceBetween: 50,
-                            },
-                            768: {
-                                slidesPerView: 2,
-                                spaceBetween: 100,
-                            },
-                            1024: {
-                                slidesPerView: 2,
-                                spaceBetween: 50,
-                            },
-                            1180: {
-                                slidesPerView: 3,
-                                spaceBetween: 200,
-                            },
-                        }}
-                        modules={[Pagination, Navigation]}
-                        className="mySwiper bg-white mt-[10px] py-[10px] px-[12px] rounded-md select-none"
-                    >   
-                        <>
-                            {
-                                filterdBooks && filterdBooks.length > 0 &&
-                                    filterdBooks.map((book) => (
-                                        <SwiperSlide key={book._id} >
-                                            <Book 
-                                                src={book.coverImage.url}
-                                                alt={book.title}
-                                                bookID={book._id}
-                                                bookTitle={book.title}
-                                                bookDesc={book.description}
-                                                newPrice={book.newPrice}
-                                                oldPrice={book.oldPrice}
-                                                handleCart={() => handleCart(book._id)}
-                                                />
-                                        </SwiperSlide>
-                                    )) 
-                            }
-                        </>
-                </Swiper> 
-            </>
-            }
-            
-            <ScaleLoader
-                className='text-center' 
-                color='#4484f2' 
-                loading={isloading}
-                size={40} 
-            />
+                    {
+                        !isloading ? !error && filterdBooks && filterdBooks.length > 0 &&
+                            filterdBooks.map((book) => (
+                                <SwiperSlide key={book._id}>
+                                    <Book 
+                                        src={book.coverImage.url}
+                                        alt={book.title}
+                                        bookID={book._id}
+                                        bookTitle={book.title}
+                                        bookDesc={book.description}
+                                        newPrice={book.newPrice}
+                                        oldPrice={book.oldPrice}
+                                        handleCart={() => handleCart(book._id)}
+                                        />
+                                </SwiperSlide>
+                            )) : 
+                            <div className='h-[250px] flex items-center justify-center'>
+                                <Loading />
+                            </div>
+                    }
 
-            {
-                fetchError ? 
-                    <p className='mt-4 italic text-red-500 text-center text-lg'> 
-                        { fetchError } 
-                    </p> : 
-                error && <p className='mt-4 italic text-red-500 text-center text-lg'> { error } </p>
-            }
+                    {
+                        fetchError ? 
+                            <p className='h-[250px] flex items-center justify-center italic text-red-500 text-lg'> 
+                                { fetchError } 
+                            </p> : 
+                        error && <p className='h-[250px] flex items-center justify-center italic text-red-500 text-lg'> { error } </p>
+                    }
+                </>
+            </Swiper> 
         </section>
     )
 }

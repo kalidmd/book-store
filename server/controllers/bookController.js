@@ -37,7 +37,7 @@ const getBooks = async (req, res) => {
         throw new NotFoundError('No Book Found!')
     }
 
-    res.status(StatusCodes.OK).json({ count: book.length, book });
+    res.status(StatusCodes.OK).json({ book });
 }
 
 const getSingleBook = async (req, res) => {

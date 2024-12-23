@@ -22,7 +22,7 @@ const UpdateBook = () => {
     const [error, setError] = useState(false);
     const [fetchError, setFetchError] = useState(false);
         // loading states
-    const [isLoading, setIsLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(false);
     const [getBookLoading, setGetBookLoading] = useState(false);
         // select option
     const options = ['Choose A Catagory', 'Fiction', 'Non-fictional', 'Romance', 'Fantasy', 'Horror', 'Business', 'Adventure'];
@@ -96,7 +96,6 @@ const UpdateBook = () => {
                 }
             });
 
-            setError(false);
             Swal.fire({
                 position: "center",
                 icon: "success",
@@ -104,18 +103,19 @@ const UpdateBook = () => {
                 showConfirmButton: false,
                 timer: 1500
                 });
-            // setIsLoading(false);
+            setError(false);
+            setFetchError(false);
+            setIsLoading(false);
             navigate('/dashboard/manage-books')
 
             
         } catch (error) {
-            setIsLoading(false);
             if(error.response) {
                 setError(error.response.data.msg)
             } else {
                 setFetchError(error.message);
             }
-
+            setIsLoading(false);
         }
     }
 
@@ -253,26 +253,19 @@ const UpdateBook = () => {
                 error && <p className='mt-4 italic text-red-500 text-center text-lg'> { error } </p>
             }
 
-            <ScaleLoader
-                className='text-center' 
-                color='#0000' 
-                loading={true}
-                size={150} 
-            />
-
-            {/* <button className='mt-4 bg-green-500 text-white py-1 rounded'> 
-                {isLoading ?  
+            <button className='mt-4 min-h-10 bg-green-500 text-white py-1 rounded'> 
+                {isLoading ? 
                     <ScaleLoader
-                        className='text-center' 
                         color='#FFFFFF' 
-                        size={150} 
-                    /> : 
+                        height={20}
+                        width={3}
+                    />:
                     'Update Book'
                 } 
-            </button> */}
+            </button>
         </form>
     </main>
   )
 }
 
-export default UpdateBook
+export default UpdateBook;

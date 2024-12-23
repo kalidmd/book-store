@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import Swal from 'sweetalert2';
 import axios from 'axios'
+import ScaleLoader from 'react-spinners/ScaleLoader';
 
 const AddNewBook = () => {
         // states
@@ -223,9 +224,15 @@ const AddNewBook = () => {
                     error && <p className='mt-4 italic text-red-500 text-center text-lg'> { error } </p>
                 }
 
-                <button className='mt-4 bg-green-500 text-white py-1 rounded'> 
+                <button className='mt-4 min-h-10 bg-green-500 text-white py-1 rounded'> 
                     {
-                        isLoading ? 'Adding Book...' : 'Add Book'
+                        isLoading ? 
+                            <ScaleLoader
+                                color='#FFFFFF' 
+                                height={20}
+                                width={3}
+                            /> :
+                    'Add New Book'
                     } 
                 </button>
             </form>
