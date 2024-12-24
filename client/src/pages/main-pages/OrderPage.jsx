@@ -24,8 +24,9 @@ const OrderPage = () => {
           }
         })
 
+        setError(false);
+        setFetchError(false);
         setisLoading(false);
-        console.log(data);
         setOrders(data.order);
 
       } catch (error) {

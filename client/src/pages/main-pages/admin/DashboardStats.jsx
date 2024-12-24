@@ -1,24 +1,41 @@
 import React, { useEffect, useState } from 'react'
-// import { UserContext } from '../../../context/userContext';
 import axios from 'axios';
+// Custom Components
+import Loading from '../../../components/Loading';
+import getBaseURL from '../../../utils/baseURL';
+import RevenueChart from '../../../components/RevenueChart';
 // React Icons
 import { LuBookOpen } from "react-icons/lu";
 import { IoTrendingDownSharp } from "react-icons/io5";
 import { IoTrendingUpOutline } from "react-icons/io5";
 import { IoPieChart } from "react-icons/io5";
-import Loading from '../../../components/Loading';
-import getBaseURL from '../../../utils/baseURL';
+
 
 const DashboardStats = () => {
   const [totalBooks, setTotalBooks] = useState('');
   const [totalSales, setTotalSales] = useState('');
   const [trendingBooks, setTrendingBooks] = useState('');
   const [totalOrders, setTotalOrders] = useState('');
+  const [monthlySales, setMonthlySales] = useState([]);
     // Error Handling States
   const [error, setError] = useState(null);
   const [fetchError, setFetchError] = useState(null);
     // Loading State
   const [loading, setLoading] = useState(false);
+
+    // Chart Datas
+  const chartData = {
+    // labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+    labels: monthlySales.map(month => month._id),
+    datasets: [{
+      label: 'Revenue (USD)',
+      data: monthlySales.map(sales => sales.totalSales),
+      // data: [65, 59, 80, 81, 56, 55, 40],
+      backgroundColor: 'rgb(69, 237, 113, 0.8)',
+      borderColor: 'rgb(148 50 233)',
+      borderWidth: 1
+    }]
+  };
   
   
   useEffect(() => {
@@ -34,12 +51,14 @@ const DashboardStats = () => {
           }
         });
        
+        // console.log(data)
         setError(false);
         setFetchError(false);
         setTotalBooks(data.totalBooks);
         setTotalSales(data.totalSales);
         setTrendingBooks(data.trendingBooks);
         setTotalOrders(data.totalOrders);
+        setMonthlySales(data.monthlySales)
         setLoading(false);
 
       } catch (error) {
@@ -57,12 +76,12 @@ const DashboardStats = () => {
     dashboardStats();
   }, [])
 
-  if (loading) return <Loading/>
+  if (loading) return <Loading />
 
   return (
     <main >
       {!error && !fetchError &&
-        <section className='bg-lime-100 grid grid-cols-2 gap-3 xl:gap-5 lg:grid-cols-4'>
+        <section className=' grid grid-cols-2 gap-3 xl:gap-5 lg:grid-cols-4'>
             {/* Item 1 */}
           <div className='bg-white flex gap-2 items-center py-6 px-3 shadow sm:px-5'>
             <div className='w-fit bg-purple-100 rounded-full p-3'>
@@ -104,11 +123,13 @@ const DashboardStats = () => {
             </div>
           </div>
             {/* Item 5 */}       
-          <div className='bg-red-200 text-center col-start-1 col-end-3 lg:col-start-1 lg:col-end-3'> item-5 </div>
+          <div className='text-center col-start-1 col-end-3 lg:col-start-1 lg:col-end-5 '> 
+            <RevenueChart data={chartData}/>
+          </div>
+
+            {/* User Ranking By Order */}
+          {/* <div className='bg-red-200'> item 6 </div> */}
           
-          <div className='bg-red-200'> item 6 </div>
-          
-          <div className='bg-red-200'> item 7 </div>
         </section>
       }
 

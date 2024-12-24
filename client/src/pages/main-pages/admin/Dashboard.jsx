@@ -6,9 +6,6 @@ import DashboardMain from '../../../components/admin/DashboardMain'
 
 
 const Dashboard = () => {
-  // const { loading } = 
-  // if (loading) return <Loading />
-
   return (
     <main>
       <div className='lg:bg-websiteMobileBg flex justify-between font-montserrat'>    

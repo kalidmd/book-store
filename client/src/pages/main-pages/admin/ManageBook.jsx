@@ -20,10 +20,14 @@ const ManageBook = () => {
   const [fetchError, setFetchError] = useState(false);
       // Loading State
   const [loading, setLoading] = useState(false);
+      // Collapse State
+  const [showAllBooks, setShowAllBooks] = useState(false);
   
   const baseURL = getBaseURL();
   
   const bookFoundText = books.length === 1 ? 'Book Found' : 'Books Found';
+
+  const filteredBooks = showAllBooks ? books && books : books && books.slice(0, 10);
   
   const getBooks = async (search) => {
     const baseURL = getBaseURL();
@@ -90,16 +94,23 @@ const ManageBook = () => {
     getBooks(search);
   }    
 
+  const handleCollapse = () => {
+    setShowAllBooks(!showAllBooks);
+    console.log(showAllBooks);
+  }
+
   if (loading) {
     return <Loading />
   }
 
   return (
-    <div className='bg-white mt-12 p-4 rounded-md text-[10px] sm:text-base'>
+    <div className='bg-white my-12 p-4 rounded-md text-[10px] sm:text-base'>
       <div className='flex justify-between mb-4'>
         <h1> All Books </h1>
         { books && books.length > 0 && <p className='italic font-medium'> { `${books.length} ${bookFoundText}` } </p> }
-        <button> See All </button>
+        <button onClick={handleCollapse} className='bg-blue-700 text-white rounded-md px-2 py-1 text-sm hover:bg-blue-600'> 
+          { showAllBooks ? 'Show Less' : 'Show All' } 
+        </button>
       </div>
 
       <div>
@@ -116,7 +127,7 @@ const ManageBook = () => {
 
           <tbody>
             {
-              !error && books && books.length > 0 && books.map((book, index) => (
+              !error && filteredBooks && filteredBooks.length > 0 &&  filteredBooks.map((book, index) => (
                 <tr key={book && book._id} className='text-left'>
                   <td className='py-4'> 
                     { book && `${index + 1}.` } 
