@@ -89,11 +89,11 @@ const OrderPage = () => {
 
       {
           fetchError ? 
-            <p className='mt-4 italic text-red-500 text-lg'> 
+            <p className='mt-4 italic text-red-500 lg:text-lg'> 
                 { fetchError } 
             </p> : 
           error && 
-            <p className='mt-4 italic text-red-500 text-lg'> 
+            <p className='mt-4 italic text-red-500 lg:text-lg'> 
               { error } 
             </p>
       }

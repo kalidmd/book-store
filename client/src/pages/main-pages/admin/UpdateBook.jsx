@@ -248,10 +248,10 @@ const UpdateBook = () => {
             
             {
                 fetchError ? 
-                <p className='mt-4 italic text-red-500 text-center text-lg'> 
+                <p className='mt-4 italic text-red-500 text-center lg:text-lg'> 
                     {fetchError}
                 </p> : 
-                error && <p className='mt-4 italic text-red-500 text-center text-lg'> { error } </p>
+                error && <p className='mt-4 italic text-red-500 text-center lg:text-lg'> { error } </p>
             }
 
             <button className='mt-4 min-h-10 bg-green-500 text-white py-1 rounded'> 

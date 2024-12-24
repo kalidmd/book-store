@@ -60,10 +60,6 @@ const DashboardMain = () => {
     navigate('/');
   }
 
-  // console.log(loading);
-
-  // if (loading) return <Loading />
-
   return (
     <main className='w-full'>
       {/* // Profile  */}
@@ -123,7 +119,7 @@ const DashboardMain = () => {
           </div>
         </section>
 
-        <section className='w-large mx-auto 2xl:w-xLarge'>
+        <section className='w-large mx-auto 2xl:w-xLarge my-10'>
           <div className='flex flex-col md:flex-row items-center md:text-left text-center justify-between my-5'>
             <div>
               <h1 className='text-xl font-medium'> Dashboard </h1>

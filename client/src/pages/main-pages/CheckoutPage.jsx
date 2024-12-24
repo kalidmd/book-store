@@ -236,10 +236,10 @@ const CheckoutPage = () => {
 
             {
               fetchError ? 
-              <p className='mt-4 italic text-red-500 text-center text-lg'> 
+              <p className='mt-4 italic text-red-500 text-center lg:text-lg'> 
                   Failed to fetch data. Please try again later. 
               </p> : 
-              error && <p className='mt-4 italic text-red-500 text-center text-lg'> { error } </p>
+              error && <p className='mt-4 italic text-red-500 text-center lg:text-lg'> { error } </p>
             }
 
             <div className='text-center mt-4 lg:text-start'>

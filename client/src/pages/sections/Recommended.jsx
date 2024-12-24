@@ -108,10 +108,10 @@ const Recommended = () => {
 
             {
                 fetchError ? 
-                    <p className='h-[250px] flex items-center justify-center italic text-red-500 text-lg'> 
+                    <p className='h-[250px] flex items-center justify-center italic text-red-500 lg:text-lg'> 
                         {fetchError}
                     </p> : 
-                error && <p className='h-[250px] flex items-center justify-center italic text-red-500 text-lg'> { error } </p>
+                error && <p className='h-[250px] flex items-center justify-center italic text-red-500 lg:text-lg'> { error } </p>
             }
         </Swiper>
     </section>

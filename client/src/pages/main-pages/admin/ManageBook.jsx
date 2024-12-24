@@ -105,10 +105,10 @@ const ManageBook = () => {
 
   return (
     <div className='bg-white my-12 p-4 rounded-md text-[10px] sm:text-base'>
-      <div className='flex justify-between mb-4'>
+      <div className='flex justify-between items-center mb-4'>
         <h1> All Books </h1>
         { books && books.length > 0 && <p className='italic font-medium'> { `${books.length} ${bookFoundText}` } </p> }
-        <button onClick={handleCollapse} className='bg-blue-700 text-white rounded-md px-2 py-1 text-sm hover:bg-blue-600'> 
+        <button onClick={handleCollapse} className='bg-blue-700 text-white rounded-md px-2 py-1 hover:bg-blue-600'> 
           { showAllBooks ? 'Show Less' : 'Show All' } 
         </button>
       </div>
@@ -172,10 +172,10 @@ const ManageBook = () => {
 
       {
           fetchError ? 
-          <p className='mt-4 italic text-red-500 text-center text-lg'> 
+          <p className='mt-4 italic text-red-500 text-center lg:text-lg'> 
               { fetchError }
           </p> : 
-          error && <p className='mt-4 italic text-red-500 text-center text-lg'> { error } </p>
+          error && <p className='mt-4 italic text-red-500 text-center lg:text-lg'> { error } </p>
       }
 
     </div>
