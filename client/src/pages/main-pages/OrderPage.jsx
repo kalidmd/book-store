@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import getBaseURL from '../../utils/baseURL';
 
 const OrderPage = () => {
   const [orders, setOrders] = useState([]);
@@ -8,19 +9,16 @@ const OrderPage = () => {
   const [fetchError, setFetchError] = useState(false);
     // Loader State
   const [isLoading, setisLoading] = useState(false);
-    // API Endpoints
-  const localUrl = 'http://localhost:5000/api/v1';
-  // const productionUrl = '';
-
-  console.log(orders);
-
+  
+  
   useEffect(() => {
     const getOrders = async () => {
+      const baseURL = getBaseURL();
       const token = localStorage.getItem('token');
 
       try {
         setisLoading(true);
-        const { data } = await axios.get(`${localUrl}/orders`, {
+        const { data } = await axios.get(`${baseURL}/orders`, {
           headers: {
             Authorization: `Bearer ${token}`
           }

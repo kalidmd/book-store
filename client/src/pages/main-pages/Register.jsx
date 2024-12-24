@@ -3,6 +3,7 @@ import Form from '../../components/Form';
 import { useNavigate } from 'react-router-dom';
 import { UserContext } from '../../context/userContext';
 import axios from 'axios';
+import getBaseURL from '../../utils/baseURL';
 
 const Register = () => {
         // User Context Usage
@@ -16,14 +17,12 @@ const Register = () => {
         // Error Handling State Defenition
     const [error, setError] = useState(false);
     const [fetchError, setFetchError] = useState(false);
-        // API Endpoints
-    const localUrl = 'http://localhost:5000/api/v1';
-    // const productionUrl =
+    const baseURL = getBaseURL();
     
     const handleRegister = async (e) => {
       e.preventDefault();
       try {
-        const { data } = await axios.post(`${localUrl}/auth/register`, { username, email, password });
+        const { data } = await axios.post(`${baseURL}/auth/register`, { username, email, password });
 
         setError(false);
         setFetchError(false);

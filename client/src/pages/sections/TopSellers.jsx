@@ -13,6 +13,7 @@ import { CartContext } from '../../context/cartContext';
 import axios from 'axios';
 import { SearchContext } from '../../context/searchContext';
 import Loading from '../../components/Loading';
+import getBaseURL from '../../utils/baseURL';
 
 
 const TopSellers = () => {
@@ -34,20 +35,17 @@ const TopSellers = () => {
 
     const filterdBooks = selectedCategory === 'Choose a genre' ? books && books.length > 0 && books : books && books.length > 0 && books.filter(book => book.category === selectedCategory);
 
-    // api url
-    const localUrl = 'http://localhost:5000/api/v1';
-    // const productionUrl =
-
     const handleCart = (bookId) => {
         AddToCart(books, bookId);
         
     }
 
     useEffect(() => {
+        const baseURL = getBaseURL();
         const fetchBooks = async () => {
             try {
                 setIsLoading(true);
-                const { data } = await axios.get(`${localUrl}/books?search=${search}`)
+                const { data } = await axios.get(`${baseURL}/books?search=${search}`)
 
                 setBooks(data.book);
                 setError(false);

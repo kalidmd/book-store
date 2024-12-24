@@ -61,7 +61,7 @@ const Navbar = () => {
     logout();
   }
 
-  console.log(user);
+  // console.log(user);
 
   const navigation = [
     user && {

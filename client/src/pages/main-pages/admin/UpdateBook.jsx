@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import Loading from '../../../components/Loading';
 import ScaleLoader from 'react-spinners/ScaleLoader';
+import getBaseURL from '../../../utils/baseURL';
 
 const UpdateBook = () => {
         // states
@@ -29,14 +30,14 @@ const UpdateBook = () => {
 
     const navigate = useNavigate();
     const params = useParams();
-    const localUrl = 'http://localhost:5000/api/v1';
-
-
+    const baseURL = getBaseURL();
+    
+    
     useEffect(() => {
         const getSingleBook = async () => {
             try {
                 setGetBookLoading(true);
-                const { data } = await axios.get(`${localUrl}/books/${params.id}`)
+                const { data } = await axios.get(`${baseURL}/books/${params.id}`)
 
                 setTitle(data.book.title);
                 setDescription(data.book.description);
@@ -63,7 +64,7 @@ const UpdateBook = () => {
 
         getSingleBook();
 
-    }, [params])
+    }, [params, baseURL])
 
 
     const handleImageChange = (e) => {
@@ -87,7 +88,7 @@ const UpdateBook = () => {
             setIsLoading(true);
             const token = localStorage.getItem('adminToken');
 
-            await axios.put(`${localUrl}/books/${params.id}`, { 
+            await axios.put(`${baseURL}/books/${params.id}`, { 
                 title, description, category, trending, coverImage, author, published, oldPrice, newPrice 
             }, 
             {

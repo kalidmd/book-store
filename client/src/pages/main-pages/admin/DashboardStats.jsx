@@ -7,6 +7,7 @@ import { IoTrendingDownSharp } from "react-icons/io5";
 import { IoTrendingUpOutline } from "react-icons/io5";
 import { IoPieChart } from "react-icons/io5";
 import Loading from '../../../components/Loading';
+import getBaseURL from '../../../utils/baseURL';
 
 const DashboardStats = () => {
   const [totalBooks, setTotalBooks] = useState('');
@@ -18,25 +19,21 @@ const DashboardStats = () => {
   const [fetchError, setFetchError] = useState(null);
     // Loading State
   const [loading, setLoading] = useState(false);
-    // API URL
-  const localUrl = 'http://localhost:5000/api/v1';
-  // const productionUrl = '';
-
-
-  // console.log(loading);
+  
   
   useEffect(() => {
+    const baseURL = getBaseURL();
+
     const dashboardStats = async () => {
       try {
         setLoading(true);
         const token = localStorage.getItem('adminToken');
-        const { data } = await axios.get(`${localUrl}/admin/dashboard`, {
+        const { data } = await axios.get(`${baseURL}/admin/dashboard`, {
           headers: {
             Authorization: `Bearer ${token}`
           }
         });
-        
-        // console.log(data);
+       
         setError(false);
         setFetchError(false);
         setTotalBooks(data.totalBooks);

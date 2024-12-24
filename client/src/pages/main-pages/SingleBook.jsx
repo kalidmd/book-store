@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
+import getBaseURL from '../../utils/baseURL';
 // icons
 import { IoCartOutline } from "react-icons/io5";
 import { CartContext } from '../../context/cartContext';
@@ -26,11 +27,11 @@ const SingleBook = () => {
   
   useEffect(()=> {
       const {id: bookId} = params;
-      const localUrl = 'http://localhost:5000/api/v1/books'
+      const baseURL = getBaseURL();
 
       const fetchSingleBook = async (req, res) => {
         try {
-          const response = await fetch(`${localUrl}/${bookId}`);
+          const response = await fetch(`${baseURL}/${bookId}`);
           const data = await response.json();
 
           if(data.msg) {

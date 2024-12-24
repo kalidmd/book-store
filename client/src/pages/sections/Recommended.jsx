@@ -16,6 +16,7 @@ import { Navigation, Pagination } from 'swiper/modules'
 import { CartContext } from '../../context/cartContext';
 import axios from 'axios';
 import Loading from '../../components/Loading';
+import getBaseURL from '../../utils/baseURL';
 
 const Recommended = () => {
     const {AddToCart} = useContext(CartContext);
@@ -26,18 +27,16 @@ const Recommended = () => {
 
     const recommendedBooks = books.length > 0 && books.slice(5, books.length);
 
-    const localUrl = 'http://localhost:5000/api/v1';
-    // const productionUrl = 
-
     const handleCart = (bookId) => {
         AddToCart(books, bookId);
     }
 
     useEffect(() => {
+        const baseURL = getBaseURL();
         const fetchBooks = async () => {
             try {
                 setLoading(true);
-                const {data} = await axios.get(`${localUrl}/books`)
+                const {data} = await axios.get(`${baseURL}/books`)
 
                 setBooks(data.book);
                 setLoading(false);

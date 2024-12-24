@@ -6,6 +6,7 @@ import Swal from 'sweetalert2';
 import { SearchContext } from '../../../context/searchContext';
 import { MdDeleteForever } from "react-icons/md";
 import Loading from '../../../components/Loading';
+import getBaseURL from '../../../utils/baseURL';
 
 const ManageBook = () => {
       // Search Context Usage
@@ -19,15 +20,16 @@ const ManageBook = () => {
   const [fetchError, setFetchError] = useState(false);
       // Loading State
   const [loading, setLoading] = useState(false);
-      // API Endpoints
-  const localUrl = 'http://localhost:5000/api/v1';
-
+  
+  const baseURL = getBaseURL();
+  
   const bookFoundText = books.length === 1 ? 'Book Found' : 'Books Found';
-
+  
   const getBooks = async (search) => {
+    const baseURL = getBaseURL();
     try {
       setLoading(true);
-      const { data } = await axios.get(`${localUrl}/books?search=${search}`)
+      const { data } = await axios.get(`${baseURL}/books?search=${search}`)
       
       setBooks(data.book);
       setError(false);
@@ -58,7 +60,7 @@ const ManageBook = () => {
     const token = localStorage.getItem('adminToken');
 
     try {
-      const { data } = await axios.delete(`${localUrl}/books/${id}`, {
+      const { data } = await axios.delete(`${baseURL}/books/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }

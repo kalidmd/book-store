@@ -3,6 +3,7 @@ import Form from '../../components/Form'
 import { useNavigate } from 'react-router-dom'
 import { UserContext } from '../../context/userContext'
 import axios from 'axios'
+import getBaseURL from '../../utils/baseURL'
 
 const Login = () => {
     // User Context Usage
@@ -17,13 +18,12 @@ const Login = () => {
 
   const navigate = useNavigate();
   
-  // const productionUrl =
-  const localUrl = 'http://localhost:5000/api/v1';
+  const baseURL = getBaseURL();
 
   const handleLogin = async (e) => {
     e.preventDefault();
       try {
-        const { data } = await axios.post(`${localUrl}/auth/login`, { email, password });
+        const { data } = await axios.post(`${baseURL}/auth/login`, { email, password });
         setError(false);
         setFetchError(false);
         

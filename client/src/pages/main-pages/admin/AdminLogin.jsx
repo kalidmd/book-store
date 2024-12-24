@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import Form from '../../../components/Form'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios';
+import getBaseURL from '../../../utils/baseURL';
 
 const AdminLogin = () => {
       // Use Navigate Hook Defenition
@@ -12,15 +13,13 @@ const AdminLogin = () => {
       // Errro Handling States
   const [error, setError] = useState(false);
   const [fetchError, setFetchError] = useState(false);
-      // API Endpoinst Defenition
-  const localUrl = 'http://localhost:5000/api/v1';
-  // const productionUrl =
+  const baseURL = getBaseURL();
 
   const handleAdminLogin = async (e) => {
     e.preventDefault();
 
     try {
-      const { data } = await axios.post(`${localUrl}/auth/login`, { email, password })
+      const { data } = await axios.post(`${baseURL}/auth/login`, { email, password })
 
       setError(false);
       setFetchError(false);

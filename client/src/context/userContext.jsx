@@ -1,5 +1,6 @@
 import React, { createContext, useState, useEffect } from 'react'
 import axios from 'axios';
+import getBaseURL from '../utils/baseURL';
 
   // User Context Created
 export const UserContext = createContext();
@@ -9,17 +10,15 @@ export const UserContextProvider = ({ children }) => {
     const [currentUser, setCurrentUser] = useState(null);
     const [user, setUser] = useState(null);
     // const [loading, setLoading] = useState(false);
-      // API Endpoints
-    const localUrl = 'http://localhost:5000/api/v1';
-    // const productionUrl = '';
-
+    
     useEffect(() => {
+      const baseURL = getBaseURL();
         const token = localStorage.getItem('token');
         setCurrentUser(!!token);
 
         const fetchUser = async (id) => {
           try {
-            const { data } = await axios.get(`${localUrl}/users/user/${id}`, {
+            const { data } = await axios.get(`${baseURL}/users/user/${id}`, {
               headers: {
                 Authorization: `Bearer ${token}`
               }

@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { CartContext } from '../../context/cartContext'
 // import { createAnOrder } from '../../../../server/controllers/order';
 import Swal from 'sweetalert2'
+import getBaseURL from '../../utils/baseURL';
 
 const CheckoutPage = () => {
   const {cartItems, setCartItems, totalPrice, item} = useContext(CartContext);
@@ -22,15 +23,15 @@ const CheckoutPage = () => {
 
   const [error, setError] = useState(false);
   const [fetchError, setFetchError] = useState(false);
-
-  const localUrl = 'http://localhost:5000/api/v1';
+    // Base URL
+  const baseURl = getBaseURL();
 
   useEffect(() => {
 
     const fetchUser = async (id) => {
       try {
         const token = localStorage.getItem('token');
-        const response = await fetch(`${localUrl}/users/user/${id}`, {
+        const response = await fetch(`${baseURl}/users/user/${id}`, {
           method: 'get',
           headers: {
             Authorization: `Bearer ${token}`,
@@ -58,7 +59,7 @@ const CheckoutPage = () => {
 
     fetchUser();
 
-  }, [])
+  }, [baseURl])
 
     
   const createAnOrder = async (e) => {
@@ -93,7 +94,7 @@ const CheckoutPage = () => {
           try {
             const token = localStorage.getItem('token');
             // setIsLoading(true);
-            const response = await fetch(`${localUrl}/orders`, {
+            const response = await fetch(`${baseURl}/orders`, {
               method: 'post',
               body: JSON.stringify( newOrder ),
               headers: {

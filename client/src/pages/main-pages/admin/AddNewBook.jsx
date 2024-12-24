@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import Swal from 'sweetalert2';
 import axios from 'axios'
+import getBaseURL from '../../../utils/baseURL';
 import ScaleLoader from 'react-spinners/ScaleLoader';
 
 const AddNewBook = () => {
@@ -23,11 +24,7 @@ const AddNewBook = () => {
         // select option
     const options = ['Choose A Catagory', 'Fiction', 'Non-fictional', 'Romance', 'Fantasy', 'Horror', 'Business', 'Adventure'];
 
-    // const navigate = useNavigate();
-
-    const localUrl = 'http://localhost:5000/api/v1';
-    
-    // console.log(coverImage);
+    const baseURL = getBaseURL();
 
     const handleImageChange = (e) => {
         const file = e.target.files[0];
@@ -50,7 +47,7 @@ const AddNewBook = () => {
             setIsLoading(true);
             const token = localStorage.getItem('adminToken');
 
-            const { data } = await axios.post(`${localUrl}/books`, { 
+            await axios.post(`${baseURL}/books`, { 
                 title, description, category, trending, coverImage, author, published, oldPrice, newPrice 
             }, 
             {
@@ -60,7 +57,7 @@ const AddNewBook = () => {
             });
 
             setError(false);
-            console.log(data);
+            setFetchError(false);
             Swal.fire({
                 position: "center",
                 icon: "success",
