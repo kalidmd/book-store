@@ -32,7 +32,6 @@ const CartPage = () => {
             if (result.isConfirmed) {
                 setCartItems([]);
                 localStorage.removeItem('carts');
-                // sessionStorage.setItem('cart', JSON.stringify([]))
               Swal.fire({
                 title: "Cleared!",
                 text: "Your Cart has been cleared.",
@@ -61,7 +60,6 @@ const CartPage = () => {
                 setCartItems(filteredItems);
                 localStorage.setItem('carts', JSON.stringify(filteredItems));
                 JSON.parse(localStorage.getItem('carts'));
-                // localStorage.setItem('carts', JSON.stringify([...cartItems, clickedBook]))
               Swal.fire({
                 title: "Removed!",
                 text: `${selecedItem.title} has been removed!`,
@@ -80,7 +78,7 @@ const CartPage = () => {
             <div className='flex w-full justify-between items-center mb-4'>
                 <h2>Shopping cart</h2>
 
-                {cartItems.length > 0 && <button onClick={clearCart} className='bg-[#dc3511] text-white rounded-md py-1 px-2'> Clear Cart </button>}
+                {cartItems.length > 0 && <button onClick={clearCart} className='bg-[#dc3511] hover:bg-red-500 text-white rounded-md py-1 px-2'> Clear Cart </button>}
             </div>
        
              {
@@ -113,7 +111,13 @@ const CartPage = () => {
                                 </div>
                                 <div className='flex flex-col justify-between items-end'>
                                     <p> ${item.newPrice}</p>
-                                    <button onClick={() => handleRemoveItem(item._id)}>Remove</button>
+                                    <button 
+                                        onClick={
+                                            () => handleRemoveItem(item._id)}
+                                        className='italic hover:text-red-600'
+                                    >
+                                            Remove
+                                    </button>
                                 </div>
                             </div>
                             <hr className='mt-5'/>
@@ -127,7 +131,7 @@ const CartPage = () => {
             <div>
                 <div className='flex justify-between mb-1'>
                     <h2> Subtotal </h2>
-                    <p> ${totalPrice} </p>
+                    <p className='font-semibold'> ${totalPrice} </p>
                 </div>
 
                 <p className='text-sm text-gray-500'>

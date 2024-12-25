@@ -29,7 +29,7 @@ const getBooks = async (req, res) => {
         $or: [
             { title: { $regex: search, $options: 'i' } },
             { author: { $regex: search, $options: 'i' } },
-            { category: { $regex: search, $options: 'i' } }
+            { category: { $regex: search, $options: 'i' } },
         ]
     }).sort('-updatedAt');
 
@@ -38,6 +38,7 @@ const getBooks = async (req, res) => {
     }
 
     res.status(StatusCodes.OK).json({ book });
+
 }
 
 const getSingleBook = async (req, res) => {
@@ -64,16 +65,6 @@ const updateBook = async (req, res) => {
         public_id: result.public_id,
         url: result.url
     }}, {new: true, runValidators: true})
-
-    // const book = await Book.findOneAndUpdate({ _id: bookId }, 
-    //     {
-    //         ...req.body, 
-    //         coverImage: {
-    //             public_id: result.public_id,
-    //             url: result.url
-    //         }
-    //     }, 
-    //     {new: true, runValidators: true})
 
     if(!book) {
         throw new NotFoundError(`No Book Found With ID ${bookId}`);

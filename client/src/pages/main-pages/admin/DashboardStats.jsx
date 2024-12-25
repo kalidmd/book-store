@@ -26,10 +26,10 @@ const DashboardStats = () => {
     // Chart Datas
   const chartData = {
     // labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-    labels: monthlySales.map(month => month._id),
+    labels: monthlySales && monthlySales.map(month => month._id),
     datasets: [{
       label: 'Revenue (USD)',
-      data: monthlySales.map(sales => sales.totalSales),
+      data: monthlySales && monthlySales.map(sales => sales.totalSales),
       // data: [65, 59, 80, 81, 56, 55, 40],
       backgroundColor: 'rgb(69, 237, 113, 0.8)',
       borderColor: 'rgb(148 50 233)',

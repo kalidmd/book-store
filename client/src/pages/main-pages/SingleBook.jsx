@@ -1,6 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
+import axios from 'axios'
 import getBaseURL from '../../utils/baseURL';
+
 // icons
 import { IoCartOutline } from "react-icons/io5";
 import { CartContext } from '../../context/cartContext';
@@ -10,8 +12,8 @@ const SingleBook = () => {
   const { AddToCart } = useContext(CartContext);
   const params = useParams();
   const [books, setBooks] = useState([]);
-  const [error, setError] = useState(false);
-  // const dateObj = new Date(books.createdAt);
+  const [error, setError] = useState(null);
+  const [fetchError, setFetchError] = useState(null);
 
   const capitalLetter = (word) => {
     const firstLetter = word.charAt(0);
@@ -31,18 +33,20 @@ const SingleBook = () => {
 
       const fetchSingleBook = async (req, res) => {
         try {
-          const response = await fetch(`${baseURL}/${bookId}`);
-          const data = await response.json();
+          const { data } = await axios.get(`${baseURL}/books/${bookId}`)
 
-          if(data.msg) {
-            setError(data.msg);
-          } else {
-            setBooks([data.book]);
-            setError(false);
-          }
+          setError(false);
+          setFetchError(false);
+          console.log(data);
+          setBooks([data.book]);
         } catch (error) {
-          setError(error);
-          console.error(error);
+          if (error.response) {
+              // Error from backend
+            setError(error.response.data.msg);
+          } else {
+              // Axios Error
+            setFetchError(error.message);
+          }
         }
       }
 
@@ -73,16 +77,20 @@ const SingleBook = () => {
             </p>
 
             <button onClick={() => handleCart(book._id)} className='mt-4 flex items-center gap-[10px] bg-primary hover:bg-blue-700 hover:text-white rounded-lg py-[7px] pl-[15px] pr-5'>
-                <IoCartOutline  className='size-6'/>
-                <p className=''> Add to Cart </p>
-              </button>
+              <IoCartOutline  className='size-6'/>
+              <p className=''> Add to Cart </p>
+            </button>
 
-              {
-              error && 
-                <p className='mt-4 text-sm italic text-red-500'> {error} </p>
-            }
           </div>
          ))
+      }
+
+      {
+          fetchError ? 
+              <p className=' my-10 shadow bg-white py-20 flex items-center justify-center italic text-red-500 lg:text-lg'> 
+                  { fetchError } 
+              </p> : 
+          error && <p className='my-10 shadow bg-white py-20 flex items-center justify-center italic text-red-500 lg:text-lg'> { error } </p>
       }
     </main>
   )

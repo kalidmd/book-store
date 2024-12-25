@@ -25,7 +25,7 @@ const Recommended = () => {
     const [fetchError, setFetchError] = useState(null);
     const [loading, setLoading] = useState(false);
 
-    const recommendedBooks = books.length > 0 && books.slice(5, books.length);
+    const recommendedBooks = books && books.length > 0 && books.slice(5, books.length);
 
     const handleCart = (bookId) => {
         AddToCart(books, bookId);
@@ -87,7 +87,7 @@ const Recommended = () => {
             className="mySwiper bg-white mt-[10px] py-[10px] px-[12px] rounded-md select-none"
         >
             {
-                !loading ? recommendedBooks.length > 0 && recommendedBooks.map((book) => (
+                !loading ? recommendedBooks && recommendedBooks.length > 0 && recommendedBooks.map((book) => (
                         <SwiperSlide key={book._id} >
                             <Book 
                                 src={book.coverImage.url}

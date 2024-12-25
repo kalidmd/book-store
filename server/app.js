@@ -17,11 +17,12 @@ const errorHandlerMiddleware = require('./middlewares/error-handler');
 const authMiddleware = require('./middlewares/authentication');
 const roleAuthMiddleware = require('./middlewares/role-based-authentication-middleware');
 
-app.use(cors({
-    origin: ['http://localhost:3000'],
-    credentials: true
-}));
+// app.use(cors({
+//     origin: ['http://localhost:3000'],
+//     credentials: true
+// }));
 
+app.use(cors());
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ extended: false, limit: '50mb' }));
 
@@ -39,18 +40,19 @@ app.use(errorHandlerMiddleware);
 const port = 5000 || process.env.PORT;
 
 app.get('/', (req, res) => {
-    res.status(200).send('Home Page')
+    res.status(200).send('Book Store')
 })
 
     // DB Connection Strings
 const localURI = process.env.MONGO_URI_LOCAL;
-// const ProductionURI = process.env.MONGO_URI_PRODUCTION;
+const productionURI = process.env.MONGO_URI_PRODUCTION;
+console.log(productionURI);
 
     // Starter Func()
 const start = async () => {
     try {
         // Connect to DB
-        await connectDB(localURI);
+        await connectDB(productionURI);
         app.listen(port, 
             () => console.log(`Server is Listening on port ${port}...`)
         )    

@@ -108,9 +108,11 @@ const ManageBook = () => {
       <div className='flex justify-between items-center mb-4'>
         <h1> All Books </h1>
         { books && books.length > 0 && <p className='italic font-medium'> { `${books.length} ${bookFoundText}` } </p> }
-        <button onClick={handleCollapse} className='bg-blue-700 text-white rounded-md px-2 py-1 hover:bg-blue-600'> 
-          { showAllBooks ? 'Show Less' : 'Show All' } 
-        </button>
+        { books && books.length > 11 &&
+          <button onClick={handleCollapse} className='bg-blue-700 text-white rounded-md px-2 py-1 hover:bg-blue-600'> 
+            { showAllBooks ? 'Show Less' : 'Show All' } 
+          </button>
+        }
       </div>
 
       <div>

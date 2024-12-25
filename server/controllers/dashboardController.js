@@ -2,14 +2,13 @@ const { StatusCodes } = require('http-status-codes');
 
 const Book = require('../models/bookModel');
 const Order = require('../models/orderModel');
-const { NotFoundError } = require('../error');
 
 const Dashboard = async (req, res) => {
     // Dashboard Stats
-        // Total Number of Orders
+            // Total Number of Orders
         const totalOrders = await Order.countDocuments();
 
-        // Total Sales - Sum of All Total Price from Orders.
+            // Total Sales - Sum of All Total Price from Orders.
         const totalSalesCount = await Order.aggregate([
             {
                 $group: {
@@ -19,22 +18,22 @@ const Dashboard = async (req, res) => {
             }
         ]);
 
-        // To Get only the Number of Total Sales Count
+            // To Get only the Number of Total Sales Count
         const totalSales = totalSalesCount.length > 0 ? totalSalesCount[0]?.totalSales : 0;
 
-        // Trending Books Stat
+            // Trending Books Stat
         const trendingBooksCount = await Book.aggregate([
             { $match: { trending: true } },  // Match only trending Books
             { $count: "trendingBooksCount" }  // Return the count of trending books
         ]);
 
-        // To Get only the Number of Trending Book Count
+            // To Get only the Number of Trending Book Count
         const trendingBooks = trendingBooksCount.length > 0 ? trendingBooksCount[0].trendingBooksCount : 0;
 
-        // Total Number of Books
+            // Total Number of Books
         const totalBooks = await Book.countDocuments();
 
-        // Monthly Sales (sum of total sales for each month)
+            // Monthly Sales (sum of total sales for each month)
         const monthlySales = await Order.aggregate([
             {
                 $group: {
@@ -46,7 +45,7 @@ const Dashboard = async (req, res) => {
             { $sort: { _id: 1 } }
         ]);
 
-        // Result Summary
+            // Result Summary
         res.status(StatusCodes.OK).json({ 
             totalOrders, 
             totalSales,
