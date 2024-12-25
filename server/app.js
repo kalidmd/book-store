@@ -40,7 +40,7 @@ app.use(errorHandlerMiddleware);
 const port = 5000 || process.env.PORT;
 
 app.get('/', (req, res) => {
-    res.status(200).send('Book Store')
+    res.status(200).send('Online Book Store API')
 })
 
     // DB Connection Strings
