@@ -46,7 +46,6 @@ app.get('/', (req, res) => {
     // DB Connection Strings
 const localURI = process.env.MONGO_URI_LOCAL;
 const productionURI = process.env.MONGO_URI_PRODUCTION;
-console.log(productionURI);
 
     // Starter Func()
 const start = async () => {
