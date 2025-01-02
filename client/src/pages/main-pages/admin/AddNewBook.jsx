@@ -215,8 +215,7 @@ const AddNewBook = () => {
                 {
                     fetchError ? 
                     <p className='mt-4 italic text-red-500 text-center lg:text-lg'> 
-                        {/* Failed to fetch data. Please try again later.  */}
-                        {fetchError}
+                        { `${fetchError}, Please try again.` }
                     </p> : 
                     error && <p className='mt-4 italic text-red-500 text-center lg:text-lg'> { error } </p>
                 }

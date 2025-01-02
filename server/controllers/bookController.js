@@ -1,7 +1,7 @@
 const { StatusCodes } = require('http-status-codes');
 const cloudinary = require('../utils/cloudinary');
 const Book = require('../models/bookModel');
-
+const User = require('../models/userModel');
 const { NotFoundError } = require('../error');
 
 const createBook = async (req, res) => {
@@ -84,4 +84,46 @@ const deleteBook = async (req, res) => {
     res.status(StatusCodes.OK).json({ book });
 }
 
-module.exports = { createBook, getBooks, getSingleBook, updateBook, deleteBook };
+const addToFavorite = async (req, res) => {
+    const { userId } = req.user;
+    const bookId = req.body._id;
+
+    const user = await User.findById(userId).populate('favorite');
+    const book = await Book.findById(bookId);
+
+    // console.log(book);
+
+    const alreadyAdded = user.favorite.find(favBook => favBook._id.toString() === bookId);
+
+    if (alreadyAdded) {
+        let user = await User.findByIdAndUpdate(
+            userId,
+            {
+                $pull: { favorite: bookId },
+            },
+            {
+                new: true,
+            }
+        ).populate('favorite').select('favorite');
+
+        res.status(StatusCodes.OK).json(user);
+
+    } else {
+        await User.findByIdAndUpdate(
+            userId,
+            {
+                $push: { favorite: book },
+            },
+            {
+                new: true,
+            }
+        );
+
+        // Re-fetch the user with populated favorite array
+        let user = await User.findById(userId).populate('favorite').select('favorite');
+
+        res.status(StatusCodes.OK).json(user);
+    }
+}
+
+module.exports = { createBook, getBooks, getSingleBook, updateBook, deleteBook, addToFavorite };

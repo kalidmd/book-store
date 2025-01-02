@@ -136,7 +136,7 @@ const DashboardStats = () => {
       { 
         fetchError ? 
         <p className='mt-4 italic text-red-500 text-center lg:text-lg'> 
-            {fetchError}
+            { `${fetchError}, Please try again.` }
         </p> : 
         error && <p className='mt-4 italic text-red-500 text-center lg:text-lg'> { error } </p> 
       }

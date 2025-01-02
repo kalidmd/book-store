@@ -1,25 +1,23 @@
 import React, { useContext, useEffect, useState } from 'react'
-
-// Components
+import { Navigation, Pagination } from 'swiper/modules'
+import axios from 'axios';
+    // Context
+import { CartContext } from '../../context/cartContext';
+    // Custom Components
+import Loading from '../../components/Loading';
 import Book from '../../components/Book'
-// import { AddToCart } from '../../components/AddToCart';
-
-// Import Swiper React components
+import getBaseURL from '../../utils/baseURL';
+    // Import Swiper React components
 import { Swiper, SwiperSlide } from 'swiper/react';
-// Import Swiper styles
+    // Import Swiper styles
 import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
-
-// import required modules
-import { Navigation, Pagination } from 'swiper/modules'
-import { CartContext } from '../../context/cartContext';
-import axios from 'axios';
-import Loading from '../../components/Loading';
-import getBaseURL from '../../utils/baseURL';
+import { FavoriteContext } from '../../context/favoriteContext';
 
 const Recommended = () => {
-    const {AddToCart} = useContext(CartContext);
+    const { AddToCart } = useContext(CartContext);
+    const { addToFavorite } = useContext(FavoriteContext);
     const [books, setBooks] = useState([]);
     const [error, setError] = useState(false);
     const [fetchError, setFetchError] = useState(null);
@@ -29,6 +27,9 @@ const Recommended = () => {
 
     const handleCart = (bookId) => {
         AddToCart(books, bookId);
+    }
+    const handleFavorite = (bookId) => {
+        addToFavorite(books, bookId);
     }
 
     useEffect(() => {
@@ -87,7 +88,7 @@ const Recommended = () => {
             className="mySwiper bg-white mt-[10px] py-[10px] px-[12px] rounded-md select-none"
         >
             {
-                !loading ? recommendedBooks && recommendedBooks.length > 0 && recommendedBooks.map((book) => (
+                !loading ? !error && !fetchError && recommendedBooks && recommendedBooks.length > 0 && recommendedBooks.map((book) => (
                         <SwiperSlide key={book._id} >
                             <Book 
                                 src={book.coverImage.url}
@@ -98,6 +99,7 @@ const Recommended = () => {
                                 newPrice={book.newPrice}
                                 oldPrice={book.oldPrice}
                                 handleCart={() => handleCart(book._id)}
+                                handleFavorite={() => handleFavorite(book._id)}
                             />
                         </SwiperSlide>
                 )) : 
@@ -109,7 +111,7 @@ const Recommended = () => {
             {
                 fetchError ? 
                     <p className='h-[250px] flex items-center justify-center italic text-red-500 lg:text-lg'> 
-                        {fetchError}
+                        { `${fetchError}, Please try again.` }
                     </p> : 
                 error && <p className='h-[250px] flex items-center justify-center italic text-red-500 lg:text-lg'> { error } </p>
             }

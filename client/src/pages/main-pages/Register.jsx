@@ -17,17 +17,20 @@ const Register = () => {
         // Error Handling State Defenition
     const [error, setError] = useState(false);
     const [fetchError, setFetchError] = useState(false);
-    const baseURL = getBaseURL();
+        // Loading State
+    const [isLoading, setIsLoading] = useState(false);
     
     const handleRegister = async (e) => {
       e.preventDefault();
       try {
-        const { data } = await axios.post(`${baseURL}/auth/register`, { username, email, password });
+        setIsLoading(true);
+        const { data } = await axios.post(`${getBaseURL()}/auth/register`, { username, email, password });
 
         setError(false);
         setFetchError(false);
         register(data.token);
         navigate('/');
+        setIsLoading(false);
 
       } catch (error) {
         if (error.response) {
@@ -36,6 +39,7 @@ const Register = () => {
         } else {
           setFetchError(error.message);
         }
+        setIsLoading(false);
       }
     }
 
@@ -43,7 +47,7 @@ const Register = () => {
    <div>
      <Form 
         Title={'Register'}
-        Name
+        Username
         Button={'Signup'}
         DirectToText={'Already have an accont?'}
         HREF={'/login'}
@@ -57,7 +61,8 @@ const Register = () => {
         handleForm={handleRegister}
         error={error}
         fetchError={fetchError}
-    />
+        isLoading={isLoading}
+      />
    </div>
   )
 }

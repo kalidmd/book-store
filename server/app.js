@@ -44,14 +44,14 @@ app.get('/', (req, res) => {
 })
 
     // DB Connection Strings
-const localURI = process.env.MONGO_URI_LOCAL;
-const productionURI = process.env.MONGO_URI_PRODUCTION;
+const localDB = process.env.MONGO_URI_LOCAL;
+const productionDB = process.env.MONGO_URI_PRODUCTION;
 
     // Starter Func()
 const start = async () => {
     try {
         // Connect to DB
-        await connectDB(productionURI);
+        await connectDB(localDB);
         app.listen(port, 
             () => console.log(`Server is Listening on port ${port}...`)
         )    

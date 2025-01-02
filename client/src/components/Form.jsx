@@ -1,10 +1,12 @@
-import React, {} from 'react'
-import {Link} from 'react-router-dom'
+import React from 'react'
+import { Link } from 'react-router-dom'
+import ScaleLoader from 'react-spinners/ScaleLoader';
+ // React Icons
 import { FaGoogle } from "react-icons/fa";
 
 const Form = ({
     Title, 
-    Name, 
+    Username, 
     Button, 
     DirectToText, 
     HREF, 
@@ -17,7 +19,8 @@ const Form = ({
     SetEmail, 
     PasswordValue, 
     SetPassword, 
-    handleForm
+    handleForm,
+    isLoading
 }) => {
 
   const handleGoogleSignIn = () => {
@@ -28,9 +31,9 @@ const Form = ({
     <div className='shadow-md w-fit mx-auto my-20 font-montserrat py-5 px-8 bg-white'>
     <h1 className='font-bold mb-2'>{Title}</h1>
     <form onSubmit={handleForm} className='flex flex-col'>
-        {Name && <>
+        {Username && <>
             <label className='text-sm font-medium mb-1' htmlFor='name'> 
-                Name
+                Username
             </label>
             <input 
                 type="text" 
@@ -64,12 +67,22 @@ const Form = ({
         {
           fetchError ? 
           <p className='mt-4 italic text-red-500 lg:text-lg'> 
-              { fetchError } 
+              { `${fetchError}, Please try again.` } 
           </p> : 
           error && <p className='mt-4 italic text-red-500 lg:text-lg'> { error } </p>
         } 
 
-        <button className='my-2 bg-blue-500 hover:bg-blue-700 w-fit text-white text-sm font-medium py-1 px-2 rounded'> {Button} </button>
+        <button className='my-2 bg-blue-500 hover:bg-blue-700 text-white text-sm font-medium py-1 px-2 rounded  h-[30px]'> 
+          {
+              isLoading ? 
+                  <ScaleLoader
+                      color='#FFFFFF' 
+                      height={16}
+                      width={2}
+                  /> :  
+                  Button
+          } 
+        </button>
     </form>
 
     <p className='text-sm mb-3'> {DirectToText}

@@ -14,15 +14,17 @@ import axios from 'axios';
 import { SearchContext } from '../../context/searchContext';
 import Loading from '../../components/Loading';
 import getBaseURL from '../../utils/baseURL';
+import { FavoriteContext } from '../../context/favoriteContext';
 
 
 const TopSellers = () => {
-        // Cart Context Usage
+        // Context Usages
     const { AddToCart } = useContext(CartContext);
-        // Search Context Usage
+    const { addToFavorite } = useContext(FavoriteContext);
     const { search } = useContext(SearchContext);
         // States Def
     const [books, setBooks] = useState([]);
+    // const [fav, setFav] = useState(null);
         // Error Handling States
     const [error, setError] = useState(null);
     const [fetchError, setFetchError] = useState(null);
@@ -37,15 +39,17 @@ const TopSellers = () => {
 
     const handleCart = (bookId) => {
         AddToCart(books, bookId);
-        
+    }
+
+    const handleFavorite = (bookId) => {
+       addToFavorite(bookId);
     }
 
     useEffect(() => {
-        const baseURL = getBaseURL();
         const fetchBooks = async () => {
             try {
                 setIsLoading(true);
-                const { data } = await axios.get(`${baseURL}/books?search=${search}`)
+                const { data } = await axios.get(`${getBaseURL()}/books?search=${search}`)
 
                 setBooks(data.book);
                 setError(false);
@@ -108,7 +112,7 @@ const TopSellers = () => {
             >   
                 <>
                     {
-                        !isloading ? !error && filterdBooks && filterdBooks.length > 0 &&
+                        !isloading ? !error && !fetchError && filterdBooks && filterdBooks.length > 0 &&
                             filterdBooks.map((book) => (
                                 <SwiperSlide key={book._id}>
                                     <Book 
@@ -120,7 +124,8 @@ const TopSellers = () => {
                                         newPrice={book.newPrice}
                                         oldPrice={book.oldPrice}
                                         handleCart={() => handleCart(book._id)}
-                                        />
+                                        handleFavorite={() => handleFavorite(book._id)}
+                                    />
                                 </SwiperSlide>
                             )) : 
                             <div className='h-[250px] flex items-center justify-center'>
@@ -131,7 +136,7 @@ const TopSellers = () => {
                     {
                         fetchError ? 
                             <p className='h-[250px] flex items-center justify-center italic text-red-500 lg:text-lg'> 
-                                { fetchError } 
+                                { `${fetchError}, Please try again.` } 
                             </p> : 
                         error && <p className='h-[250px] flex items-center justify-center italic text-red-500 lg:text-lg'> { error } </p>
                     }

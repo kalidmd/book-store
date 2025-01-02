@@ -1,8 +1,9 @@
 import React, { useContext, useState } from 'react'
-import Form from '../../components/Form'
 import { useNavigate } from 'react-router-dom'
 import { UserContext } from '../../context/userContext'
 import axios from 'axios'
+  // Custom Components
+import Form from '../../components/Form'
 import getBaseURL from '../../utils/baseURL'
 
 const Login = () => {
@@ -14,19 +15,19 @@ const Login = () => {
     // Error Handling States Def
   const [error, setError] = useState(false);
   const [fetchError, setFetchError] = useState(false);
-  
+    // Loading State
+  const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
-  
-  const baseURL = getBaseURL();
 
   const handleLogin = async (e) => {
     e.preventDefault();
       try {
-        const { data } = await axios.post(`${baseURL}/auth/login`, { email, password });
+        setIsLoading(true);
+        const { data } = await axios.post(`${getBaseURL()}/auth/login`, { email, password });
+        
         setError(false);
         setFetchError(false);
-        
         if (data.user.role === 'admin') {
           localStorage.setItem('adminToken', data.token);
         } else {
@@ -35,6 +36,7 @@ const Login = () => {
 
         login(data.token);
         navigate('/');
+        setIsLoading(false);
 
       } catch (error) {
           if (error.response) {
@@ -44,6 +46,7 @@ const Login = () => {
           }
           setEmail('');
           setPassword('');
+          setIsLoading(false);
       }
   }
 
@@ -61,6 +64,7 @@ const Login = () => {
       PasswordValue={password}
       SetPassword={setPassword}
       handleForm={handleLogin}
+      isLoading={isLoading}
     />
   )
 }

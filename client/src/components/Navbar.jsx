@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useRef, useState } from 'react'
-import { Link, NavLink, useLocation } from 'react-router-dom'
+import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom'
     // Contexts
 import { UserContext } from '../context/userContext';
 import { CartContext } from '../context/cartContext';
@@ -11,25 +11,28 @@ import { HiMiniBars3CenterLeft } from "react-icons/hi2";
 import { IoIosSearch } from "react-icons/io";
 import { FaRegUser } from "react-icons/fa";
 import { MdFavoriteBorder } from "react-icons/md";
+import { MdFavorite } from "react-icons/md";
     // Images
 import AvatarImg from '../assets/avatar.png'
 import { SearchContext } from '../context/searchContext';
+import { FavoriteContext } from '../context/favoriteContext';
 
 const Navbar = () => {
   // Breakpoints Memo
   // sm:bg-yellow-300 md:bg-green-500 lg:bg-red-400 xl:bg-teal-500 2xl:bg-purple-400'
       // Use Location Hook Def
   const location = useLocation();
-      // Cart Context Usage
-  const {cartItems} = useContext(CartContext);
-      // User Context Usage
+      // Context Usages
+  const { cartItems } = useContext(CartContext);
+  const { favorite } = useContext(FavoriteContext);
   const {logout, currentUser, user} = useContext(UserContext);
-      // Search Context Usage
   const { search, setSearch } = useContext(SearchContext);
       // Dropdown Ref Hook Defenition
   const dropdownRef = useRef(null);
       // Dropdown State Defenition
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+  const navigate = useNavigate();
 
       // Method to Convert the First Letter of Username to Capital
   const toCapital = (username) => {
@@ -61,8 +64,6 @@ const Navbar = () => {
     logout();
   }
 
-  // console.log(user);
-
   const navigation = [
     user && {
       name: `Hi, ${toCapital( user?.username.split(" ")[0] )}`,
@@ -71,6 +72,12 @@ const Navbar = () => {
     user?.role ==='admin' && {
       name: 'Dashboard',
       href: 'dashboard',
+      link: true,
+    },
+    favorite && favorite.length > 0 &&
+    {
+      name: 'Favorites',
+      href: 'favorite',
       link: true,
     },
     {
@@ -161,7 +168,15 @@ const Navbar = () => {
             </div>:
             <NavLink to='login'> <FaRegUser className='size-6'/> </NavLink>
           }
-          <MdFavoriteBorder className='hidden md:flex size-7'/>
+          
+          {
+            favorite && favorite.length > 0 ?
+              <button className='hidden md:block' onClick={() => navigate('/favorite')}>
+                <MdFavorite className='size-7 text-red-600 '/> 
+              </button>
+              :
+              <MdFavoriteBorder title='Favorite is Empty' className='hidden md:flex size-7'/>
+          }
          
          <Link className='hidden md:block' to='/cart'>
             <button className='flex gap-1 bg-primary hover:bg-blue-500 hover:text-white py-2 px-3 rounded-lg'>

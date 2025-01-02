@@ -17,6 +17,7 @@ import UsersRoute from './protected-routes/UsersRoute';
 import AdminRoute from './protected-routes/AdminRoute';
 import UpdateBook from './pages/main-pages/admin/UpdateBook';
 import DashboardStats from './pages/main-pages/admin/DashboardStats';
+import FavoritePage from './pages/main-pages/FavoritePage';
 
 // import AddBook from './pages/sub-pages/AddBook';
 
@@ -43,6 +44,10 @@ const router = createBrowserRouter([
                 path: 'books/:id',
                 element: <SingleBook />
             },                    
+            {
+                path: 'favorite',
+                element: <FavoritePage />
+            },    
             {
                 path: 'cart',
                 element: <CartPage />

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import getBaseURL from '../../utils/baseURL';
+import Loading from '../../components/Loading';
 
 const OrderPage = () => {
   const [orders, setOrders] = useState([]);
@@ -13,12 +14,11 @@ const OrderPage = () => {
   
   useEffect(() => {
     const getOrders = async () => {
-      const baseURL = getBaseURL();
       const token = localStorage.getItem('token');
 
       try {
         setisLoading(true);
-        const { data } = await axios.get(`${baseURL}/orders`, {
+        const { data } = await axios.get(`${getBaseURL()}/orders`, {
           headers: {
             Authorization: `Bearer ${token}`
           }
@@ -26,16 +26,16 @@ const OrderPage = () => {
 
         setError(false);
         setFetchError(false);
-        setisLoading(false);
         setOrders(data.order);
+        setisLoading(false); 
 
       } catch (error) {
-          setisLoading(false);
           if (error.response) {
             setError(error.response.data.msg);
           } else {
             setFetchError(error.message);
           }
+          setisLoading(false);
       }
     }
 
@@ -47,7 +47,7 @@ const OrderPage = () => {
       <h1 className='font-bold text-xl'>Your Orders</h1>
       
       {
-       orders && orders.length > 0 && orders.map((order, index) => {
+       !isLoading && orders && orders.length > 0 && orders.map((order, index) => {
           return (
              <div key={order._id} className='flex flex-col gap-1 my-4'>
                 <h2 className='bg-text w-fit text-white rounded py-1 px-2'> 
@@ -84,13 +84,13 @@ const OrderPage = () => {
       }
 
       {
-        isLoading && <p> Loading... </p>
+        isLoading && <Loading />
       }
 
       {
           fetchError ? 
             <p className='mt-4 italic text-red-500 lg:text-lg'> 
-                { fetchError } 
+                { `${fetchError}, Please try again.` } 
             </p> : 
           error && 
             <p className='mt-4 italic text-red-500 lg:text-lg'> 

@@ -1,69 +1,40 @@
-import React, { useContext, useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
-import axios from 'axios'
-import getBaseURL from '../../utils/baseURL';
-
-import { CartContext } from '../../context/cartContext';
-import { FavoriteContext } from '../../context/favoriteContext';
-// React Icons
+import React, { useContext } from 'react'
+// import { FavoriteContext } from '../../context/favoriteContext';
+    // React Icons
 import { IoCartOutline } from "react-icons/io5";
 import { MdFavorite } from "react-icons/md";
+// import getBaseURL from '../../utils/baseURL';
+import { CartContext } from '../../context/cartContext';
+import { FavoriteContext } from '../../context/favoriteContext';
 
+const FavoritePage = () => {
+  const { addToFavorite, favorite, error, fetchError } = useContext(FavoriteContext);
 
-const SingleBook = () => {
-  const params = useParams();
-  const { AddToCart } = useContext(CartContext);
-  const { addToFavorite } = useContext(FavoriteContext);
-  const [books, setBooks] = useState([]);
-    // Error Handling States
-  const [error, setError] = useState(null);
-  const [fetchError, setFetchError] = useState(null);
+    const { AddToCart } = useContext(CartContext);
+    // const {favorite, addToFavorite } = useContext(FavoriteContext);
 
-  const capitalLetter = (word) => {
-    const firstLetter = word.charAt(0);
-    const remainingletters = word.substring(1);
-
-    return `${firstLetter.toUpperCase()}${remainingletters}` 
-  }
-
-  
-  const handleCart = (bookId) => {
-    AddToCart(books, bookId);
-  }
-
-  const handleFavorite = (bookId) => {
-    addToFavorite(books, bookId);
-  }
-  
-  useEffect(()=> {
-      const {id: bookId} = params;
-
-      const fetchSingleBook = async (req, res) => {
-        try {
-          const { data } = await axios.get(`${getBaseURL()}/books/${bookId}`)
-
-          setError(false);
-          setFetchError(false);
-          console.log(data);
-          setBooks([data.book]);
-        } catch (error) {
-          if (error.response) {
-              // Error from backend
-            setError(error.response.data.msg);
-          } else {
-              // Axios Error
-            setFetchError(error.message);
-          }
-        }
+    const capitalLetter = (word) => {
+        const firstLetter = word.charAt(0);
+        const remainingletters = word.substring(1);
+    
+        return `${firstLetter.toUpperCase()}${remainingletters}` 
       }
 
-      fetchSingleBook();
-    }, [params])
+    const handleCart = (bookId) => {
+        AddToCart(favorite, bookId);
+    }
+
+    const handleFavorite = (bookId) => {
+        addToFavorite(bookId);
+    }
+
+
 
   return (
-    <main className='w-large mx-auto 2xl:w-xLarge'>
+    <main className='w-large mx-auto my-10 2xl:w-xLarge'>
+        <h1 className='font-bold text-2xl italic'>Favorites ({favorite && favorite.length})</h1>
       {
-         books && books.map((book) => (
+         !error && !fetchError && favorite && favorite.map((book) => (
           <div key={book._id} className='w-fit my-10 shadow bg-white p-4'>
             <h1 className='text-xl font-bold'> {book.title} </h1>
             <div className='w-[150px] h-[200px] rounded my-4 '>
@@ -90,7 +61,7 @@ const SingleBook = () => {
               </button>
 
               <button onClick={() => handleFavorite(book._id)}>
-                <MdFavorite className='size-8 text-gray-500 hover:text-red-600'/>
+                <MdFavorite className={`size-8 text-gray-500 hover:text-red-600`}/>
               </button>
             </div>
           </div>
@@ -108,4 +79,4 @@ const SingleBook = () => {
   )
 }
 
-export default SingleBook
+export default FavoritePage

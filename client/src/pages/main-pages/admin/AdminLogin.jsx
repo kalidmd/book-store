@@ -13,13 +13,15 @@ const AdminLogin = () => {
       // Errro Handling States
   const [error, setError] = useState(false);
   const [fetchError, setFetchError] = useState(false);
-  const baseURL = getBaseURL();
+      // Loading State
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleAdminLogin = async (e) => {
     e.preventDefault();
 
     try {
-      const { data } = await axios.post(`${baseURL}/auth/login`, { email, password })
+      setIsLoading(true);
+      const { data } = await axios.post(`${getBaseURL()}/auth/login`, { email, password })
 
       setError(false);
       setFetchError(false);
@@ -30,6 +32,7 @@ const AdminLogin = () => {
       } else {
         setError('Access Denied!');
       }
+      setIsLoading(false);
 
     } catch (error) {
       if (error.response) {
@@ -39,6 +42,7 @@ const AdminLogin = () => {
       }
       setEmail('');
       setPassword('');
+      setIsLoading(false);
     }
   }
 
@@ -53,6 +57,7 @@ const AdminLogin = () => {
       PasswordValue={password}
       SetPassword={setPassword}
       handleForm={handleAdminLogin}
+      isLoading={isLoading}
     />
   )
 }

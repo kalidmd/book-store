@@ -27,7 +27,13 @@ const userSchema = new mongoose.Schema({
         enum: ['admin', 'user'],
         default: 'user',
         required: true
-    }
+    },
+    favorite: [
+        { 
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Book'
+        }
+    ]
 
 }, {timestamps: true})
 
