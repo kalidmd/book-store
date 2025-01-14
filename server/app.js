@@ -51,7 +51,7 @@ const productionDB = process.env.MONGO_URI_PRODUCTION;
 const start = async () => {
     try {
         // Connect to DB
-        await connectDB(localDB);
+        await connectDB(productionDB);
         app.listen(port, 
             () => console.log(`Server is Listening on port ${port}...`)
         )    

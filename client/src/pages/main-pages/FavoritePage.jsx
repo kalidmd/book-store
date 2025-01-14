@@ -1,17 +1,18 @@
 import React, { useContext } from 'react'
-// import { FavoriteContext } from '../../context/favoriteContext';
+  // Custom Components
+  import Loading from '../../components/Loading';
+  import { FavoriteContext } from '../../context/favoriteContext';
     // React Icons
 import { IoCartOutline } from "react-icons/io5";
 import { MdFavorite } from "react-icons/md";
-// import getBaseURL from '../../utils/baseURL';
 import { CartContext } from '../../context/cartContext';
-import { FavoriteContext } from '../../context/favoriteContext';
 
 const FavoritePage = () => {
-  const { addToFavorite, favorite, error, fetchError } = useContext(FavoriteContext);
+  const { favorite, addToFavorite, favoriteError, favoriteFetchError, isFavoriteLoading } = useContext(FavoriteContext);
 
     const { AddToCart } = useContext(CartContext);
-    // const {favorite, addToFavorite } = useContext(FavoriteContext);
+
+    const favoriteIds = favorite && favorite.map(book => book._id);
 
     const capitalLetter = (word) => {
         const firstLetter = word.charAt(0);
@@ -28,13 +29,16 @@ const FavoritePage = () => {
         addToFavorite(bookId);
     }
 
+    if (isFavoriteLoading) {
+      return <Loading />
+    }
 
 
   return (
     <main className='w-large mx-auto my-10 2xl:w-xLarge'>
         <h1 className='font-bold text-2xl italic'>Favorites ({favorite && favorite.length})</h1>
       {
-         !error && !fetchError && favorite && favorite.map((book) => (
+         !favoriteError && !favoriteFetchError && favorite && favorite.map((book) => (
           <div key={book._id} className='w-fit my-10 shadow bg-white p-4'>
             <h1 className='text-xl font-bold'> {book.title} </h1>
             <div className='w-[150px] h-[200px] rounded my-4 '>
@@ -61,7 +65,9 @@ const FavoritePage = () => {
               </button>
 
               <button onClick={() => handleFavorite(book._id)}>
-                <MdFavorite className={`size-8 text-gray-500 hover:text-red-600`}/>
+                <MdFavorite 
+                  className={`size-8 ${favoriteIds && favoriteIds.includes(book._id) ? 'text-red-600' : 'text-gray-500'}  hover:scale-110`}
+                />
               </button>
             </div>
           </div>
@@ -69,11 +75,11 @@ const FavoritePage = () => {
       }
 
       {
-          fetchError ? 
+          favoriteFetchError ? 
               <p className=' my-10 shadow bg-white py-20 flex items-center justify-center italic text-red-500 lg:text-lg'> 
-                  { `${fetchError}, Please try again.` } 
+                  { `${favoriteFetchError}, Please try again.` } 
               </p> : 
-          error && <p className='my-10 shadow bg-white py-20 flex items-center justify-center italic text-red-500 lg:text-lg'> { error } </p>
+          favoriteError && <p className='my-10 shadow bg-white py-20 flex items-center justify-center italic text-red-500 lg:text-lg'> { favoriteError } </p>
       }
     </main>
   )

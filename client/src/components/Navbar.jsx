@@ -16,6 +16,8 @@ import { MdFavorite } from "react-icons/md";
 import AvatarImg from '../assets/avatar.png'
 import { SearchContext } from '../context/searchContext';
 import { FavoriteContext } from '../context/favoriteContext';
+// import axios from 'axios';
+// import getBaseURL from '../utils/baseURL';
 
 const Navbar = () => {
   // Breakpoints Memo
@@ -54,6 +56,7 @@ const Navbar = () => {
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
+
   }, [dropdownRef]);
 
   const handleDropdownClick = () => {

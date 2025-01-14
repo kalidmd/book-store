@@ -20,11 +20,10 @@ import { FavoriteContext } from '../../context/favoriteContext';
 const TopSellers = () => {
         // Context Usages
     const { AddToCart } = useContext(CartContext);
-    const { addToFavorite } = useContext(FavoriteContext);
+    const { favorite, addToFavorite } = useContext(FavoriteContext);
     const { search } = useContext(SearchContext);
         // States Def
     const [books, setBooks] = useState([]);
-    // const [fav, setFav] = useState(null);
         // Error Handling States
     const [error, setError] = useState(null);
     const [fetchError, setFetchError] = useState(null);
@@ -37,6 +36,9 @@ const TopSellers = () => {
 
     const filterdBooks = selectedCategory === 'Choose a genre' ? books && books.length > 0 && books : books && books.length > 0 && books.filter(book => book.category === selectedCategory);
 
+
+    const favoriteIds = favorite && favorite.map(book => book._id);
+
     const handleCart = (bookId) => {
         AddToCart(books, bookId);
     }
@@ -44,6 +46,7 @@ const TopSellers = () => {
     const handleFavorite = (bookId) => {
        addToFavorite(bookId);
     }
+
 
     useEffect(() => {
         const fetchBooks = async () => {
@@ -125,6 +128,8 @@ const TopSellers = () => {
                                         oldPrice={book.oldPrice}
                                         handleCart={() => handleCart(book._id)}
                                         handleFavorite={() => handleFavorite(book._id)}
+                                        favoriteIds={favoriteIds}
+                            
                                     />
                                 </SwiperSlide>
                             )) : 

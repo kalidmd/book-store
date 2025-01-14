@@ -5,7 +5,7 @@ import { IoCartOutline } from "react-icons/io5";
 import { MdFavorite } from "react-icons/md";
 
 const Book = ({ 
-  src, alt, bookID, bookTitle, bookDesc, newPrice, oldPrice, handleCart, handleFavorite
+  src, alt, bookID, bookTitle, bookDesc, newPrice, oldPrice, handleCart, handleFavorite, favoriteIds
 }) => {
 
   return (
@@ -47,7 +47,11 @@ const Book = ({
           </button>
 
           <button className='hidden md:block' onClick={() => handleFavorite()}>
-            <MdFavorite className={`size-8 text-gray-500 hover:scale-110`} />
+            {
+              <MdFavorite 
+                className={`size-8 ${favoriteIds && favoriteIds.includes(bookID) ? 'text-red-600' : 'text-gray-500'} hover:scale-110`} 
+              />
+            }
           </button>
         </div>
 

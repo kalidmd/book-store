@@ -91,8 +91,6 @@ const addToFavorite = async (req, res) => {
     const user = await User.findById(userId).populate('favorite');
     const book = await Book.findById(bookId);
 
-    // console.log(book);
-
     const alreadyAdded = user.favorite.find(favBook => favBook._id.toString() === bookId);
 
     if (alreadyAdded) {
@@ -126,4 +124,12 @@ const addToFavorite = async (req, res) => {
     }
 }
 
-module.exports = { createBook, getBooks, getSingleBook, updateBook, deleteBook, addToFavorite };
+const getFavoriteBooks = async (req, res) => {
+    const { userId } = req.user;
+
+    const user = await User.findById(userId).populate('favorite').select('favorite');
+
+    res.status(StatusCodes.OK).json(user);
+}
+
+module.exports = { createBook, getBooks, getSingleBook, updateBook, deleteBook, addToFavorite, getFavoriteBooks };

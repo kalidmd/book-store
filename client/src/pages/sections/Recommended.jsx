@@ -17,7 +17,7 @@ import { FavoriteContext } from '../../context/favoriteContext';
 
 const Recommended = () => {
     const { AddToCart } = useContext(CartContext);
-    const { addToFavorite } = useContext(FavoriteContext);
+    const { favorite, addToFavorite } = useContext(FavoriteContext);
     const [books, setBooks] = useState([]);
     const [error, setError] = useState(false);
     const [fetchError, setFetchError] = useState(null);
@@ -25,11 +25,14 @@ const Recommended = () => {
 
     const recommendedBooks = books && books.length > 0 && books.slice(5, books.length);
 
+    const favoriteIds = favorite && favorite.map(book => book._id);
+
     const handleCart = (bookId) => {
         AddToCart(books, bookId);
     }
+
     const handleFavorite = (bookId) => {
-        addToFavorite(books, bookId);
+        addToFavorite(bookId);
     }
 
     useEffect(() => {
@@ -100,6 +103,7 @@ const Recommended = () => {
                                 oldPrice={book.oldPrice}
                                 handleCart={() => handleCart(book._id)}
                                 handleFavorite={() => handleFavorite(book._id)}
+                                favoriteIds={favoriteIds}
                             />
                         </SwiperSlide>
                 )) : 

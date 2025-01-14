@@ -1,61 +1,82 @@
 import axios from "axios";
-import { createContext, useContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import getBaseURL from "../utils/baseURL";
-import { UserContext } from "./userContext";
 
 export const FavoriteContext = createContext([]);
 
 export const FavoriteProvider = ({ children }) => {
-    const { user } = useContext(UserContext);
+    const [favorite, setFavorite] = useState([]);
+    const [favoriteError, setFavoriteError] = useState(null);
+    const [favoriteFetchError, setFavoriteFetchError] = useState(null);
+    const [isFavoriteLoading, setIsFavoriteLoading] = useState(false);
+    const [isAddToFavoriteLoading, setIsAddToFavoriteLoading] = useState(false);
 
-    const [favorite, setFavorite] = useState(localStorage.getItem('favorite') ? JSON.parse(localStorage.getItem('favorite')) : []);
-    const [isFavorite, setIsFavorite] = useState(false);
-    const [error, setError] = useState(null);
-    const [fetchError, setFetchError] = useState(null);
-    console.log('favorite', favorite);
-    console.log('isFavorite:', isFavorite);
-    console.log(user);
-
-    const checkFavorite = async () => {
+    useEffect(() => {
+        getFavoriteBooks();
+    }, [])
+    
+    const getFavoriteBooks = async () => {
         try {
+            setIsFavoriteLoading(true);
+            const token = localStorage.getItem('token');
+            const { data } = await axios.get(`${getBaseURL()}/books/favorite`, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            })
+            setIsFavoriteLoading(false);
+            setFavoriteError(false);
+            setFavoriteFetchError(false);
+            setFavorite(data.favorite);
             
         } catch (error) {
-            
+                // Error From Backend
+            if (error.response) {
+                setFavoriteError(error.response.data.msg);
+            } else {
+                    // Axios Error
+                setFavoriteFetchError(error.message)
+            }
+            setIsFavoriteLoading(false);
         }
     }
-
+    
     const addToFavorite = async (bookId) => {
         try {
+            setIsAddToFavoriteLoading(true);
             const token = localStorage.getItem('token');
-            const { data } = await axios.put(`${getBaseURL()}/books/favorite`, {_id: bookId}, {
+            await axios.put(`${getBaseURL()}/books/favorite`, {_id: bookId}, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
             })
 
-            setFavorite(data.favorite);
-            setIsFavorite(!isFavorite);
-            localStorage.setItem('favorite', JSON.stringify(data.favorite));
+            setIsAddToFavoriteLoading(false);
+            
 
         } catch(error) {
             if (error.response) {
                     // Error From Backend
-                setError(error.response.data.msg);
+                setFavoriteError(error.response.data.msg);
                 console.error(error.response.data.msg); 
             } else {
                 // Axios Error
-                setFetchError(error.message);
+                setFavoriteFetchError(error.message);
                 console.error(error.message); 
             }
+            setIsAddToFavoriteLoading(false);
+        } finally {
+            getFavoriteBooks();
         }
-
     }
 
     const value = {
         favorite,
         addToFavorite,
-        error,
-        fetchError
+        favoriteError,
+        favoriteFetchError,
+        isFavoriteLoading,
+        isAddToFavoriteLoading
     }
     return (
         <FavoriteContext.Provider value={value}>
