@@ -44,7 +44,6 @@ const SingleBook = () => {
 
           setError(false);
           setFetchError(false);
-          console.log(data);
           setBooks([data.book]);
         } catch (error) {
           if (error.response) {

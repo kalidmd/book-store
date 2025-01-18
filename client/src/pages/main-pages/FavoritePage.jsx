@@ -1,14 +1,13 @@
 import React, { useContext } from 'react'
   // Custom Components
-  import Loading from '../../components/Loading';
-  import { FavoriteContext } from '../../context/favoriteContext';
+import { FavoriteContext } from '../../context/favoriteContext';
     // React Icons
 import { IoCartOutline } from "react-icons/io5";
 import { MdFavorite } from "react-icons/md";
 import { CartContext } from '../../context/cartContext';
 
 const FavoritePage = () => {
-  const { favorite, addToFavorite, favoriteError, favoriteFetchError, isFavoriteLoading } = useContext(FavoriteContext);
+  const { favorite, addToFavorite } = useContext(FavoriteContext);
 
     const { AddToCart } = useContext(CartContext);
 
@@ -26,19 +25,16 @@ const FavoritePage = () => {
     }
 
     const handleFavorite = (bookId) => {
-        addToFavorite(bookId);
+        addToFavorite(favorite, bookId);
     }
 
-    if (isFavoriteLoading) {
-      return <Loading />
-    }
 
 
   return (
     <main className='w-large mx-auto my-10 2xl:w-xLarge'>
         <h1 className='font-bold text-2xl italic'>Favorites ({favorite && favorite.length})</h1>
       {
-         !favoriteError && !favoriteFetchError && favorite && favorite.map((book) => (
+        favorite && favorite.map((book) => (
           <div key={book._id} className='w-fit my-10 shadow bg-white p-4'>
             <h1 className='text-xl font-bold'> {book.title} </h1>
             <div className='w-[150px] h-[200px] rounded my-4 '>
@@ -72,14 +68,6 @@ const FavoritePage = () => {
             </div>
           </div>
          ))
-      }
-
-      {
-          favoriteFetchError ? 
-              <p className=' my-10 shadow bg-white py-20 flex items-center justify-center italic text-red-500 lg:text-lg'> 
-                  { `${favoriteFetchError}, Please try again.` } 
-              </p> : 
-          favoriteError && <p className='my-10 shadow bg-white py-20 flex items-center justify-center italic text-red-500 lg:text-lg'> { favoriteError } </p>
       }
     </main>
   )

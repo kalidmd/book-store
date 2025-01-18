@@ -26,9 +26,9 @@ const Book = ({
               </div>
             </button>
 
-            <button>
+            <button onClick={() => handleFavorite()}>
               <div className='rounded-full bg-white border w-10 h-10 flex items-center justify-center'>
-                <MdFavorite className='size-7 text-gray-500'/>
+                <MdFavorite className={`size-7 ${favoriteIds && favoriteIds.includes(bookID) ? 'text-red-600' : 'text-gray-500'} hover:scale-110`}/>
               </div>
             </button>
           </div>

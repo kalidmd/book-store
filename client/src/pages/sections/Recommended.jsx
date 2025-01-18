@@ -32,7 +32,7 @@ const Recommended = () => {
     }
 
     const handleFavorite = (bookId) => {
-        addToFavorite(bookId);
+        addToFavorite(books, bookId);
     }
 
     useEffect(() => {

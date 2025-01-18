@@ -61,42 +61,54 @@ const ManageBook = () => {
   }
 
   const deleteBook = async (id) => {
-    const token = localStorage.getItem('adminToken');
-
-    try {
-      const { data } = await axios.delete(`${baseURL}/books/${id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!"
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          const token = localStorage.getItem('adminToken');
+          const { data } = await axios.delete(`${baseURL}/books/${id}`, {
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+          })
+    
+          setError(false);
+          setFetchError(false);
+         
+          Swal.fire({
+            position: "center",
+              icon: "success",
+              title:  `${data.book.title} has been deleted!`,
+              showConfirmButton: false,
+              timer: 2000
+          });
+    
+        } catch (error) {
+          if (error.response) {
+              // Error from Backend
+            setError(error.response.data.msg);
+          } else {
+              // Axios Error
+            setFetchError(error.message);
+          }
         }
-      })
-
-      Swal.fire({
-          position: "center",
-          icon: "success",
-          title:  `${data.book.title} has been deleted!`,
-          showConfirmButton: false,
-          timer: 2000
-        });
-
-      setError(false);
-      setFetchError(false);
-
-    } catch (error) {
-      if (error.response) {
-          // Error from Backend
-        setError(error.response.data.msg);
-      } else {
-          // Axios Error
-        setFetchError(error.message);
+    
+        getBooks(search);    
+        
       }
-    }
-
-    getBooks(search);
-  }    
+    });
+  }
+    
 
   const handleCollapse = () => {
     setShowAllBooks(!showAllBooks);
-    console.log(showAllBooks);
   }
 
   if (loading) {
@@ -108,11 +120,7 @@ const ManageBook = () => {
       <div className='flex justify-between items-center mb-4'>
         <h1> All Books </h1>
         { books && books.length > 0 && <p className='italic font-medium'> { `${books.length} ${bookFoundText}` } </p> }
-        { books && books.length > 11 &&
-          <button onClick={handleCollapse} className='bg-blue-700 text-white rounded-md px-2 py-1 hover:bg-blue-600'> 
-            { showAllBooks ? 'Show Less' : 'Show All' } 
-          </button>
-        }
+        
       </div>
 
       <div>
@@ -171,6 +179,12 @@ const ManageBook = () => {
           </tbody>
         </table>
       </div>
+
+      { books && books.length > 11 &&
+          <button onClick={handleCollapse} className='bg-blue-700 text-white rounded-md px-2 py-1 hover:bg-blue-600'> 
+            { showAllBooks ? 'Show Less' : 'Show All' } 
+          </button>
+        }
 
       {
           fetchError ? 

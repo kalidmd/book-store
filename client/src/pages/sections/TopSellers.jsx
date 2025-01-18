@@ -44,7 +44,7 @@ const TopSellers = () => {
     }
 
     const handleFavorite = (bookId) => {
-       addToFavorite(bookId);
+       addToFavorite(books, bookId);
     }
 
 
