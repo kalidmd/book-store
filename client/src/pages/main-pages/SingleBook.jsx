@@ -8,6 +8,7 @@ import { FavoriteContext } from '../../context/favoriteContext';
 // React Icons
 import { IoCartOutline } from "react-icons/io5";
 import { MdFavorite } from "react-icons/md";
+import Loading from '../../components/Loading';
 
 
 const SingleBook = () => {
@@ -15,6 +16,7 @@ const SingleBook = () => {
   const { AddToCart } = useContext(CartContext);
   const { addToFavorite } = useContext(FavoriteContext);
   const [books, setBooks] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
     // Error Handling States
   const [error, setError] = useState(null);
   const [fetchError, setFetchError] = useState(null);
@@ -40,8 +42,10 @@ const SingleBook = () => {
 
       const fetchSingleBook = async (req, res) => {
         try {
+          setIsLoading(true);
           const { data } = await axios.get(`${getBaseURL()}/books/${bookId}`)
 
+          setIsLoading(false);
           setError(false);
           setFetchError(false);
           setBooks([data.book]);
@@ -53,11 +57,16 @@ const SingleBook = () => {
               // Axios Error
             setFetchError(error.message);
           }
+          setIsLoading(false);
         }
       }
 
       fetchSingleBook();
     }, [params])
+
+  if (isLoading) {
+    return <Loading />
+  }
 
   return (
     <main className='w-large mx-auto 2xl:w-xLarge'>
