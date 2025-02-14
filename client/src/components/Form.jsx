@@ -2,7 +2,8 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import ScaleLoader from 'react-spinners/ScaleLoader';
  // React Icons
-import { FaGoogle } from "react-icons/fa";
+// import { FaGoogle } from "react-icons/fa";
+import { FcGoogle } from "react-icons/fc";
 
 const Form = ({
     Title, 
@@ -95,16 +96,16 @@ const Form = ({
     </p>
 
     {/* Singn in with googel */}
-    <button onClick={handleGoogleSignIn} className='flex items-center gap-2 bg-blue-900 hover:bg-blue-700 text-white text-sm w-full rounded justify-center py-1'>
+    <button onClick={handleGoogleSignIn} className='flex items-center gap-2 border hover:border hover:border-blue-700 text-blue-900 text-sm w-full rounded justify-center py-1'>
     {
               isGoogleLoading ? 
                   <ScaleLoader
-                      color='#FFFFFF' 
+                      color='#0394fc' 
                       height={16}
                       width={2}
                   /> :  
                   <>
-                    <FaGoogle /> <p> Sign in with Google </p>
+                    <FcGoogle size={16}/> <p> Sign in with Google </p>
                   </>
       } 
       
