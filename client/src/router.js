@@ -18,6 +18,9 @@ import AdminRoute from './protected-routes/AdminRoute';
 import UpdateBook from './pages/main-pages/admin/UpdateBook';
 import DashboardStats from './pages/main-pages/admin/DashboardStats';
 import FavoritePage from './pages/main-pages/FavoritePage';
+import EmailVerifyPage from './pages/main-pages/EmailVerifyPage';
+// import RegisterUser from './pages/main-pages/RegisterUser';
+// import LoginUser from './pages/main-pages/LoginUser';
 
 // import AddBook from './pages/sub-pages/AddBook';
 
@@ -39,6 +42,10 @@ const router = createBrowserRouter([
             {
                 path: 'register',
                 element: <Register />
+            },            
+            {
+                path: 'users/:id/verify/:mailToken',
+                element: <EmailVerifyPage />
             },            
             {
                 path: 'books/:id',

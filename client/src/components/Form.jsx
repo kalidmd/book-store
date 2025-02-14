@@ -13,6 +13,7 @@ const Form = ({
     DirectTo, 
     error,
     fetchError, 
+    message,
     NameValue, 
     SetName, 
     EmailValue, 
@@ -20,15 +21,13 @@ const Form = ({
     PasswordValue, 
     SetPassword, 
     handleForm,
-    isLoading
+    handleGoogleSignIn,
+    isLoading,
+    isGoogleLoading
 }) => {
 
-  const handleGoogleSignIn = () => {
-      console.log('google sign in');
-  }
-
   return (
-    <div className='shadow-md w-fit mx-auto my-20 font-montserrat py-5 px-8 bg-white'>
+    <div className='shadow-md max-w-[360px] mx-auto my-20 font-montserrat py-5 px-8 bg-white'>
     <h1 className='font-bold mb-2'>{Title}</h1>
     <form onSubmit={handleForm} className='flex flex-col'>
         {Username && <>
@@ -64,13 +63,13 @@ const Form = ({
           className='mb-1 indent-2 focus:outline-none border-2 rounded py-1 ' 
         />
 
-        {
-          fetchError ? 
-          <p className='mt-4 italic text-red-500 lg:text-lg'> 
-              { `${fetchError}, Please try again.` } 
-          </p> : 
-          error && <p className='mt-4 italic text-red-500 lg:text-lg'> { error } </p>
-        } 
+      { 
+        fetchError ? 
+        <p className='mt-4 italic text-red-500 text-center lg:text-lg'> 
+            { `${fetchError}, Please Try Again.` }
+        </p> : 
+        error && <p className='mt-4 italic text-red-500 text-center lg:text-lg'> { `${error}` } </p> 
+      }
 
         <button className='my-2 bg-blue-500 hover:bg-blue-700 text-white text-sm font-medium py-1 px-2 rounded  h-[30px]'> 
           {
@@ -83,6 +82,12 @@ const Form = ({
                   Button
           } 
         </button>
+
+        {
+        message && 
+          <p className='text-center bg-green-600 px-2 text-white rounded-md my-2'> {message} </p>
+
+      }
     </form>
 
     <p className='text-sm mb-3'> {DirectToText}
@@ -91,7 +96,18 @@ const Form = ({
 
     {/* Singn in with googel */}
     <button onClick={handleGoogleSignIn} className='flex items-center gap-2 bg-blue-900 hover:bg-blue-700 text-white text-sm w-full rounded justify-center py-1'>
-      <FaGoogle /> <p> Sign in with Google </p>
+    {
+              isGoogleLoading ? 
+                  <ScaleLoader
+                      color='#FFFFFF' 
+                      height={16}
+                      width={2}
+                  /> :  
+                  <>
+                    <FaGoogle /> <p> Sign in with Google </p>
+                  </>
+      } 
+      
     </button>
 
     <p className='mt-3 text-center text-xs text-bookDesc'>©️ 2025 Book Store All rights reserverd</p>

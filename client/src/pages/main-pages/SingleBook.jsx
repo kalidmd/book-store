@@ -14,7 +14,7 @@ import Loading from '../../components/Loading';
 const SingleBook = () => {
   const params = useParams();
   const { AddToCart } = useContext(CartContext);
-  const { addToFavorite } = useContext(FavoriteContext);
+  const { favorite, addToFavorite } = useContext(FavoriteContext);
   const [books, setBooks] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
     // Error Handling States
@@ -27,8 +27,9 @@ const SingleBook = () => {
 
     return `${firstLetter.toUpperCase()}${remainingletters}` 
   }
-
   
+  const favoriteIds = favorite && favorite.map(book => book._id);
+
   const handleCart = (bookId) => {
     AddToCart(books, bookId);
   }
@@ -40,7 +41,7 @@ const SingleBook = () => {
   useEffect(()=> {
       const {id: bookId} = params;
 
-      const fetchSingleBook = async (req, res) => {
+      const fetchSingleBook = async () => {
         try {
           setIsLoading(true);
           const { data } = await axios.get(`${getBaseURL()}/books/${bookId}`)
@@ -98,7 +99,7 @@ const SingleBook = () => {
               </button>
 
               <button onClick={() => handleFavorite(book._id)}>
-                <MdFavorite className='size-8 text-gray-500 hover:text-red-600'/>
+                <MdFavorite className={`size-8 ${favoriteIds && favoriteIds.includes(book._id) ? 'text-red-600' : 'text-gray-500'} hover:text-red-600`}/>
               </button>
             </div>
           </div>

@@ -3,7 +3,9 @@ import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom'
     // Contexts
 import { UserContext } from '../context/userContext';
 import { CartContext } from '../context/cartContext';
-    // Components
+import { FavoriteContext } from '../context/favoriteContext';
+import { SearchContext } from '../context/searchContext';
+    // Custom Components
 import Search from './Search';
     // React Icons
 import { IoCartOutline } from "react-icons/io5";
@@ -14,10 +16,8 @@ import { MdFavoriteBorder } from "react-icons/md";
 import { MdFavorite } from "react-icons/md";
     // Images
 import AvatarImg from '../assets/avatar.png'
-import { SearchContext } from '../context/searchContext';
-import { FavoriteContext } from '../context/favoriteContext';
-// import axios from 'axios';
-// import getBaseURL from '../utils/baseURL';
+import { useGoogleAuth } from '../context/googleAuthContext';
+
 
 const Navbar = () => {
   // Breakpoints Memo
@@ -25,9 +25,10 @@ const Navbar = () => {
       // Use Location Hook Def
   const location = useLocation();
       // Context Usages
+  const {logout, currentUser, user} = useContext(UserContext);
+  const { googleCurrentUser, googleUserData, logoutFromGoogle } = useGoogleAuth();
   const { cartItems } = useContext(CartContext);
   const { favorite } = useContext(FavoriteContext);
-  const {logout, currentUser, user} = useContext(UserContext);
   const { search, setSearch } = useContext(SearchContext);
       // Dropdown Ref Hook Defenition
   const dropdownRef = useRef(null);
@@ -44,35 +45,13 @@ const Navbar = () => {
     return firstLetter + restOfTheWords;
   };
 
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if(dropdownRef.current && !dropdownRef.current.contains(event.target)){
-        setIsDropdownOpen(false);
-      }
-    };
-
-    document.addEventListener('mousedown', handleClickOutside);
-
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-
-  }, [dropdownRef]);
-
-  const handleDropdownClick = () => {
-    setIsDropdownOpen(!isDropdownOpen);
-  };
-
-  const handleLogout = () => {
-    logout();
-  }
 
   const navigation = [
-    user && {
-      name: `Hi, ${toCapital( user?.username.split(" ")[0] )}`,
+    (googleUserData || user) && {
+      name: `Hi, ${toCapital( user?.username.split(" ")[0] || googleUserData?.name.split(" ")[0] )}`,
       link: false,
     },
-    user?.role ==='admin' && {
+    user && user?.role ==='admin' && {
       name: 'Dashboard',
       href: 'dashboard',
       link: true,
@@ -103,9 +82,36 @@ const Navbar = () => {
       name: 'Logout',
       href: '/',
       link: true,
-      onClick: logout
+      onClick: true
     }
   ]
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if(dropdownRef.current && !dropdownRef.current.contains(event.target)){
+        setIsDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+
+  }, [dropdownRef]);
+
+      // Handle Dropdowon
+  const handleDropdownClick = () => {
+    setIsDropdownOpen(!isDropdownOpen);
+  };
+
+      // Handle Logout
+  const handleLogout = () => {
+    logout();
+    logoutFromGoogle();
+  }
+
 
   return (
     <nav className='bg-white pt-11 pb-5'>
@@ -142,10 +148,10 @@ const Navbar = () => {
 
         <div className='md:flex items-center justify-center gap-[30px] md:ml-20 lg:ml-36'>
           {
-            currentUser ? 
+            (currentUser || googleCurrentUser) ? 
             <div className='relative flex min-w-7'>
               <button onClick={handleDropdownClick}>  
-                <img className={`size-7 rounded-full ring-2 ring-blue-500`} src={AvatarImg} alt="avatar" />
+                <img className={`size-7 rounded-full ring-2 ring-blue-500`} src={googleUserData ? googleUserData?.photo : AvatarImg} alt="avatar" />
               </button>
               {
                 isDropdownOpen && 
@@ -154,16 +160,16 @@ const Navbar = () => {
                     className='py- pl-1 absolute w-[105px] md:w-40  bg-white mt-10 shadow-lg rounded-md z-40 '>
                     {navigation.map((item, index) => (
                       <NavLink
-                        className={ item.link ? `block mb-1 hover:bg-gray-200` : `font-bold`} 
+                        className={ item?.link ? `block mb-1 hover:bg-gray-200` : `font-bold`} 
                         key={index} 
-                        to={item.href} 
+                        to={item?.href} 
                         onClick={() => {
                           handleDropdownClick();
                           item?.onClick && handleLogout();
                         }}
                         
                       > 
-                            {item.name}  
+                            {item?.name}  
                       </NavLink>
                     ))}
                   </div>

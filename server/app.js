@@ -29,7 +29,7 @@ app.use(express.urlencoded({ extended: false, limit: '50mb' }));
     // Routes Usage
 app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/books', booksRouter);
-app.use('/api/v1/users', authMiddleware, usersRouter);
+app.use('/api/v1/users', usersRouter);
 app.use('/api/v1/orders', authMiddleware, orderRouter);
 app.use('/api/v1/admin/dashboard', authMiddleware, roleAuthMiddleware('admin'), dashboardRouter);
 

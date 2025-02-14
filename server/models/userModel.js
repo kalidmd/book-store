@@ -28,12 +28,11 @@ const userSchema = new mongoose.Schema({
         default: 'user',
         required: true
     },
-    favorite: [
-        { 
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Book'
-        }
-    ]
+    verified: {
+        type: Boolean,
+        default: false,
+        required: true
+    }
 
 }, {timestamps: true})
 

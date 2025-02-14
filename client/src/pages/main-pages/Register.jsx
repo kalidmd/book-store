@@ -1,25 +1,25 @@
-import React, { useContext, useState } from 'react'
+import React, { useState } from 'react'
 import Form from '../../components/Form';
-import { useNavigate } from 'react-router-dom';
-import { UserContext } from '../../context/userContext';
 import axios from 'axios';
 import getBaseURL from '../../utils/baseURL';
+import { useGoogleAuth } from '../../context/googleAuthContext';
+import { useNavigate } from 'react-router-dom';
 
 const Register = () => {
-        // User Context Usage
-    const { register } = useContext(UserContext);
-        // Use Navigate Hook Defenition
-    const navigate = useNavigate();
-        // State Defenition
+    const { signInWithGoogle } = useGoogleAuth()
     const [username, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [message, setMessage] = useState(false);
+    const navigate = useNavigate();
         // Error Handling State Defenition
     const [error, setError] = useState(false);
     const [fetchError, setFetchError] = useState(false);
         // Loading State
     const [isLoading, setIsLoading] = useState(false);
+    const [isGoogleLoading, setIsGoogleLoading] = useState(false);
     
+        // Register a New User to DB
     const handleRegister = async (e) => {
       e.preventDefault();
       try {
@@ -28,18 +28,34 @@ const Register = () => {
 
         setError(false);
         setFetchError(false);
-        register(data.token);
-        navigate('/');
+        setMessage(data.msg);
         setIsLoading(false);
 
       } catch (error) {
         if (error.response) {
-          localStorage.removeItem('token')
           setError(error.response.data.msg);
         } else {
           setFetchError(error.message);
         }
         setIsLoading(false);
+        setMessage(false);
+      }
+    }
+
+    // Register a New User Using Google Auth (Firebase)
+    const handleGoogleSignIn = async () => {
+      try {
+        setIsGoogleLoading(true);
+        setFetchError(false);
+        await signInWithGoogle();
+
+        setIsGoogleLoading(false);
+        navigate('/');
+
+      } catch (error) {
+        // alert(error);
+        setFetchError(error);
+        setIsGoogleLoading(false);
       }
     }
 
@@ -61,7 +77,10 @@ const Register = () => {
         handleForm={handleRegister}
         error={error}
         fetchError={fetchError}
+        message={message}
         isLoading={isLoading}
+        isGoogleLoading={isGoogleLoading}
+        handleGoogleSignIn={handleGoogleSignIn}
       />
    </div>
   )
