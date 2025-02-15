@@ -48,6 +48,7 @@ const Register = () => {
         setIsGoogleLoading(true);
         setFetchError(false);
         await signInWithGoogle();
+        // addUsersFromGoogle();
 
         setIsGoogleLoading(false);
         navigate('/');
@@ -58,6 +59,26 @@ const Register = () => {
         setIsGoogleLoading(false);
       }
     }
+
+    // const addUsersFromGoogle = async () => {
+    //   const username = googleUserData?.name;
+    //   const email= googleUserData?.email;
+      
+    //   if (username && email) {
+    //     console.log('username: ', username);
+    //     console.log('email: ', email);
+
+    //     try {
+    //       const {data} = await axios.post(`${getBaseURL()}/auth/google`, {username, email} )
+  
+    //       console.log(data);
+  
+    //     } catch (error) {
+    //       console.log(error);
+    //       alert(error); 
+    //     }
+    //   }
+    // }
 
   return (
    <div>

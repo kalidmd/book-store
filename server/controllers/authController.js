@@ -116,4 +116,33 @@ const verifyMailtoken = async (req, res) => {
 }
 
 
-module.exports = { register, login, verifyMailtoken };
+const signinWithGoogle = async (req, res) => {
+    const { username, email } = req.body;
+
+    // Check if user exists
+    let user = await User.findOne({ email });
+
+    if (!user) {
+        // Create new user
+        user = new User({
+            username,
+            email,
+            verified: true,
+            password: email + username
+        });
+   
+        await user.save();
+        
+        const token = user.createJWT();
+
+        return res.status(StatusCodes.CREATED).json({ user, token, msg: 'User Created' })
+    } else {
+        const token = user.createJWT();
+
+        return res.status(StatusCodes.FORBIDDEN).json({ token , msg: 'User Already Exists' })
+
+    }
+}
+
+
+module.exports = { register, login, verifyMailtoken, signinWithGoogle };

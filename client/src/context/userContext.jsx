@@ -39,10 +39,10 @@ export const UserContextProvider = ({ children }) => {
       
     }, [currentUser]);
 
-    const register = (token) => {
-        localStorage.setItem('token', token);
-        setCurrentUser(true);
-    }
+    // const register = (token) => {
+    //     localStorage.setItem('token', token);
+    //     setCurrentUser(true);
+    // }
 
     const login = (token) => {
         localStorage.setItem('token', token);
@@ -58,7 +58,6 @@ export const UserContextProvider = ({ children }) => {
     const value = {
         currentUser,
         user,
-        register,
         login,
         logout
     }

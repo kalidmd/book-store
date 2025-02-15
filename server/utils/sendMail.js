@@ -30,12 +30,6 @@ const sendMail = async ( email, text ) => {
     };
 
     return await transporter.sendMail(message);
-    // try {
-    //     console.log('Email Sent Successfully');
-        
-    // } catch (error) {
-    //     console.log(error);
-    // }
 }
 
 module.exports = sendMail;
