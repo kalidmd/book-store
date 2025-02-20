@@ -141,8 +141,15 @@ const signinWithGoogle = async (req, res) => {
 
         return res.status(StatusCodes.FORBIDDEN).json({ token , msg: 'User Already Exists' })
 
-    }
+    }   
+}
+
+const forgotPassword = async (req, res) => {
+    const { email } = req.body;
+    
+
+    res.status(StatusCodes.OK).json({ msg: 'Forgot Password' })
 }
 
 
-module.exports = { register, login, verifyMailtoken, signinWithGoogle };
+module.exports = { register, login, verifyMailtoken, signinWithGoogle, forgotPassword };

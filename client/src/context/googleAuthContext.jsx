@@ -43,13 +43,12 @@ export const GoogleAuthContextProvider = ({ children }) => {
                     const username = displayName;
                     const { data } = await axios.post(`${getBaseURL()}/auth/google`, { username, email })
                     
-                    console.log(data);
+                    // console.log(data);
                     localStorage.setItem('token', data.token);
                     
                     
                 } catch (error) {
-                    console.log(error?.response.data);
-                    
+                    // console.log(error?.response.data);   
                     if (error?.response.data.msg === 'User Already Exists') {
                         localStorage.setItem('token', error?.response.data.token);
                     } else {

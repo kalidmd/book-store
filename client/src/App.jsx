@@ -6,7 +6,9 @@ function App() {
   return (
       <div className="App">
           <Navbar />
-          <Outlet />
+          <div className='mt-24'>
+            <Outlet />
+          </div>
           <Footer />
       </div>
   );

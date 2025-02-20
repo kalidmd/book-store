@@ -74,7 +74,7 @@ const CartPage = () => {
         navigate('/checkout');
     }
     return (
-        <div className='w-large 2xl:w-xLarge mx-auto shadow-md p-4 my-10 flex flex-col gap-5'>
+        <div className='bg-white lg:bg-websiteMobileBg w-large 2xl:w-xLarge mx-auto shadow-md p-4 my-10 flex flex-col gap-5'>
             <div className='flex w-full justify-between items-center mb-4'>
                 <h2>Shopping cart</h2>
 

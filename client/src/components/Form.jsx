@@ -28,7 +28,7 @@ const Form = ({
 }) => {
 
   return (
-    <div className='shadow-md max-w-[360px] mx-auto my-20 font-montserrat py-5 px-8 bg-white'>
+    <div className='shadow-md max-w-[360px] mx-auto my-20 font-montserrat py-5 px-8 bg-white mt-'>
     <h1 className='font-bold mb-2'>{Title}</h1>
     <form onSubmit={handleForm} className='flex flex-col'>
         {Username && <>
@@ -91,11 +91,18 @@ const Form = ({
       }
     </form>
 
+    {Title === 'Login' && <Link className='text-blue-500 text-sm font-semibold' to='/forgot-password'> Forgot password? </Link>}
+
     <p className='text-sm mb-3'> {DirectToText}
-      <Link className='text-blue-500 hover:text-blue-700' to={HREF}> {DirectTo} </Link> 
+      <Link className='text-blue-500 hover:text-blue-700' to={HREF}> 
+        <span className='font-semibold'>
+          &nbsp;{DirectTo}  
+        </span> 
+      </Link> 
     </p>
 
     {/* Singn in with googel */}
+    { handleGoogleSignIn && 
     <button onClick={handleGoogleSignIn} className='flex items-center gap-2 border hover:border hover:border-blue-700 text-blue-900 text-sm w-full rounded justify-center py-1'>
     {
               isGoogleLoading ? 
@@ -109,7 +116,7 @@ const Form = ({
                   </>
       } 
       
-    </button>
+    </button>}
 
     <p className='mt-3 text-center text-xs text-bookDesc'>©️ 2025 Book Store All rights reserverd</p>
 </div>

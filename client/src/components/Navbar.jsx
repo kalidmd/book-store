@@ -114,7 +114,7 @@ const Navbar = () => {
 
 
   return (
-    <nav className='bg-white pt-11 pb-5'>
+    <nav className='bg-white pt-11 pb-5 fixed w-full z-50'>
       <main className='flex items-center w-large 2xl:w-xLarge mx-auto justify-between gap-4'>
           {/* vissible less than 768px screen width */}
           <NavLink to='/' className='md:hidden'> 
