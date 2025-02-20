@@ -1,8 +1,10 @@
 const User = require('../models/userModel');
 const Mailtoken = require('../models/mailTokenModel');
 const crypto = require('crypto')
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 const { StatusCodes } = require('http-status-codes');
-const { BadRequestError, UnauthorizedError } = require('../error');
+const { BadRequestError, UnauthorizedError, NotFoundError } = require('../error');
 const sendMail = require('../utils/sendMail');
 const getBaseURL = require('../utils/baseURL');
 
@@ -146,10 +148,50 @@ const signinWithGoogle = async (req, res) => {
 
 const forgotPassword = async (req, res) => {
     const { email } = req.body;
-    
+    const user = await User.findOne({ email })
 
-    res.status(StatusCodes.OK).json({ msg: 'Forgot Password' })
+    if (!user) {
+        throw new NotFoundError('User doesn\'t exist!')
+    }
+
+    const token = jwt.sign({userId: user._id}, process.env.JWT_SECRECT, {expiresIn: '30m'})
+
+    const url = `${getBaseURL()}/reset-password/${user._id}/${token}`;
+    
+    try {
+        await sendMail(email, url);
+        console.log('Email Send Successfully! Forgot Password');
+        return res.status(StatusCodes.CREATED).json({response: `An Email is sent to ${email}, Reset your password.`})
+        
+    } catch (error) {
+        console.log(error);
+        throw new BadRequestError('Something went wrong, Please try again.')
+    }
 }
 
+const resetPassword = async (req, res) => {
+    const {id, token} = req.params;
+    const {password} = req.body;
 
-module.exports = { register, login, verifyMailtoken, signinWithGoogle, forgotPassword };
+    if (!password) {
+        throw new BadRequestError('Please provide password');
+    }
+
+    const user = await User.findOne({ _id: id });
+
+    if (!user) {
+        throw new NotFoundError("user doesn't exist!");
+    }
+    
+    jwt.verify(token, process.env.JWT_SECRECT)
+
+    const salt = await bcrypt.genSalt(10);
+    const hashed = await bcrypt.hash(password, salt);
+
+    
+    await user.updateOne({ _id: id, password: hashed  })
+        
+    res.status(StatusCodes.OK).json({ successResponse: 'Password Updated' });
+}
+
+module.exports = { register, login, verifyMailtoken, signinWithGoogle, forgotPassword, resetPassword };

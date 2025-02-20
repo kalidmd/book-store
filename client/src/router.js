@@ -20,6 +20,7 @@ import DashboardStats from './pages/main-pages/admin/DashboardStats';
 import FavoritePage from './pages/main-pages/FavoritePage';
 import EmailVerifyPage from './pages/main-pages/EmailVerifyPage';
 import ForgotPassword from './pages/main-pages/ForgotPassword';
+import ResetPassword from './pages/main-pages/ResetPassword';
 // import RegisterUser from './pages/main-pages/RegisterUser';
 // import LoginUser from './pages/main-pages/LoginUser';
 
@@ -47,6 +48,10 @@ const router = createBrowserRouter([
             {
                 path: 'forgot-password',
                 element: <ForgotPassword />
+            },            
+            {
+                path: 'reset-password/:id/:token',
+                element: <ResetPassword />
             },            
             {
                 path: 'users/:id/verify/:mailToken',
