@@ -9,7 +9,7 @@ const OrderPage = () => {
   const [error, setError] = useState(false);
   const [fetchError, setFetchError] = useState(false);
     // Loader State
-  const [isLoading, setisLoading] = useState(false);
+  const [isLoading, setisLoading] = useState(true);
   
   
   useEffect(() => {
@@ -27,7 +27,7 @@ const OrderPage = () => {
         setError(false);
         setFetchError(false);
         setOrders(data.order);
-        setisLoading(false); 
+        // setisLoading(false); 
 
       } catch (error) {
           if (error.response) {
