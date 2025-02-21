@@ -151,7 +151,7 @@ const Navbar = () => {
             (currentUser || googleCurrentUser) ? 
             <div className='relative flex min-w-7'>
               <button onClick={handleDropdownClick}>  
-                <img className={`size-7 rounded-full ring-2 ring-blue-500`} src={googleUserData ? googleUserData?.photo : AvatarImg} alt="avatar" />
+                <img className={`size-7 rounded-full`} src={googleUserData ? googleUserData?.photo : AvatarImg} alt="avatar" />
               </button>
               {
                 isDropdownOpen && 
