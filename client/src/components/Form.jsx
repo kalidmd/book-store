@@ -78,11 +78,14 @@ const Form = ({
         </div>
 
       { 
-        fetchError ? 
+        fetchError &&
         <p className='mt-4 italic text-red-500 text-center lg:text-lg'> 
             { `${fetchError}, Please Try Again.` }
-        </p> : 
-        error && <p className='mt-4 italic text-red-500 text-center lg:text-lg'> { `${error}` } </p> 
+        </p>  
+      }
+
+      {
+        error && <p className='mt-4 italic text-red-500 text-center lg:text-lg'> { `${error}` } </p>
       }
 
         <button className='my-2 bg-blue-500 hover:bg-blue-700 text-white text-sm font-medium py-1 px-2 rounded  h-[30px]'> 
