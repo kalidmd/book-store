@@ -2,5 +2,5 @@
 // http://localhost:3000
 
 module.exports = getBaseUrl = () => {
-  return 'http://localhost:3000'
+  return 'https://bookstorekd.netlify.app'
 }

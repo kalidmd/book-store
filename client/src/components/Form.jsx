@@ -1,9 +1,11 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import ScaleLoader from 'react-spinners/ScaleLoader';
  // React Icons
 // import { FaGoogle } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
+import { IoEyeOffOutline } from "react-icons/io5";
+import { IoEyeOutline } from "react-icons/io5";
 
 const Form = ({
     Title, 
@@ -26,6 +28,12 @@ const Form = ({
     isLoading,
     isGoogleLoading
 }) => {
+
+  const [showPassword, setShowPassword] = useState(false);
+
+  const handleShowPassword = () => {
+    setShowPassword(!showPassword);
+  }
 
   return (
     <div className='shadow-md max-w-[360px] mx-auto my-20 font-montserrat py-5 px-8 bg-white mt-'>
@@ -55,14 +63,19 @@ const Form = ({
         />
 
         <label className='text-sm font-medium mb-1' htmlFor="password">Password</label>
-        <input 
-          type="password"
-          placeholder='Password' 
-          required 
-          value={PasswordValue}
-          onChange={(e) => SetPassword(e.target.value)}
-          className='mb-1 indent-2 focus:outline-none border-2 rounded py-1 ' 
-        />
+        <div className='flex items-center'>
+          <input 
+            type={showPassword ? 'text': 'password'}
+            placeholder='Password' 
+            required 
+            value={PasswordValue}
+            onChange={(e) => SetPassword(e.target.value)}
+            className='w-full mb-1 indent-2 focus:outline-none border-2 rounded py-1 ' 
+          />
+          <p className='ml-[-28px] cursor-pointer' onClick={handleShowPassword}>
+            { showPassword ? <IoEyeOffOutline /> : <IoEyeOutline /> }
+          </p>
+        </div>
 
       { 
         fetchError ? 
