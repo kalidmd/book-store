@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom'
+import { motion } from 'framer-motion';
     // Contexts
 import { UserContext } from '../context/userContext';
 import { CartContext } from '../context/cartContext';
@@ -101,6 +102,11 @@ const Navbar = () => {
 
   }, [dropdownRef]);
 
+      // Framer Motion
+  const variants = {
+    open: { opacity: 1, y:0 },
+    closed: { opacity: 0, y: '-10px'}
+  }
       // Handle Dropdowon
   const handleDropdownClick = () => {
     setIsDropdownOpen(!isDropdownOpen);
@@ -154,25 +160,30 @@ const Navbar = () => {
                 <img className={`size-7 rounded-full`} src={googleUserData ? googleUserData?.photo : AvatarImg} alt="avatar" />
               </button>
               {
-                isDropdownOpen && 
-                  <div
-                    ref={dropdownRef} 
-                    className='py- pl-1 absolute w-[105px] md:w-40  bg-white mt-10 shadow-lg rounded-md z-40 '>
-                    {navigation.map((item, index) => (
-                      <NavLink
-                        className={ item?.link ? `block mb-1 hover:bg-gray-200` : `font-bold`} 
-                        key={index} 
-                        to={item?.href} 
-                        onClick={() => {
-                          handleDropdownClick();
-                          item?.onClick && handleLogout();
-                        }}
-                        
-                      > 
-                            {item?.name}  
-                      </NavLink>
-                    ))}
-                  </div>
+              
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={isDropdownOpen ? 'open' : 'closed'}
+                variants={variants}
+                transition={{  }}
+                ref={dropdownRef} 
+                className='right-0 md:left-0 px-2 absolute w-32 md:w-40 bg-white mt-10 shadow-lg rounded-md z-40 '>
+                {navigation.map((item, index) => (
+                  <NavLink
+                    className={ item?.link ? `block mb-1 hover:bg-gray-200` : `font-bold`} 
+                    key={index} 
+                    to={item?.href} 
+                    onClick={() => {
+                      handleDropdownClick();
+                      item?.onClick && handleLogout();
+                    }}
+                    
+                  > 
+                        {item?.name}  
+                  </NavLink>
+                ))}
+              </motion.div>
+
               } 
             </div>:
             <NavLink to='login'> <FaRegUser className='size-6'/> </NavLink>
@@ -184,7 +195,7 @@ const Navbar = () => {
                 <MdFavorite className='size-7 text-red-600 '/> 
               </button>
               :
-              <MdFavoriteBorder title='Favorite is Empty' className='hidden md:flex size-7'/>
+              <MdFavoriteBorder title='Favorite is Empty' className='hidden md:flex size-7 text-gray-400'/>
           }
          
          <Link className='hidden md:block' to='/cart'>

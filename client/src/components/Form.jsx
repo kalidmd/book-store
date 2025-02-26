@@ -101,10 +101,10 @@ const Form = ({
         </button>
 
         {
-        message && 
-          <p className='text-center bg-green-600 px-2 text-white rounded-md my-2'> {message} </p>
+          message && 
+            <p className='text-center bg-blue-500 px-2 text-white rounded-md my-2'> {message} </p>
 
-      }
+        }
     </form>
 
     {Title === 'Login' && <Link className='text-blue-500 text-sm font-semibold' to='/forgot-password'> Forgot password? </Link>}

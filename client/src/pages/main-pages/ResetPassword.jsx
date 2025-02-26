@@ -48,10 +48,10 @@ const ResetPassword = () => {
     <div className='shadow-md max-w-[360px] mx-auto my-20 font-montserrat py-5 px-8 bg-white mt-'>
     <h1 className='font-bold mb-2'> Reset Password </h1>
     <form onSubmit={handleResetPassword} className='flex flex-col'>
-        <label className='text-sm font-medium mb-1' htmlFor='email'> Password </label>
+        <label className='text-sm font-medium mb-1'> New Password </label>
         <input 
           type="text"
-          placeholder='Enter Password'  
+          placeholder='Enter New Password'  
           required 
           value={password}
           onChange={(e) => setPassword(e.target.value)}
@@ -60,7 +60,7 @@ const ResetPassword = () => {
 
       {
         successResponse && 
-          <p> {successResponse} </p>
+          <p className='text-center bg-blue-500 px-2 text-white rounded-md my-2'> {successResponse} </p>
       }
 
       { 

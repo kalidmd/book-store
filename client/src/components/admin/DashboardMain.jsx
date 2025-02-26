@@ -33,6 +33,7 @@ const DashboardMain = () => {
       return firstLetter + restOfTheWords;
   };
   
+
   useEffect(() => {
     const handleClickOutside = (e) => {
       if(dropdownRef.current && !dropdownRef.current.contains(e.target)) {
@@ -95,10 +96,10 @@ const DashboardMain = () => {
                     
                   </div>
               }
-
-                <div className='outline outline-adminHomeBg outline-offset-2 rounded-full w-8 h-8'>
-                  <img className='w-full h-full rounded-full' src={AdminProfile} alt="Teddy Jeff" />
-                </div>
+ 
+              <div className='outline outline-adminHomeBg outline-offset-2 rounded-full w-8 h-8'>
+              <img className='w-full h-full rounded-full' src={ AdminProfile} alt='avatar' />
+              </div>
 
                 <button onClick={ handleDropdown }>
                   <MdKeyboardArrowDown className='text-gray-500'/>

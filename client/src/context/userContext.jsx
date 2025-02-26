@@ -13,7 +13,7 @@ export const UserContextProvider = ({ children }) => {
     
     useEffect(() => {
       const baseURL = getBaseURL();
-        const token = localStorage.getItem('token');
+        const token = localStorage.getItem('token') || localStorage.getItem('adminToken');
         setCurrentUser(!!token);
 
         const fetchUser = async (id) => {

@@ -3,6 +3,7 @@ import {Link} from 'react-router-dom';
   // React Icons
 import { IoCartOutline } from "react-icons/io5";
 import { MdFavorite } from "react-icons/md";
+import { motion } from 'framer-motion';
 
 const Book = ({ 
   src, alt, bookID, bookTitle, bookDesc, newPrice, oldPrice, handleCart, handleFavorite, favoriteIds
@@ -20,17 +21,23 @@ const Book = ({
           <p className="md:hidden mb-4"> {`$ ${newPrice}`} </p>
           
           <div className='md:hidden flex gap-[10px] items-center'>
-            <button onClick={() => handleCart()}>
+            <motion.button 
+              whileTap={{ scale: 1.1 }}
+              onClick={() => handleCart()
+            }>
               <div className='rounded-full bg-white border w-10 h-10 flex items-center justify-center'>
                 <IoCartOutline className='size-7 text-gray-500'/>
               </div>
-            </button>
+            </motion.button>
 
-            <button onClick={() => handleFavorite()}>
+            <motion.button 
+              whileTap={{ scale: 1.1 }}
+              onClick={() => handleFavorite()}
+            >
               <div className='rounded-full bg-white border w-10 h-10 flex items-center justify-center'>
-                <MdFavorite className={`size-7 ${favoriteIds && favoriteIds.includes(bookID) ? 'text-red-600' : 'text-gray-500'} hover:scale-110`}/>
+                <MdFavorite className={`size-7 ${favoriteIds && favoriteIds.includes(bookID) ? 'text-red-600' : 'text-gray-500'}`}/>
               </div>
-            </button>
+            </motion.button>
           </div>
 
         {/* above medium devices */}
@@ -46,13 +53,19 @@ const Book = ({
             <p className=''> Add to Cart </p>
           </button>
 
-          <button className='hidden md:block' onClick={() => handleFavorite()}>
+          <motion.button 
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+            className='hidden md:block' 
+            onClick={() => handleFavorite()
+            
+          }>
             {
               <MdFavorite 
-                className={`size-8 ${favoriteIds && favoriteIds.includes(bookID) ? 'text-red-600' : 'text-gray-500'} hover:scale-110`} 
+                className={`size-8 ${favoriteIds && favoriteIds.includes(bookID) ? 'text-red-600' : 'text-gray-500'}`} 
               />
             }
-          </button>
+          </motion.button>
         </div>
 
       </div>

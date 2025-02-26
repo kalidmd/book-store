@@ -8,7 +8,7 @@ const ForgotPassword = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(false);
     const [fetchError, setFetchError] = useState(false);
-    const [successResponse, setSuccessResponse] = useState('');
+    const [successResponse, setSuccessResponse] = useState(false);
 
     const handleForgetPassword = async (e) => {
         e.preventDefault();
@@ -49,8 +49,12 @@ const ForgotPassword = () => {
 
 
       {
-        successResponse && <p> { successResponse } </p>
+        successResponse && 
+          <p className='text-center bg-blue-500 px-2 text-white rounded-md my-2'>   
+            { successResponse } 
+          </p>
       }
+
       { 
         fetchError ? 
         <p className='mt-4 italic text-red-500 text-center lg:text-lg'> 
@@ -59,6 +63,8 @@ const ForgotPassword = () => {
         error && <p className='mt-4 italic text-red-500 text-center lg:text-lg'> { `${error}` } </p> 
       }
 
+      {
+        !successResponse ?
         <button className='my-2 bg-blue-500 hover:bg-blue-700 text-white text-sm font-medium py-1 px-2 rounded  h-[30px]'> 
           {
               isLoading ? 
@@ -69,7 +75,12 @@ const ForgotPassword = () => {
                   /> :  
                   'Send Link'
           } 
+        </button> :
+        <button disabled className='my-2 bg-gray-400 text-white text-sm font-medium py-1 px-2 rounded  h-[30px]'> 
+          Send Link
         </button>
+
+      }
 
     </form>
    
